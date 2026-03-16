@@ -11,22 +11,34 @@ const cards: GridCard[] = [
     colSpan: 4,
   },
   {
-    id: "vimeo",
+    id: "vimeo-viewer",
     type: "case-study",
     colSpan: 8,
     caseStudy: caseStudies[0],
   },
   {
-    id: "placeholder",
+    id: "vimeo-engagement",
     type: "case-study",
     colSpan: 6,
     caseStudy: caseStudies[1],
   },
   {
-    id: "mobile",
+    id: "systems",
     type: "case-study",
     colSpan: 6,
     caseStudy: caseStudies[2],
+  },
+  {
+    id: "commerce",
+    type: "case-study",
+    colSpan: 6,
+    caseStudy: caseStudies[3],
+  },
+  {
+    id: "future-work",
+    type: "case-study",
+    colSpan: 6,
+    caseStudy: caseStudies[4],
   },
 ];
 

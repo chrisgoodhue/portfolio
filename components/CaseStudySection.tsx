@@ -36,12 +36,32 @@ export function CaseStudySection({ section, themeColor, themeColorDark }: Props)
 
         {/* Title */}
         {section.title && (
-          <h2
-            className="text-display mb-10"
-            style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", color: "var(--color-ink)" }}
-          >
-            {section.title}
-          </h2>
+          // Subsections (e.g. secondary problem/approach/design entries) use a smaller H3
+          section.id !== section.type &&
+          (section.type === "problem" ||
+            section.type === "solution" ||
+            section.type === "approach" ||
+            section.type === "design") ? (
+            <h3
+              className="mb-8"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontWeight: 700,
+                letterSpacing: "-0.01em",
+                fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
+                color: "var(--color-ink)",
+              }}
+            >
+              {section.title}
+            </h3>
+          ) : (
+            <h2
+              className="text-display mb-10"
+              style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", color: "var(--color-ink)" }}
+            >
+              {section.title}
+            </h2>
+          )
         )}
 
         {/* Quote */}
@@ -83,7 +103,7 @@ export function CaseStudySection({ section, themeColor, themeColorDark }: Props)
               <div key={m.label} className="border-t pt-6" style={{ borderColor: "var(--color-border)" }}>
                 <div
                   className="text-metric"
-                  style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", color: themeColorDark || "var(--color-ink)" }}
+                  style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", color: "var(--color-ink)" }}
                 >
                   {m.value}
                 </div>

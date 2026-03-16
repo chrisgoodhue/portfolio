@@ -11,6 +11,7 @@ export interface CaseStudySection {
     | "hero"
     | "context"
     | "problem"
+    | "solution"
     | "approach"
     | "design"
     | "outcome"
