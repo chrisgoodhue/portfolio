@@ -65,18 +65,20 @@ export function ComponentsShowcase() {
     >
       <Nav />
 
-      <Container className="" style={{ paddingTop: "var(--space-20)" }}>
-        <h1 style={headingStyle}>Component library</h1>
-        <p style={{ ...captionStyle, marginBottom: "var(--space-12)" }}>
-          Reusable components for visual QA — spacing, type, and colors use design tokens.
-        </p>
-        <Link
-          href="/"
-          className="text-label"
-          style={{ color: "var(--color-muted)", marginBottom: "var(--space-12)", display: "inline-block" }}
-        >
-          ← Back to home
-        </Link>
+      <Container>
+        <div style={{ paddingTop: "var(--space-20)" }}>
+          <h1 style={headingStyle}>Component library</h1>
+          <p style={{ ...captionStyle, marginBottom: "var(--space-12)" }}>
+            Reusable components for visual QA — spacing, type, and colors use design tokens.
+          </p>
+          <Link
+            href="/"
+            className="text-label"
+            style={{ color: "var(--color-muted)", marginBottom: "var(--space-12)", display: "inline-block" }}
+          >
+            ← Back to home
+          </Link>
+        </div>
       </Container>
 
       {/* Design tokens reference */}
