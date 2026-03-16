@@ -53,10 +53,7 @@ export function CardGrid({ cards }: CardGridProps) {
 
   return (
     <motion.div
-      className="grid gap-2 p-2"
-      style={{
-        gridTemplateColumns: "repeat(12, 1fr)",
-      }}
+      className="home-card-grid gap-2 p-2"
       variants={containerVariants}
       initial="hidden"
       animate="visible"

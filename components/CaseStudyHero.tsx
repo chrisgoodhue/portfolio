@@ -10,7 +10,7 @@ interface CaseStudyHeroProps {
 export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
   return (
     <div
-      className="w-full min-h-screen flex gap-8"
+      className="w-full flex flex-col lg:min-h-screen lg:flex-row gap-8"
       style={{
         backgroundColor: caseStudy.themeColor,
         padding: "6rem 2.5rem 4rem",
@@ -77,7 +77,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
 
       {/* Right: hero image placeholder */}
       <motion.div
-        className="hidden lg:flex flex-[2]"
+        className="mt-10 lg:mt-0 flex-[2] flex"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
