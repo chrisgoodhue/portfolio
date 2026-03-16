@@ -77,7 +77,6 @@ export function CardGrid({ cards }: CardGridProps) {
             {card.type === "case-study" && card.caseStudy && (
               <CaseStudyCard
                 caseStudy={card.caseStudy}
-                colSpan={12} // already constrained by grid parent
                 isAnimatingIn={isReturning}
               />
             )}
