@@ -47,7 +47,10 @@ export const transitionStore = {
 
   subscribe: (listener: () => void) => {
     listeners.add(listener);
-    return () => listeners.delete(listener);
+    // React effects expect a cleanup of type () => void; ensure we don't return boolean
+    return () => {
+      listeners.delete(listener);
+    };
   },
 
   beginExpand: (rect: CardRect, color: string, slug: string) => {
