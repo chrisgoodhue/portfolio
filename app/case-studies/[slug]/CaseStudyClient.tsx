@@ -185,6 +185,7 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
           <motion.div
             ref={pageRef}
             key="case-study-content"
+            className="overflow-x-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

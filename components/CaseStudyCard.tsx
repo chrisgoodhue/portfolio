@@ -18,9 +18,11 @@ import { transitionStore } from "@/lib/transition-store";
 interface CaseStudyCardProps {
   caseStudy: CaseStudy;
   isAnimatingIn?: boolean;
+  /** When true, card height fits content (for featured card in row 1); otherwise min-height and stretch */
+  fitHeightToContent?: boolean;
 }
 
-export function CaseStudyCard({ caseStudy, isAnimatingIn = false }: CaseStudyCardProps) {
+export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToContent = false }: CaseStudyCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [contentVisible, setContentVisible] = useState(true);
   const [hovered, setHovered] = useState(false);
@@ -77,8 +79,8 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false }: CaseStudyCar
       style={{
         position: "relative",
         width: "100%",
-        height: "100%",
-        minHeight: "520px",
+        height: fitHeightToContent ? "auto" : "100%",
+        minHeight: fitHeightToContent ? "auto" : "max(320px, min-content)",
         backgroundColor: caseStudy.themeColor,
         borderRadius: "2px",
         overflow: "hidden",
@@ -89,68 +91,70 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false }: CaseStudyCar
       <motion.div
         animate={{ scale: hovered ? 1.012 : 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        style={{ position: "absolute", inset: 0 }}
+        style={{
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          flex: 1,
+          minHeight: 0,
+        }}
       >
+        {/* Image: 16:9, full bleed top/left/right */}
+        <div
+          style={{
+            width: "100%",
+            aspectRatio: "16 / 9",
+            flexShrink: 0,
+            overflow: "hidden",
+            backgroundColor: `${caseStudy.themeColorDark}18`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+          }}
+        >
+          <svg
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.06 }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <pattern id={`grid-${caseStudy.slug}`} width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke={caseStudy.themeColorDark} strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill={`url(#grid-${caseStudy.slug})`} />
+          </svg>
+          <span
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(3rem, 8vw, 6rem)",
+              fontWeight: 900,
+              letterSpacing: "-0.04em",
+              color: caseStudy.themeColorDark,
+              opacity: 0.08,
+              userSelect: "none",
+            }}
+          >
+            {caseStudy.company}
+          </span>
+          {/* When using next/image: fill, objectFit="cover", sizes for 16:9 */}
+        </div>
+
         {/* Content layer — fades out on click, in on return */}
         <motion.div
           animate={{ opacity: contentVisible ? 1 : 0 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            position: "absolute",
-            inset: 0,
+            flex: 1,
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
             padding: "clamp(1.5rem, 4vw, 2.5rem)",
+            minHeight: 0,
           }}
         >
-          {/* ── Image placeholder ── */}
-          <div
-            style={{
-              flex: 1,
-              borderRadius: "2px",
-              backgroundColor: `${caseStudy.themeColorDark}18`,
-              marginBottom: "2rem",
-              minHeight: "160px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-              position: "relative",
-            }}
-          >
-            {/* Decorative grid overlay */}
-            <svg
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.06 }}
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <pattern id={`grid-${caseStudy.slug}`} width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke={caseStudy.themeColorDark} strokeWidth="1" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill={`url(#grid-${caseStudy.slug})`} />
-            </svg>
-
-            <span
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(3rem, 8vw, 6rem)",
-                fontWeight: 900,
-                letterSpacing: "-0.04em",
-                color: caseStudy.themeColorDark,
-                opacity: 0.08,
-                userSelect: "none",
-              }}
-            >
-              {caseStudy.company}
-            </span>
-
-            {/* Replace the above with next/image when real images are ready:
-            <Image src={caseStudy.coverImage} alt={caseStudy.title} fill style={{ objectFit: "cover" }} /> */}
-          </div>
-
-          {/* ── Bottom: meta + metrics ── */}
+          {/* ── Meta + metrics ── */}
           <div>
             <div style={{ marginBottom: "1.5rem" }}>
               <p
@@ -182,9 +186,9 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false }: CaseStudyCar
               </p>
             </div>
 
-            {/* Metrics row */}
+            {/* Metrics row — show all outcomes */}
             <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
-              {caseStudy.outcomes.slice(0, 3).map((metric) => (
+              {caseStudy.outcomes.map((metric) => (
                 <div key={metric.label}>
                   <div
                     className="text-metric"

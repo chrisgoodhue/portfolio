@@ -63,18 +63,24 @@ export function CardGrid({ cards }: CardGridProps) {
           (card.type === "case-study" && card.caseStudy?.slug === returningSlug) ||
           (card.type === "about" && returningSlug === "about");
 
+        const isFeatured = card.id === "featured";
         return (
           <motion.div
             key={card.id}
             variants={cardVariants}
             style={{
               gridColumn: `span ${card.colSpan ?? 6}`,
+              alignSelf: isFeatured ? "start" : "stretch",
+              display: "flex",
+              minHeight: isFeatured ? undefined : "max(320px, min-content)",
+              // No height: 100% — let row size from content, then items stretch to equal height
             }}
           >
             {card.type === "case-study" && card.caseStudy && (
               <CaseStudyCard
                 caseStudy={card.caseStudy}
                 isAnimatingIn={isReturning}
+                fitHeightToContent={isFeatured}
               />
             )}
             {card.type === "about" && <AboutCard isAnimatingIn={isReturning} />}

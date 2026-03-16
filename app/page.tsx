@@ -4,6 +4,7 @@ import { Nav } from "@/components/Nav";
 import { caseStudies } from "@/lib/case-studies";
 import type { GridCard } from "@/types/case-study";
 
+// Wide screens: Row 1 = about (4) + featured (8); Row 2 = 2 equal (6+6); Row 3 = 3 equal (4+4+4)
 const cards: GridCard[] = [
   {
     id: "about",
@@ -11,7 +12,7 @@ const cards: GridCard[] = [
     colSpan: 4,
   },
   {
-    id: "vimeo-viewer",
+    id: "featured",
     type: "case-study",
     colSpan: 8,
     caseStudy: caseStudies[0],
@@ -31,14 +32,20 @@ const cards: GridCard[] = [
   {
     id: "commerce",
     type: "case-study",
-    colSpan: 6,
+    colSpan: 4,
     caseStudy: caseStudies[3],
   },
   {
-    id: "future-work",
+    id: "editorial",
     type: "case-study",
-    colSpan: 6,
+    colSpan: 4,
     caseStudy: caseStudies[4],
+  },
+  {
+    id: "design-ops",
+    type: "case-study",
+    colSpan: 4,
+    caseStudy: caseStudies[5],
   },
 ];
 

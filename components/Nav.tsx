@@ -18,7 +18,7 @@ export function Nav() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "1.25rem 1rem",
+        padding: "var(--space-5) var(--space-4)",
         // Transparent — sits above the card grid
       }}
     >
@@ -29,7 +29,14 @@ export function Nav() {
         Portfolio
       </span>
 
-      <nav style={{ display: "flex", gap: "2.5rem", alignItems: "center" }}>
+      <nav style={{ display: "flex", gap: "var(--space-10)", alignItems: "center" }}>
+        <Link
+          href="/components"
+          className="text-label"
+          style={{ color: "var(--color-ink)", opacity: 0.5 }}
+        >
+          Components
+        </Link>
         <Link
           href="/about"
           className="text-label"

@@ -489,6 +489,29 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
   },
+  {
+    slug: "design-ops-placeholder",
+    title: "Design Ops & Workflow",
+    company: "TBD",
+    role: "Principal Product Designer",
+    year: "2022–2024",
+    summary:
+      "Scaling design operations and cross-functional workflows. Placeholder — add your case study here.",
+    themeColor: "#D8E0E8",
+    themeColorDark: "#2A3540",
+    coverImage: "/images/placeholder-cover.jpg",
+    outcomes: [
+      { value: "—", label: "Coming soon" },
+    ],
+    sections: [
+      {
+        id: "hero",
+        type: "hero",
+        title: "Design Ops & Workflow",
+        body: "Placeholder content — add your case study here.",
+      },
+    ],
+  },
 ];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
