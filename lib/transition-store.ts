@@ -16,6 +16,9 @@ export interface TransitionState {
   rect: CardRect | null;
   color: string;
   slug: string;
+  requestId: number;
+  /** Homepage scroll position captured before navigating away from home. */
+  scrollY: number | null;
   phase:
     | "idle"
     | "content-fade-out"  // Step 2: card content fades
@@ -32,11 +35,15 @@ let state: TransitionState = {
   rect: null,
   color: "#000",
   slug: "",
+  requestId: 0,
+  scrollY: null,
   phase: "idle",
   overlayFadeRequested: false,
 };
 
 const listeners = new Set<() => void>();
+
+let requestCounter = 0;
 
 function notify() {
   listeners.forEach((l) => l());
@@ -53,8 +60,38 @@ export const transitionStore = {
     };
   },
 
-  beginExpand: (rect: CardRect, color: string, slug: string) => {
-    state = { rect, color, slug, phase: "content-fade-out", overlayFadeRequested: false };
+  /** Start transition immediately (pre-measure) to prevent rapid double-click races. */
+  requestExpandMeta: (color: string, slug: string, scrollY?: number | null) => {
+    requestCounter += 1;
+    state = {
+      rect: null,
+      color,
+      slug,
+      requestId: requestCounter,
+      scrollY: typeof scrollY === "number" ? scrollY : null,
+      phase: "content-fade-out",
+      overlayFadeRequested: false,
+    };
+    notify();
+  },
+
+  /** Fill in the card rect after measuring it. */
+  setExpandRect: (rect: CardRect) => {
+    state = { ...state, rect, overlayFadeRequested: false };
+    notify();
+  },
+
+  beginExpand: (rect: CardRect, color: string, slug: string, scrollY?: number | null) => {
+    requestCounter += 1;
+    state = {
+      rect,
+      color,
+      slug,
+      requestId: requestCounter,
+      scrollY: typeof scrollY === "number" ? scrollY : null,
+      phase: "content-fade-out",
+      overlayFadeRequested: false,
+    };
     notify();
   },
 
@@ -64,13 +101,29 @@ export const transitionStore = {
   },
 
   /** Call from case study page after content has painted (e.g. double rAF) so overlay fades only then */
-  requestOverlayFadeOut: () => {
+  requestOverlayFadeOut: (requestId: number) => {
+    // If another navigation started, ignore stale fade requests.
+    if (state.requestId !== requestId) return;
     state = { ...state, overlayFadeRequested: true };
     notify();
   },
 
+  ackOverlayFadeOut: (requestId: number) => {
+    if (!state.overlayFadeRequested) return;
+    state = { ...state, overlayFadeRequested: false };
+    notify();
+  },
+
   reset: () => {
-    state = { rect: null, color: "#000", slug: "", phase: "idle", overlayFadeRequested: false };
+    state = {
+      rect: null,
+      color: "#000",
+      slug: "",
+      requestId: 0,
+      scrollY: null,
+      phase: "idle",
+      overlayFadeRequested: false,
+    };
     notify();
   },
 };

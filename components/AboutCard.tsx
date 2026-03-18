@@ -10,17 +10,21 @@ const companies = ["Vimeo", "Spotify", "NYT", "IDEO"];
 
 interface AboutCardProps {
   isAnimatingIn?: boolean;
+  /** Only reveal this card for the matching transition request (prevents stale flashes). */
+  returnRequestId?: number | null;
 }
 
-export function AboutCard({ isAnimatingIn = false }: AboutCardProps) {
+export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: AboutCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
-  const [contentVisible, setContentVisible] = useState(true);
+  // Start hidden when we know we're returning (prevents a 1-frame flash).
+  const [contentVisible, setContentVisible] = useState(() => !isAnimatingIn);
 
   useEffect(() => {
     return transitionStore.subscribe(() => {
       const s = transitionStore.getState();
       if (s.slug !== "about") return;
+      if (returnRequestId != null && s.requestId !== returnRequestId) return;
       if (s.phase === "content-fade-in") {
         setTimeout(() => setContentVisible(true), 100);
       }
@@ -28,7 +32,7 @@ export function AboutCard({ isAnimatingIn = false }: AboutCardProps) {
         setContentVisible(true);
       }
     });
-  }, []);
+  }, [returnRequestId]);
 
   useEffect(() => {
     if (isAnimatingIn) {
@@ -39,13 +43,19 @@ export function AboutCard({ isAnimatingIn = false }: AboutCardProps) {
   const handleClick = useCallback(() => {
     if (!cardRef.current) return;
     if (transitionStore.getState().phase !== "idle") return;
-    const rect = cardRef.current.getBoundingClientRect();
+
+    // Start transition immediately to prevent rapid double-click races.
+    const scrollY = typeof window !== "undefined" ? window.scrollY ?? 0 : 0;
+    transitionStore.requestExpandMeta(ABOUT_THEME_COLOR, "about", scrollY);
     setContentVisible(false);
-    transitionStore.beginExpand(
-      { top: rect.top, left: rect.left, width: rect.width, height: rect.height },
-      ABOUT_THEME_COLOR,
-      "about"
-    );
+
+    const rect = cardRef.current.getBoundingClientRect();
+    transitionStore.setExpandRect({
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+    });
   }, []);
 
   return (
@@ -59,12 +69,16 @@ export function AboutCard({ isAnimatingIn = false }: AboutCardProps) {
       style={{
         position: "relative",
         width: "100%",
-        height: "100%",
-        minHeight: "520px",
+        minHeight: "20rem",
         backgroundColor: "var(--color-ink)",
-        borderRadius: "2px",
+        borderRadius: "var(--radius-xl)",
         overflow: "hidden",
         cursor: "pointer",
+        display: "flex",
+        alignItems: "stretch",
+        // Prevent the card background from flashing while content is intentionally hidden.
+        opacity: isAnimatingIn ? (contentVisible ? 1 : 0) : 1,
+        transition: "opacity 0.35s ease-out",
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -83,62 +97,28 @@ export function AboutCard({ isAnimatingIn = false }: AboutCardProps) {
 
       {/* Content — fades out on click, fades in on return */}
       <motion.div
-        animate={{ opacity: contentVisible ? 1 : 0 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        animate={{ opacity: contentVisible ? 1 : 0, y: contentVisible ? 0 : 20 }}
+        transition={{
+          duration: contentVisible ? 0.7 : 0.35,
+          ease: [0.22, 1, 0.36, 1],
+          delay: contentVisible ? 0.1 : 0,
+        }}
         style={{
-          position: "absolute",
-          inset: 0,
+          position: "relative",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           padding: "clamp(1.5rem, 4vw, 2.5rem)",
+          width: "100%",
         }}
       >
-          {/* Top: availability indicator */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <motion.div
-                animate={{ opacity: [1, 0.3, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  backgroundColor: "#4ade80",
-                }}
-              />
-              <span
-                className="text-label"
-                style={{ color: "rgba(248,247,244,0.35)" }}
-              >
-                Available for work
-              </span>
-            </div>
-
-            {/* Arrow — slides on hover */}
-            <motion.div
-              animate={{ x: hovered ? 0 : -6, opacity: hovered ? 1 : 0.3 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path
-                  d="M3.75 9H14.25M14.25 9L9 3.75M14.25 9L9 14.25"
-                  stroke="rgba(248,247,244,0.6)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </motion.div>
-          </div>
-
-          {/* Bottom: name + bio + companies */}
+          {/* Name + bio + companies */}
           <div>
             {/* Avatar circle */}
             <div
               style={{
-                width: "64px",
-                height: "64px",
+                width: "4rem",
+                height: "4rem",
                 borderRadius: "50%",
                 backgroundColor: "rgba(248,247,244,0.08)",
                 border: "1px solid rgba(248,247,244,0.12)",
@@ -153,25 +133,28 @@ export function AboutCard({ isAnimatingIn = false }: AboutCardProps) {
               <span style={{ color: "rgba(248,247,244,0.2)", fontSize: "1.5rem" }}>↗</span>
             </div>
 
-            <h2
-              className="text-display"
+            <h1
+              className="mb-4"
               style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 900,
+                letterSpacing: "-0.03em",
                 color: "var(--color-paper)",
-                fontSize: "clamp(2rem, 4vw, 3rem)",
+                fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)",
                 lineHeight: 1,
                 marginBottom: "1rem",
               }}
             >
               Your<br />
               <span style={{ opacity: 0.45, fontStyle: "italic" }}>Name</span>
-            </h2>
+            </h1>
 
             <p
               style={{
-                fontSize: "0.875rem",
+                fontSize: "var(--text-sm)",
                 lineHeight: 1.65,
                 color: "rgba(248,247,244,0.5)",
-                maxWidth: "260px",
+                maxWidth: "16.25rem",
                 marginBottom: "2rem",
               }}
             >

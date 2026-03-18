@@ -31,11 +31,14 @@ export function AboutPageClient() {
     if (ts.phase === "expanded" || ts.phase === "page-fade-in") {
       transitionStore.setPhase("page-fade-in");
       if (fadeRequestedRef.current) return;
+
+      const currentRequestId = transitionStore.getState().requestId;
+
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           if (fadeRequestedRef.current) return;
           fadeRequestedRef.current = true;
-          transitionStore.requestOverlayFadeOut();
+          transitionStore.requestOverlayFadeOut(currentRequestId);
         });
       });
     }
@@ -96,16 +99,16 @@ export function AboutPageClient() {
               <div
                 className="mb-10"
                 style={{
-                  width: "80px",
-                  height: "80px",
-                  borderRadius: "50%",
+                  width: "5rem",
+                  height: "5rem",
+                  borderRadius: "999rem",
                   backgroundColor: "var(--color-ink)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <span style={{ color: "var(--color-paper)", opacity: 0.4, fontSize: "1.5rem" }}>
+                <span style={{ color: "var(--color-paper)", opacity: 0.4, fontSize: "var(--text-2xl)" }}>
                   ↗
                 </span>
               </div>
@@ -121,8 +124,8 @@ export function AboutPageClient() {
               <p
                 className="mt-10 leading-relaxed"
                 style={{
-                  fontSize: "1.25rem",
-                  maxWidth: "560px",
+                  fontSize: "var(--text-xl)",
+                  maxWidth: "35rem",
                   color: "var(--color-ink)",
                   opacity: 0.7,
                 }}
@@ -192,7 +195,7 @@ export function AboutPageClient() {
                     style={{
                       border: "1px solid var(--color-border)",
                       padding: "0.5rem 1rem",
-                      borderRadius: "2px",
+                      borderRadius: "var(--radius-sm)",
                       color: "var(--color-ink)",
                     }}
                   >

@@ -36,40 +36,76 @@ const cardVariants = {
 };
 
 export function CardGrid({ cards }: CardGridProps) {
-  const [returningSlug, setReturningSlug] = useState<string>("");
+  const [returningSlug, setReturningSlug] = useState<string>(() => {
+    const s = transitionStore.getState();
+    // If the user navigated back while the overlay is still shrinking,
+    // hide the returning card content on first paint to avoid flashes.
+    if (s.phase === "shrinking" || s.phase === "content-fade-in") return s.slug;
+    return "";
+  });
+  const [returningRequestId, setReturningRequestId] = useState<number | null>(() => {
+    const s = transitionStore.getState();
+    if (s.phase === "shrinking" || s.phase === "content-fade-in") return s.requestId;
+    return null;
+  });
+  const [enableGridEnterAnim, setEnableGridEnterAnim] = useState<boolean>(() => {
+    return transitionStore.getState().phase === "idle";
+  });
 
   // Detect when we're returning from a case study (content-fade-in phase)
   useEffect(() => {
     const unsub = transitionStore.subscribe(() => {
       const s = transitionStore.getState();
-      if (s.phase === "content-fade-in") {
-        setReturningSlug(s.slug);
-      } else if (s.phase === "idle") {
+      if (s.phase === "idle") {
         setReturningSlug("");
+        setReturningRequestId(null);
+        setEnableGridEnterAnim(true);
+        return;
       }
+
+      // During return to home, hide the returning card content immediately
+      // (before overlay finishes shrinking) so the back animation matches the
+      // hero text cadence.
+      if (s.phase === "shrinking" || s.phase === "content-fade-in") {
+        setReturningSlug(s.slug);
+        setReturningRequestId(s.requestId);
+      }
+
+      // Avoid outer grid "enter" slide while overlay is in control.
+      setEnableGridEnterAnim(false);
     });
     return unsub;
   }, []);
 
   return (
     <motion.div
-      className="home-card-grid gap-2 p-2"
+      className="home-card-grid"
       variants={containerVariants}
-      initial="hidden"
+      initial={enableGridEnterAnim ? "hidden" : "visible"}
       animate="visible"
+      style={{
+        padding: "var(--space-5)",
+        columnGap: "var(--space-5)",
+        rowGap: "var(--space-5)",
+      }}
     >
       {cards.map((card) => {
         const isReturning =
           (card.type === "case-study" && card.caseStudy?.slug === returningSlug) ||
           (card.type === "about" && returningSlug === "about");
+        const shouldAnimateIn = isReturning && returningRequestId != null;
 
         const isFeatured = card.id === "featured";
+        const baseSpan = card.colSpan ?? 6;
+        const span2xl = card.colSpan2xl ?? baseSpan;
         return (
           <motion.div
             key={card.id}
             variants={cardVariants}
+            className="home-card-item"
             style={{
-              gridColumn: `span ${card.colSpan ?? 6}`,
+              ["--span-base" as any]: baseSpan,
+              ["--span-2xl" as any]: span2xl,
               alignSelf: isFeatured ? "start" : "stretch",
               display: "flex",
               minHeight: isFeatured ? undefined : "max(320px, min-content)",
@@ -79,11 +115,14 @@ export function CardGrid({ cards }: CardGridProps) {
             {card.type === "case-study" && card.caseStudy && (
               <CaseStudyCard
                 caseStudy={card.caseStudy}
-                isAnimatingIn={isReturning}
+                isAnimatingIn={shouldAnimateIn}
+                returnRequestId={returningRequestId}
                 fitHeightToContent={isFeatured}
               />
             )}
-            {card.type === "about" && <AboutCard isAnimatingIn={isReturning} />}
+            {card.type === "about" && (
+              <AboutCard isAnimatingIn={shouldAnimateIn} returnRequestId={returningRequestId} />
+            )}
             {/* Future card types plug in here */}
           </motion.div>
         );

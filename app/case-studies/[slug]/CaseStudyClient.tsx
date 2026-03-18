@@ -7,7 +7,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import type { CaseStudy } from "@/types/case-study";
+import type { CaseStudy, CaseStudySection as SectionData } from "@/types/case-study";
 import { getCaseStudyBySlug } from "@/lib/case-studies";
 import { transitionStore } from "@/lib/transition-store";
 import { CaseStudyHero } from "@/components/CaseStudyHero";
@@ -36,11 +36,16 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
     setVisible(true);
     transitionStore.setPhase("page-fade-in");
     if (fadeRequestedRef.current) return;
+
+    // Capture the requestId for this navigation so stale pages can't
+    // accidentally fade the overlay during a newer transition.
+    const currentRequestId = transitionStore.getState().requestId;
+
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         if (fadeRequestedRef.current) return;
         fadeRequestedRef.current = true;
-        transitionStore.requestOverlayFadeOut();
+        transitionStore.requestOverlayFadeOut(currentRequestId);
       });
     });
   }, []);
@@ -135,6 +140,35 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
 
   const nonHeroSections = caseStudy.sections.filter((s) => s.type !== "hero");
 
+  // Group subsections (e.g. approach-* and design-*) under their primary section
+  const groupedSections: { section: SectionData; subsections?: SectionData[] }[] = (() => {
+    const groups: { section: SectionData; subsections?: SectionData[] }[] = [];
+    const canGroupTypes: Array<SectionData["type"]> = ["approach", "design"];
+
+    for (let i = 0; i < nonHeroSections.length; i += 1) {
+      const current = nonHeroSections[i] as SectionData;
+
+      if (canGroupTypes.includes(current.type) && current.id === current.type) {
+        const subsections: SectionData[] = [];
+        let j = i + 1;
+
+        while (j < nonHeroSections.length) {
+          const next = nonHeroSections[j] as SectionData;
+          if (next.type !== current.type || next.id === next.type) break;
+          subsections.push(next);
+          j += 1;
+        }
+
+        groups.push({ section: current, subsections });
+        i = j - 1;
+      } else {
+        groups.push({ section: current });
+      }
+    }
+
+    return groups;
+  })();
+
   return (
     <>
       {/* Back button — always rendered above the animated content */}
@@ -196,13 +230,20 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
 
             {/* Body sections */}
             <div style={{ backgroundColor: "var(--color-paper)" }}>
-              {nonHeroSections.map((section) => (
-                <CaseStudySection
+              {groupedSections.map(({ section, subsections }, index) => (
+                <div
                   key={section.id}
-                  section={section}
-                  themeColor={caseStudy.themeColor}
-                  themeColorDark={caseStudy.themeColorDark}
-                />
+                  style={{
+                    borderTop: index === 0 ? "none" : "1px solid var(--color-border)",
+                  }}
+                >
+                  <CaseStudySection
+                    section={section}
+                    subsections={subsections}
+                    themeColor={caseStudy.themeColor}
+                    themeColorDark={caseStudy.themeColorDark}
+                  />
+                </div>
               ))}
 
               {/* Footer strip */}

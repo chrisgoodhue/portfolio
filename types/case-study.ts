@@ -57,6 +57,8 @@ export interface GridCard {
   type: CardType;
   // Spans control the editorial grid layout (out of 12 columns)
   colSpan?: number;              // default: 6
+  // Responsive 2xl span override (min-width: 1536px)
+  colSpan2xl?: number;
   rowSpan?: number;              // default: 1
   caseStudy?: CaseStudy;         // populated when type === "case-study"
 }

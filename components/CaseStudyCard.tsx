@@ -18,13 +18,21 @@ import { transitionStore } from "@/lib/transition-store";
 interface CaseStudyCardProps {
   caseStudy: CaseStudy;
   isAnimatingIn?: boolean;
+  /** Only reveal this card for the matching transition request (prevents stale flashes). */
+  returnRequestId?: number | null;
   /** When true, card height fits content (for featured card in row 1); otherwise min-height and stretch */
   fitHeightToContent?: boolean;
 }
 
-export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToContent = false }: CaseStudyCardProps) {
+export function CaseStudyCard({
+  caseStudy,
+  isAnimatingIn = false,
+  returnRequestId = null,
+  fitHeightToContent = false,
+}: CaseStudyCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [contentVisible, setContentVisible] = useState(true);
+  // Start hidden when we know we're returning (prevents a 1-frame flash).
+  const [contentVisible, setContentVisible] = useState(() => !isAnimatingIn);
   const [hovered, setHovered] = useState(false);
 
   // Subscribe to transition store — handles the return journey
@@ -33,6 +41,7 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToCon
       const s = transitionStore.getState();
       // Only respond to events for this specific card
       if (s.slug !== caseStudy.slug) return;
+      if (returnRequestId != null && s.requestId !== returnRequestId) return;
 
       if (s.phase === "content-fade-in") {
         // Overlay has finished shrinking; short delay then fade content in
@@ -42,7 +51,7 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToCon
         setContentVisible(true);
       }
     });
-  }, [caseStudy.slug]);
+  }, [caseStudy.slug, returnRequestId]);
 
   // If returning to this specific card (prop-driven, set by CardGrid)
   useEffect(() => {
@@ -55,14 +64,19 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToCon
     if (!cardRef.current) return;
     if (transitionStore.getState().phase !== "idle") return;
 
-    const rect = cardRef.current.getBoundingClientRect();
+    // Start the transition immediately (before measuring) so rapid
+    // double-clicks cannot race and leave overlapping overlays.
+    const scrollY = typeof window !== "undefined" ? window.scrollY ?? 0 : 0;
+    transitionStore.requestExpandMeta(caseStudy.themeColor, caseStudy.slug, scrollY);
     setContentVisible(false);
 
-    transitionStore.beginExpand(
-      { top: rect.top, left: rect.left, width: rect.width, height: rect.height },
-      caseStudy.themeColor,
-      caseStudy.slug
-    );
+    const rect = cardRef.current.getBoundingClientRect();
+    transitionStore.setExpandRect({
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+    });
   }, [caseStudy.themeColor, caseStudy.slug]);
 
   return (
@@ -82,9 +96,12 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToCon
         height: fitHeightToContent ? "auto" : "100%",
         minHeight: fitHeightToContent ? "auto" : "max(320px, min-content)",
         backgroundColor: caseStudy.themeColor,
-        borderRadius: "2px",
+        borderRadius: "var(--radius-xl)",
         overflow: "hidden",
         cursor: "pointer",
+        // Prevent the card background/image from flashing while content is intentionally hidden.
+        opacity: isAnimatingIn ? (contentVisible ? 1 : 0) : 1,
+        transition: "opacity 0.35s ease-out",
       }}
     >
       {/* Subtle scale on hover — container only, not content */}
@@ -143,8 +160,12 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToCon
 
         {/* Content layer — fades out on click, in on return */}
         <motion.div
-          animate={{ opacity: contentVisible ? 1 : 0 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          animate={{ opacity: contentVisible ? 1 : 0, y: contentVisible ? 0 : 20 }}
+          transition={{
+            duration: contentVisible ? 0.7 : 0.35,
+            ease: [0.22, 1, 0.36, 1],
+            delay: contentVisible ? 0.1 : 0,
+          }}
           style={{
             flex: 1,
             display: "flex",
@@ -164,8 +185,11 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToCon
                 {caseStudy.company} — {caseStudy.year}
               </p>
               <h2
-                className="text-display"
+                className="mb-0"
                 style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
                   color: caseStudy.themeColorDark,
                   fontSize: "clamp(1.375rem, 2.5vw, 2rem)",
                   lineHeight: 1.05,
@@ -176,10 +200,10 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToCon
               </h2>
               <p
                 style={{
-                  fontSize: "0.875rem",
+                  fontSize: "var(--text-sm)",
                   lineHeight: 1.6,
                   color: `${caseStudy.themeColorDark}99`,
-                  maxWidth: "460px",
+                  maxWidth: "28rem",
                 }}
               >
                 {caseStudy.summary}
@@ -204,7 +228,7 @@ export function CaseStudyCard({ caseStudy, isAnimatingIn = false, fitHeightToCon
                     style={{
                       color: `${caseStudy.themeColorDark}66`,
                       marginTop: "0.25rem",
-                      maxWidth: "110px",
+                      maxWidth: "7rem",
                       lineHeight: 1.3,
                     }}
                   >
