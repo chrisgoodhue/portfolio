@@ -69,7 +69,9 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
       style={{
         position: "relative",
         width: "100%",
+        height: "100%",
         minHeight: "20rem",
+        flex: 1,
         backgroundColor: "var(--color-ink)",
         borderRadius: "var(--radius-xl)",
         overflow: "hidden",
@@ -95,6 +97,7 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
           width: "100%",
           flex: 1,
           minHeight: 0,
+          height: "100%",
         }}
       >
       {/* Animated background texture */}
@@ -123,8 +126,11 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
           flexDirection: "column",
           justifyContent: "flex-end",
           alignItems: "flex-start",
-          padding: "clamp(1.5rem, 4vw, 2.5rem)",
+          flex: 1,
+          minHeight: 0,
           width: "100%",
+          boxSizing: "border-box",
+          padding: "clamp(1.5rem, 4vw, 2.5rem)",
         }}
       >
           {/* Name + bio + companies */}
