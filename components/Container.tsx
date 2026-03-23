@@ -12,7 +12,7 @@ export function Container({ children, className, wide }: ContainerProps) {
   return (
     <div
       className={cn(
-        "mx-auto w-full px-6 md:px-10",
+        "mx-auto w-full px-[var(--space-8)] md:px-[var(--space-10)]",
         wide ? "max-w-screen-2xl" : "max-w-screen-xl",
         className
       )}

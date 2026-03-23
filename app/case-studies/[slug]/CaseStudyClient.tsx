@@ -78,13 +78,18 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
     return unsub;
   }, [caseStudy, showContentAndRequestOverlayFade]);
 
-  // Lock body scroll during transition
+  // Lock body scroll only while a transition is active — must subscribe so we clear
+  // when phase becomes page-fade-in/idle; otherwise overflow:hidden can stick after HMR/stale store.
   useEffect(() => {
-    const ts = transitionStore.getState();
-    if (ts.phase !== "idle" && ts.phase !== "page-fade-in") {
-      document.body.classList.add("is-transitioning");
-    }
+    const syncBodyScrollLock = () => {
+      const ts = transitionStore.getState();
+      const shouldLock = ts.phase !== "idle" && ts.phase !== "page-fade-in";
+      document.body.classList.toggle("is-transitioning", shouldLock);
+    };
+    syncBodyScrollLock();
+    const unsub = transitionStore.subscribe(syncBodyScrollLock);
     return () => {
+      unsub();
       document.body.classList.remove("is-transitioning");
     };
   }, []);
@@ -208,7 +213,7 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
               <div
                 style={{
                   borderTop: "1px solid var(--color-border)",
-                  padding: "4rem 2.5rem",
+                  padding: "var(--space-12) var(--space-10)",
                 }}
               >
                 <Container>

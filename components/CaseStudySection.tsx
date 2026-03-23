@@ -27,7 +27,7 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
       variants={variants}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      className="py-24"
+      className="py-[var(--space-14)]"
     >
       <Container>
         {/* Section label */}

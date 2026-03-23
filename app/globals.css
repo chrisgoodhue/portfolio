@@ -92,7 +92,14 @@
 
 html {
   width: 100%;
+  min-height: 100%;
   overflow-x: hidden;
+  /* Same surface as body so the scrollbar gutter / overscroll isn’t browser-default white */
+  background-color: var(--color-paper);
+  color-scheme: light;
+  /* Firefox: thumb + track (track matches page edge) */
+  scrollbar-color: var(--color-border) var(--color-paper);
+  scrollbar-width: thin;
 }
 
 body {
@@ -181,13 +188,17 @@ a {
   color: var(--color-paper);
 }
 
-/* Scrollbar */
+/* Scrollbar — track uses paper so it blends with the window edge (transparent showed white behind html) */
 ::-webkit-scrollbar {
   width: var(--radius-sm);
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--color-paper);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
+  border-radius: var(--radius-sm);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
 }

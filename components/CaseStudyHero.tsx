@@ -195,12 +195,18 @@ function HeroImagePlaceholder({
 export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
   return (
     <div
-      className="relative w-full min-w-full flex flex-col min-h-0 lg:min-h-screen overflow-x-hidden pt-24 pb-16 pl-10 pr-10 lg:pr-0"
+      className={[
+        "relative flex w-full min-w-0 max-w-full flex-col overflow-x-hidden",
+        "min-h-0 lg:min-h-screen",
+        /* Match CaseStudySection <Container>: px-6 / md:px-10 */
+        "px-[var(--space-8)] md:px-[var(--space-10)] lg:pl-[var(--space-10)] lg:pr-0",
+        /* Vertical rhythm via tokens (was pt-24 pb-16) */
+        "pt-[var(--space-14)] pb-[var(--space-12)]",
+        /* Full-bleed breakout only at lg+ — avoids uneven L/R inset on small screens */
+        "lg:w-[calc(100vw+20px)] lg:ml-[calc(-50vw+50%)]",
+      ].join(" ")}
       style={{
         backgroundColor: caseStudy.themeColor,
-        /* TODO: revisit right-edge white gap — 100vw + overflow tried; may need scrollbar-gutter, different unit, or browser-specific fix */
-        width: "calc(100vw + 20px)",
-        marginLeft: "calc(-50vw + 50%)",
       }}
     >
       {/* Desktop/tablet: square image anchored right, flush top/right/bottom. Height = 100% hero → width = height (1:1). */}
@@ -237,7 +243,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
       >
         <p
-          className="text-label mb-6"
+          className="text-label mb-[var(--space-8)]"
           style={{ color: `${caseStudy.themeColorDark}88` }}
         >
           {caseStudy.company} — {caseStudy.role} — {caseStudy.year}
@@ -255,7 +261,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
         </h1>
 
         <p
-          className="mt-8 text-lg leading-relaxed"
+          className="mt-[var(--space-8)] text-lg leading-relaxed"
           style={{
             color: `${caseStudy.themeColorDark}cc`,
             maxWidth: "37.5rem",
@@ -264,7 +270,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
           {caseStudy.summary}
         </p>
 
-        <div className="mt-10 flex flex-wrap gap-10">
+        <div className="mt-[var(--space-10)] flex flex-wrap gap-[var(--space-10)]">
           {caseStudy.outcomes.map((metric) => (
             <div key={metric.label}>
               <div
@@ -277,7 +283,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
                 {metric.value}
               </div>
               <div
-                className="text-label mt-2"
+                className="text-label mt-[var(--space-4)]"
                 style={{ color: `${caseStudy.themeColorDark}88`, maxWidth: "10.625rem" }}
               >
                 {metric.label}
@@ -289,7 +295,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
 
       {/* Mobile: hero image in flow, first in stack, 1:1 */}
       <motion.div
-        className="order-1 w-full aspect-square lg:hidden mb-8"
+        className="order-1 w-full aspect-square lg:hidden mb-[var(--space-9)]"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
