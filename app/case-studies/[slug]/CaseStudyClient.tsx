@@ -171,48 +171,6 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
 
   return (
     <>
-      {/* Back button — always rendered above the animated content */}
-      <AnimatePresence>
-        {visible && (
-          <motion.div
-            key="back-btn"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            style={{
-              position: "fixed",
-              top: "1.5rem",
-              left: "1.5rem",
-              zIndex: 200,
-            }}
-          >
-            <button
-              onClick={handleBack}
-              className="text-label flex items-center gap-2"
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                color: `${caseStudy.themeColorDark}aa`,
-                padding: "0.5rem 0",
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M13 8H3M3 8L8 3M3 8L8 13"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Back
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Main content */}
       <AnimatePresence>
         {visible && (

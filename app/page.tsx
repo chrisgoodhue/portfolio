@@ -1,6 +1,5 @@
 // app/page.tsx
 import { CardGrid } from "@/components/CardGrid";
-import { Nav } from "@/components/Nav";
 import { caseStudies } from "@/lib/case-studies";
 import type { GridCard } from "@/types/case-study";
 
@@ -64,7 +63,6 @@ export default function HomePage() {
         backgroundColor: "var(--color-paper)",
       }}
     >
-      <Nav />
       {/* pt-16 gives breathing room below fixed nav */}
       <div style={{ paddingTop: "0.5rem" }}>
         <CardGrid cards={cards} />

@@ -44,48 +44,15 @@ export function AboutPageClient() {
     }
   }, []);
 
-  const handleBack = () => {
-    const storedRect = transitionStore.getState().rect;
-    const rect = storedRect ?? {
-      top: 100,
-      left: 80,
-      width: Math.min(typeof window !== "undefined" ? window.innerWidth * 0.65 : 400, 800),
-      height: 520,
-    };
-    const collapse = (typeof window !== "undefined" && (window as any).__portfolioCollapse) as
-      | ((r: { top: number; left: number; width: number; height: number }) => Promise<void>)
-      | undefined;
-    if (typeof collapse === "function") {
-      collapse(rect);
-    } else {
-      window.location.href = "/";
-    }
-  };
-
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "var(--color-paper)" }}>
-      <header
-        className="flex items-center justify-between px-5 py-5"
-        style={{ borderBottom: "1px solid var(--color-border)" }}
-      >
-        <button
-          type="button"
-          onClick={handleBack}
-          className="text-label"
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "var(--color-muted)",
-            padding: 0,
-          }}
-        >
-          ← Work
-        </button>
-        <span className="text-label" style={{ color: "var(--color-ink)" }}>
-          About
-        </span>
-      </header>
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "var(--color-paper)",
+        // Fixed header offset (global nav)
+        paddingTop: "4.5rem",
+      }}
+    >
 
       <div
         style={{

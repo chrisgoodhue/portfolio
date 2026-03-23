@@ -3,7 +3,7 @@
 // Same overlay transition as case study cards: expand from card → fullscreen, shrink on back.
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { transitionStore } from "@/lib/transition-store";
+import { canStartCardExpand, transitionStore } from "@/lib/transition-store";
 
 const ABOUT_THEME_COLOR = "#0A0A0A"; // --color-ink
 const companies = ["Vimeo", "Spotify", "NYT", "IDEO"];
@@ -42,7 +42,7 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
 
   const handleClick = useCallback(() => {
     if (!cardRef.current) return;
-    if (transitionStore.getState().phase !== "idle") return;
+    if (!canStartCardExpand()) return;
 
     // Start transition immediately to prevent rapid double-click races.
     const scrollY = typeof window !== "undefined" ? window.scrollY ?? 0 : 0;
@@ -75,6 +75,7 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
         overflow: "hidden",
         cursor: "pointer",
         display: "flex",
+        flexDirection: "column",
         alignItems: "stretch",
         // Prevent the card background from flashing while content is intentionally hidden.
         opacity: isAnimatingIn ? (contentVisible ? 1 : 0) : 1,
@@ -83,10 +84,23 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+      {/* Subtle scale on hover — same as CaseStudyCard */}
+      <motion.div
+        animate={{ scale: hovered ? 1.012 : 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          flex: 1,
+          minHeight: 0,
+        }}
+      >
       {/* Animated background texture */}
       <motion.div
-        animate={{ scale: hovered ? 1.04 : 1, opacity: hovered ? 0.06 : 0.04 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        animate={{ opacity: hovered ? 0.06 : 0.04 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         style={{
           position: "absolute",
           inset: "-10%",
@@ -108,6 +122,7 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end",
+          alignItems: "flex-start",
           padding: "clamp(1.5rem, 4vw, 2.5rem)",
           width: "100%",
         }}
@@ -184,6 +199,39 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
             </div>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
+
+      {/* Arrow indicator — slides in on hover (same as CaseStudyCard) */}
+      <motion.div
+        animate={{
+          opacity: contentVisible ? (hovered ? 1 : 0.4) : 0,
+          x: hovered ? 0 : -4,
+        }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+        style={{
+          position: "absolute",
+          bottom: "clamp(1.5rem, 4vw, 2.5rem)",
+          right: "clamp(1.5rem, 4vw, 2.5rem)",
+          width: "2.5rem",
+          height: "2.5rem",
+          borderRadius: "50%",
+          backgroundColor: "rgba(248,247,244,0.1)",
+          border: "1px solid rgba(248,247,244,0.2)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path
+            d="M2.5 7H11.5M11.5 7L7 2.5M11.5 7L7 11.5"
+            stroke="rgba(248,247,244,0.8)"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </motion.div>
+    </div>
   );
 }

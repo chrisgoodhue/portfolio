@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { TransitionOverlay } from "@/components/TransitionOverlay";
+import { NavHost } from "@/components/NavHost";
 
 export const metadata: Metadata = {
   title: "Portfolio — Principal Product Designer",
@@ -18,7 +19,7 @@ export default function RootLayout({
       <body>
         {/* The overlay lives outside the page tree so it persists across routes */}
         <TransitionOverlay />
-        {children}
+        <NavHost>{children}</NavHost>
       </body>
     </html>
   );

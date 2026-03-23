@@ -13,7 +13,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import type { CaseStudy } from "@/types/case-study";
-import { transitionStore } from "@/lib/transition-store";
+import { canStartCardExpand, transitionStore } from "@/lib/transition-store";
 
 interface CaseStudyCardProps {
   caseStudy: CaseStudy;
@@ -62,7 +62,7 @@ export function CaseStudyCard({
 
   const handleClick = useCallback(() => {
     if (!cardRef.current) return;
-    if (transitionStore.getState().phase !== "idle") return;
+    if (!canStartCardExpand()) return;
 
     // Start the transition immediately (before measuring) so rapid
     // double-clicks cannot race and leave overlapping overlays.

@@ -49,6 +49,14 @@ function notify() {
   listeners.forEach((l) => l());
 }
 
+/** True when a homepage card can start a new expand (click → overlay). */
+export function canStartCardExpand(): boolean {
+  const p = state.phase;
+  // "idle" — normal. "page-fade-in" — stale after navigating home via Link/nav
+  // (collapse() calls reset(); client-side <Link> to / does not).
+  return p === "idle" || p === "page-fade-in";
+}
+
 export const transitionStore = {
   getState: () => state,
 

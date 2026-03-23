@@ -3,7 +3,6 @@
 // Uses design tokens (spacing, radius, type, colors) — no raw pixels.
 
 import Link from "next/link";
-import { Nav } from "@/components/Nav";
 import { Container } from "@/components/Container";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { AboutCard } from "@/components/AboutCard";
@@ -72,8 +71,6 @@ export function ComponentsShowcase() {
         paddingBottom: "var(--space-24)",
       }}
     >
-      <Nav />
-
       {/* Hero: landing area for the design system docs */}
       <section
         style={{
