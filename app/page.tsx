@@ -64,7 +64,7 @@ export default function HomePage() {
       }}
     >
       {/* pt-16 gives breathing room below fixed nav */}
-      <div style={{ paddingTop: "0.5rem" }}>
+      <div style={{ paddingTop: "0px" }}>
         <CardGrid cards={cards} />
       </div>
     </main>
