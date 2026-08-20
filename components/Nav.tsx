@@ -5,8 +5,22 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useState, type MouseEvent } from "react";
 import { caseStudies } from "@/lib/case-studies";
+import { narrativeCaseStudies } from "@/lib/narrative-case-studies";
 import { navShouldUseLightForeground } from "@/lib/nav-contrast";
 import { transitionStore } from "@/lib/transition-store";
+
+// Combined list for the "Work" dropdown and active-state lookups — spans
+// both the legacy case-study system and the new narrative one. A narrative
+// portfolio entry shadows a legacy entry at the same slug (e.g. Viewer
+// Experience now has its primary route in the new system), so it wins;
+// legacy entries not yet migrated (Video Engagement, placeholders) pass through.
+const narrativeSlugs = new Set(narrativeCaseStudies.map((cs) => cs.slug));
+const allWork: { slug: string; title: string; themeColor: string }[] = [
+  ...narrativeCaseStudies.map((cs) => ({ slug: cs.slug, title: cs.title, themeColor: cs.themeColor })),
+  ...caseStudies
+    .filter((cs) => !narrativeSlugs.has(cs.slug))
+    .map((cs) => ({ slug: cs.slug, title: cs.title, themeColor: cs.themeColor })),
+];
 
 export function Nav({ animateFromTop = false }: { animateFromTop?: boolean }) {
   const pathname = usePathname();
@@ -17,7 +31,7 @@ export function Nav({ animateFromTop = false }: { animateFromTop?: boolean }) {
 
   const activeCaseStudy = useMemo(() => {
     if (!activeCaseSlug) return null;
-    return caseStudies.find((cs) => cs.slug === activeCaseSlug) ?? null;
+    return allWork.find((cs) => cs.slug === activeCaseSlug) ?? null;
   }, [activeCaseSlug]);
 
   /** Case study hero fills under the fixed nav — choose ink vs paper labels from contrast ratio. */
@@ -140,7 +154,7 @@ export function Nav({ animateFromTop = false }: { animateFromTop?: boolean }) {
                 aria-label="Work menu"
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-                  {caseStudies.map((cs) => {
+                  {allWork.map((cs) => {
                     const isActive = cs.slug === activeCaseSlug;
                     return (
                       <Link

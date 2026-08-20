@@ -1,8 +1,9 @@
 "use client";
 // components/CaseStudySection.tsx
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import type { CaseStudySection as SectionData } from "@/types/case-study";
+import type { MediaScale } from "@/types/narrative-case-study";
 import { Container } from "./Container";
 
 interface Props {
@@ -10,6 +11,200 @@ interface Props {
   subsections?: SectionData[];
   themeColor: string;
   themeColorDark: string;
+}
+
+/**
+ * Resolve the effective scale: an explicit `scale` wins; otherwise it's
+ * derived from the legacy `fullWidth` boolean so nothing authored before
+ * `scale` existed has to change. `fullWidth: false` now maps to "contained"
+ * (narrower — matches the body-copy measure) rather than "the full
+ * container width", which is what gives images and body text actual visual
+ * rhythm instead of every non-fullWidth image reading at the same width as
+ * the page itself.
+ */
+function resolveScale(explicit: MediaScale | undefined, fullWidth: boolean | undefined): MediaScale {
+  return explicit ?? (fullWidth ? "wide" : "contained");
+}
+
+function mediaWrapperProps(scale: MediaScale): { className: string; style: React.CSSProperties } {
+  if (scale === "full-bleed") {
+    // Same breakout formula as CaseStudyHero / the narrative system's
+    // MediaFeature — reaches the true viewport edge regardless of nesting.
+    return { className: "", style: { width: "100vw", marginLeft: "calc(-50vw + 50%)" } };
+  }
+  if (scale === "contained") {
+    return { className: "", style: { maxWidth: "42.5rem" } };
+  }
+  return { className: "-mx-6 md:-mx-10", style: {} };
+}
+
+/**
+ * Clearly-labeled stand-in for an asset that hasn't been produced yet —
+ * visually aligned with components/case-study/MediaPlaceholder.tsx so the
+ * legacy and narrative systems read as one component library rather than
+ * two different eras. No real image/video files exist for this content
+ * yet, so both `image` and `video` sections render this instead of an
+ * <img>/<video> pointing at a path that doesn't resolve.
+ */
+function MediaSlot({
+  kind,
+  label,
+  scale,
+  fullWidth,
+  themeColor,
+  themeColorDark,
+}: {
+  kind: "Image" | "Video";
+  label: string;
+  scale?: MediaScale;
+  fullWidth?: boolean;
+  themeColor: string;
+  themeColorDark: string;
+}) {
+  const reduceMotion = useReducedMotion();
+  const resolved = resolveScale(scale, fullWidth);
+  const { className, style } = mediaWrapperProps(resolved);
+
+  return (
+    <div className={className} style={style}>
+      <div
+        role="img"
+        aria-label={`Placeholder for ${kind.toLowerCase()}: ${label}`}
+        style={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: "16/9",
+          borderRadius: "var(--radius-sm)",
+          overflow: "hidden",
+          backgroundColor: `${themeColor}1a`,
+          border: `1px dashed ${themeColorDark}40`,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: "clamp(1.5rem, 4vw, 3rem)",
+        }}
+      >
+        {!reduceMotion && (
+          <motion.div
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: 0,
+              top: "50%",
+              width: "100%",
+              height: "1px",
+              background: `linear-gradient(90deg, transparent, ${themeColorDark}55, transparent)`,
+            }}
+            animate={{ opacity: [0.2, 0.6, 0.2] }}
+            transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+          />
+        )}
+
+        <span
+          className="text-label"
+          style={{
+            color: themeColorDark,
+            opacity: 0.6,
+            marginBottom: "0.75rem",
+            padding: "0.25rem 0.6rem",
+            border: `1px solid ${themeColorDark}33`,
+            borderRadius: "999px",
+          }}
+        >
+          {kind}
+        </span>
+
+        <p
+          style={{
+            fontFamily: "var(--font-body)",
+            fontWeight: 700,
+            fontSize: "clamp(1rem, 2vw, 1.25rem)",
+            color: themeColorDark,
+            maxWidth: "32rem",
+          }}
+        >
+          {label}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The single dramatic moment on an "outcome" section — a full-bleed,
+ * color-inverted band with the numbers at real scale, replacing what used
+ * to be a small in-column grid. Background is `themeColor` and text is
+ * `themeColorDark` — the exact same pairing CaseStudyHero already uses for
+ * this case study, so contrast is guaranteed correct for every case study
+ * without auditing each one's colors individually (unlike reusing the
+ * narrative system's Metrics component, which is built for the opposite
+ * pairing and would render near-invisible label text here).
+ */
+function OutcomeBand({
+  heading,
+  metrics,
+  themeColor,
+  themeColorDark,
+}: {
+  heading?: string;
+  metrics: { value: string; label: string }[];
+  themeColor: string;
+  themeColorDark: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-10%" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        width: "100vw",
+        marginLeft: "calc(-50vw + 50%)",
+        backgroundColor: themeColor,
+        paddingTop: "clamp(4rem, 9vw, 7rem)",
+        paddingBottom: "clamp(4rem, 9vw, 7rem)",
+      }}
+    >
+      <Container>
+        {heading && (
+          <h2
+            className="mb-14"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              fontSize: "clamp(2rem, 4vw, 3.5rem)",
+              color: themeColorDark,
+              maxWidth: "42rem",
+            }}
+          >
+            {heading}
+          </h2>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
+          {metrics.map((m) => (
+            <div key={m.label}>
+              <div
+                className="text-metric"
+                style={{ color: themeColorDark, fontSize: "clamp(2.5rem, 6vw, 4.5rem)" }}
+              >
+                {m.value}
+              </div>
+              <div className="text-label mt-3" style={{ color: `${themeColorDark}88` }}>
+                {m.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </motion.div>
+  );
 }
 
 export function CaseStudySection({ section, subsections, themeColor, themeColorDark }: Props) {
@@ -20,6 +215,11 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
   };
+
+  // Outcome sections with real metrics get the full-bleed band treatment
+  // below instead of the generic heading — skip the standalone title render
+  // here so the band's own heading is the only one.
+  const hasMetricsBand = section.type === "outcome" && !!section.metrics && section.metrics.length > 0;
 
   return (
     <motion.div
@@ -36,7 +236,7 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
         </p>
 
         {/* Title */}
-        {section.title && (
+        {section.title && !hasMetricsBand && (
           // Subsections (e.g. secondary problem/approach/design entries) use a smaller H3
           section.id !== section.type &&
           (section.type === "problem" ||
@@ -109,56 +309,38 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
           </p>
         )}
 
-        {/* Metrics grid */}
-        {section.metrics && section.metrics.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
-            {section.metrics.map((m) => (
-              <div key={m.label} className="border-t pt-6" style={{ borderColor: "var(--color-border)" }}>
-                <div
-                  className="text-metric"
-                  style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", color: "var(--color-ink)" }}
-                >
-                  {m.value}
-                </div>
-                <div className="text-label mt-2" style={{ color: "var(--color-muted)" }}>
-                  {m.label}
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Outcome metrics — full-bleed band (see OutcomeBand above) */}
+        {hasMetricsBand && (
+          <OutcomeBand
+            heading={section.title}
+            metrics={section.metrics!}
+            themeColor={themeColor}
+            themeColorDark={themeColorDark}
+          />
         )}
 
         {/* Image */}
         {section.image && (
-          <div
-            className={`relative overflow-hidden rounded-sm ${section.image.fullWidth ? "-mx-6 md:-mx-10" : ""}`}
-            style={{ aspectRatio: "16/9", backgroundColor: "var(--color-border)" }}
-          >
-            {/* Replace with <Image> when real images are added */}
-            <div
-              className="w-full h-full flex items-center justify-center"
-              style={{ backgroundColor: `${themeColor}22` }}
-            >
-              <span className="text-label" style={{ color: "var(--color-muted)" }}>
-                {section.image.alt}
-              </span>
-            </div>
-          </div>
+          <MediaSlot
+            kind="Image"
+            label={section.image.alt}
+            scale={section.image.scale}
+            fullWidth={section.image.fullWidth}
+            themeColor={themeColor}
+            themeColorDark={themeColorDark}
+          />
         )}
 
         {/* Video */}
         {section.video && (
-          <div
-            className={`relative overflow-hidden rounded-sm ${section.video.fullWidth ? "-mx-6 md:-mx-10" : ""}`}
-            style={{ aspectRatio: "16/9", backgroundColor: "var(--color-ink)" }}
-          >
-            <video
-              src={section.video.src}
-              poster={section.video.poster}
-              controls
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <MediaSlot
+            kind="Video"
+            label={section.video.label ?? "Video placeholder"}
+            scale={section.video.scale}
+            fullWidth={section.video.fullWidth}
+            themeColor={themeColor}
+            themeColorDark={themeColorDark}
+          />
         )}
 
         {/* Subsections (e.g. Approach / Design sub-parts) */}
@@ -198,56 +380,26 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
                   </p>
                 )}
 
-                {sub.metrics && sub.metrics.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-8">
-                    {sub.metrics.map((m) => (
-                      <div key={m.label} className="border-t pt-6" style={{ borderColor: "var(--color-border)" }}>
-                        <div
-                          className="text-metric"
-                          style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", color: "var(--color-ink)" }}
-                        >
-                          {m.value}
-                        </div>
-                        <div className="text-label mt-2" style={{ color: "var(--color-muted)" }}>
-                          {m.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
                 {sub.image && (
-                  <div
-                    className={`relative overflow-hidden rounded-sm ${
-                      sub.image.fullWidth ? "-mx-6 md:-mx-10" : ""
-                    }`}
-                    style={{ aspectRatio: "16/9", backgroundColor: "var(--color-border)" }}
-                  >
-                    <div
-                      className="w-full h-full flex items-center justify-center"
-                      style={{ backgroundColor: `${themeColor}22` }}
-                    >
-                      <span className="text-label" style={{ color: "var(--color-muted)" }}>
-                        {sub.image.alt}
-                      </span>
-                    </div>
-                  </div>
+                  <MediaSlot
+                    kind="Image"
+                    label={sub.image.alt}
+                    scale={sub.image.scale}
+                    fullWidth={sub.image.fullWidth}
+                    themeColor={themeColor}
+                    themeColorDark={themeColorDark}
+                  />
                 )}
 
                 {sub.video && (
-                  <div
-                    className={`relative overflow-hidden rounded-sm ${
-                      sub.video.fullWidth ? "-mx-6 md:-mx-10" : ""
-                    }`}
-                    style={{ aspectRatio: "16/9", backgroundColor: "var(--color-ink)" }}
-                  >
-                    <video
-                      src={sub.video.src}
-                      poster={sub.video.poster}
-                      controls
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                  <MediaSlot
+                    kind="Video"
+                    label={sub.video.label ?? "Video placeholder"}
+                    scale={sub.video.scale}
+                    fullWidth={sub.video.fullWidth}
+                    themeColor={themeColor}
+                    themeColorDark={themeColorDark}
+                  />
                 )}
               </div>
             ))}

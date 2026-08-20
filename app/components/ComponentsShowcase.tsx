@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Container } from "@/components/Container";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { AboutCard } from "@/components/AboutCard";
-import { CaseStudyHero } from "@/components/CaseStudyHero";
+import { CaseStudyHero } from "@/components/case-study/CaseStudyHero";
 import { CaseStudySection } from "@/components/CaseStudySection";
 import { CardGrid } from "@/components/CardGrid";
 import { caseStudies } from "@/lib/case-studies";
@@ -635,7 +635,16 @@ export function ComponentsShowcase() {
           Hero with theme color, metadata, title, summary, outcomes, and 1:1 image area
         </p>
         <div style={{ marginTop: "var(--space-8)" }}>
-          <CaseStudyHero caseStudy={sampleCaseStudy} />
+          <CaseStudyHero
+            themeColor={sampleCaseStudy.themeColor}
+            themeColorDark={sampleCaseStudy.themeColorDark}
+            eyebrow={`${sampleCaseStudy.company} — ${sampleCaseStudy.role} — ${sampleCaseStudy.year}`}
+            title={sampleCaseStudy.title}
+            description={sampleCaseStudy.summary}
+            image={{ kind: "image", label: "Hero image placeholder", assetId: `${sampleCaseStudy.slug}-hero` }}
+            metrics={sampleCaseStudy.outcomes}
+            highlightTags={sampleCaseStudy.highlightTags}
+          />
         </div>
       </section>
 

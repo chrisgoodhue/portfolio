@@ -1,5 +1,9 @@
 // types/case-study.ts
 
+// Shared with the narrative system's media rhythm — one definition, both
+// component libraries agree on what "wide" vs "contained" means.
+import type { MediaScale } from "./narrative-case-study";
+
 export interface Metric {
   value: string;       // e.g. "32%", "500K"
   label: string;       // e.g. "Increase in viewer engagement"
@@ -21,12 +25,15 @@ export interface CaseStudySection {
   image?: {
     src: string;
     alt: string;
-    fullWidth?: boolean;
+    fullWidth?: boolean;        // Legacy flag — still honored when `scale` is absent (true → "wide", false → "contained").
+    scale?: MediaScale;
   };
   video?: {
     src: string;
     poster?: string;
+    label?: string;             // Placeholder label (no real video assets exist yet — see CaseStudySection).
     fullWidth?: boolean;
+    scale?: MediaScale;
   };
   metrics?: Metric[];
   quote?: {
@@ -47,6 +54,10 @@ export interface CaseStudy {
   coverImage: string;            // Path to cover image
   outcomes: Metric[];            // Snapshot metrics shown on card
   sections: CaseStudySection[];
+  // Optional non-numeric highlight phrases (e.g. "AI-assisted prototyping").
+  // When present, CaseStudyCard renders these as pills instead of the
+  // metrics grid — for projects where no quantified outcomes were supplied.
+  highlightTags?: string[];
 }
 
 // Grid card variants ─ extensible for future card types

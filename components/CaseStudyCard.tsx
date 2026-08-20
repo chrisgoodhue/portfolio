@@ -210,33 +210,52 @@ export function CaseStudyCard({
               </p>
             </div>
 
-            {/* Metrics row — show all outcomes */}
-            <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
-              {caseStudy.outcomes.map((metric) => (
-                <div key={metric.label}>
-                  <div
-                    className="text-metric"
-                    style={{
-                      color: caseStudy.themeColorDark,
-                      fontSize: "clamp(1.5rem, 2.8vw, 2.25rem)",
-                    }}
-                  >
-                    {metric.value}
-                  </div>
-                  <div
+            {/* Highlight tags (non-numeric) or metrics row — mutually exclusive */}
+            {caseStudy.highlightTags && caseStudy.highlightTags.length > 0 ? (
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                {caseStudy.highlightTags.map((tag) => (
+                  <span
+                    key={tag}
                     className="text-label"
                     style={{
-                      color: `${caseStudy.themeColorDark}66`,
-                      marginTop: "0.25rem",
-                      maxWidth: "7rem",
-                      lineHeight: 1.3,
+                      color: caseStudy.themeColorDark,
+                      border: `1px solid ${caseStudy.themeColorDark}33`,
+                      borderRadius: "999px",
+                      padding: "0.35rem 0.75rem",
                     }}
                   >
-                    {metric.label}
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
+                {caseStudy.outcomes.map((metric) => (
+                  <div key={metric.label}>
+                    <div
+                      className="text-metric"
+                      style={{
+                        color: caseStudy.themeColorDark,
+                        fontSize: "clamp(1.5rem, 2.8vw, 2.25rem)",
+                      }}
+                    >
+                      {metric.value}
+                    </div>
+                    <div
+                      className="text-label"
+                      style={{
+                        color: `${caseStudy.themeColorDark}66`,
+                        marginTop: "0.25rem",
+                        maxWidth: "7rem",
+                        lineHeight: 1.3,
+                      }}
+                    >
+                      {metric.label}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </motion.div>
       </motion.div>

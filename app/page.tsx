@@ -1,6 +1,7 @@
 // app/page.tsx
 import { CardGrid } from "@/components/CardGrid";
 import { caseStudies } from "@/lib/case-studies";
+import { showcasesCardData, viewerExperienceCardData } from "@/lib/narrative-case-studies";
 import type { GridCard } from "@/types/case-study";
 
 // Wide screens: Row 1 = about (4) + featured (8); Row 2 = 2 equal (6+6); Row 3 = 3 equal (4+4+4)
@@ -16,7 +17,16 @@ const cards: GridCard[] = [
     type: "case-study",
     colSpan: 8,
     colSpan2xl: 4,
-    caseStudy: caseStudies[0],
+    // Points at the new narrative-portfolio adapter (not the raw legacy
+    // caseStudies[0]) so this card can't drift from the page it links to.
+    caseStudy: viewerExperienceCardData,
+  },
+  {
+    id: "showcases",
+    type: "case-study",
+    colSpan: 6,
+    colSpan2xl: 4,
+    caseStudy: showcasesCardData,
   },
   {
     id: "vimeo-engagement",

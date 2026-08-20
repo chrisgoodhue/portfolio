@@ -4,13 +4,13 @@
 // Client component: handles all animation, store subscriptions, back nav.
 // Rendered by the server page.tsx wrapper below.
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useRef } from "react";
 import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import type { CaseStudy, CaseStudySection as SectionData } from "@/types/case-study";
 import { getCaseStudyBySlug } from "@/lib/case-studies";
-import { transitionStore } from "@/lib/transition-store";
-import { CaseStudyHero } from "@/components/CaseStudyHero";
+import { useCaseStudyTransition } from "@/lib/useCaseStudyTransition";
+import { CaseStudyHero } from "@/components/case-study/CaseStudyHero";
 import { CaseStudySection } from "@/components/CaseStudySection";
 import { Container } from "@/components/Container";
 
@@ -25,111 +25,11 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
   const slug = slugFromParams || initialSlug;
   const caseStudy = getCaseStudyBySlug(slug) ?? initialCaseStudy ?? undefined;
 
-  // Show content immediately when we have server-provided data (avoids blank state until client hydrates)
-  const [visible, setVisible] = useState(() => !!initialCaseStudy);
-  const [isLeaving, setIsLeaving] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
-  const fadeRequestedRef = useRef(false);
 
-  // Helper: show content then after paint tell overlay to fade (so no background flash)
-  const showContentAndRequestOverlayFade = useCallback(() => {
-    setVisible(true);
-    transitionStore.setPhase("page-fade-in");
-    if (fadeRequestedRef.current) return;
-
-    // Capture the requestId for this navigation so stale pages can't
-    // accidentally fade the overlay during a newer transition.
-    const currentRequestId = transitionStore.getState().requestId;
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (fadeRequestedRef.current) return;
-        fadeRequestedRef.current = true;
-        transitionStore.requestOverlayFadeOut(currentRequestId);
-      });
-    });
-  }, []);
-
-  // ── Fade in after overlay expansion ──────────────────────────────────────
-  useEffect(() => {
-    if (!caseStudy) return;
-
-    const ts = transitionStore.getState();
-
-    // Direct navigation or refresh: show immediately (no overlay to fade)
-    if (ts.phase === "idle" || ts.phase === "page-fade-in") {
-      setVisible(true);
-      return;
-    }
-
-    // Coming via card click: wait for "expanded" phase
-    const unsub = transitionStore.subscribe(() => {
-      const s = transitionStore.getState();
-      if (s.phase === "expanded") {
-        requestAnimationFrame(() => showContentAndRequestOverlayFade());
-      }
-    });
-
-    // Already expanded by the time this effect runs
-    if (ts.phase === "expanded") {
-      requestAnimationFrame(() => showContentAndRequestOverlayFade());
-    }
-
-    return unsub;
-  }, [caseStudy, showContentAndRequestOverlayFade]);
-
-  // Lock body scroll only while a transition is active — must subscribe so we clear
-  // when phase becomes page-fade-in/idle; otherwise overflow:hidden can stick after HMR/stale store.
-  useEffect(() => {
-    const syncBodyScrollLock = () => {
-      const ts = transitionStore.getState();
-      const shouldLock = ts.phase !== "idle" && ts.phase !== "page-fade-in";
-      document.body.classList.toggle("is-transitioning", shouldLock);
-    };
-    syncBodyScrollLock();
-    const unsub = transitionStore.subscribe(syncBodyScrollLock);
-    return () => {
-      unsub();
-      document.body.classList.remove("is-transitioning");
-    };
-  }, []);
-
-  // ── Back navigation ───────────────────────────────────────────────────────
-  const handleBack = useCallback(async () => {
-    if (isLeaving) return;
-    setIsLeaving(true);
-
-    // Step 1: fade out page content
-    setVisible(false);
-
-    // Wait for fade-out (400ms matches exit transition below)
-    await new Promise((r) => setTimeout(r, 400));
-
-    // Step 2: hand off to overlay to shrink back
-    // We stored the card rect in the transition store when we began the expand.
-    const storedRect = transitionStore.getState().rect;
-
-    const collapseRect = storedRect ?? {
-      top: 100,
-      left: 80,
-      width: Math.min(window.innerWidth * 0.65, 800),
-      height: 520,
-    };
-
-    const collapse = (window as any).__portfolioCollapse;
-    if (typeof collapse === "function") {
-      await collapse(collapseRect);
-    }
-
-    setIsLeaving(false);
-  }, [isLeaving]);
-
-  // Handle browser back button
-  useEffect(() => {
-    const onPopState = () => handleBack();
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, [handleBack]);
+  // Transition/back-nav behavior is shared with the narrative case-study
+  // system via this hook — see lib/useCaseStudyTransition.ts.
+  const { visible, handleBack } = useCaseStudyTransition({ hasContent: !!caseStudy });
 
   if (!caseStudy) {
     return (
@@ -189,7 +89,16 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
             {/* Hero — full viewport, theme color bg */}
-            <CaseStudyHero caseStudy={caseStudy} />
+            <CaseStudyHero
+              themeColor={caseStudy.themeColor}
+              themeColorDark={caseStudy.themeColorDark}
+              eyebrow={`${caseStudy.company} — ${caseStudy.role} — ${caseStudy.year}`}
+              title={caseStudy.title}
+              description={caseStudy.summary}
+              image={{ kind: "image", label: "Hero image placeholder", assetId: `${caseStudy.slug}-hero` }}
+              metrics={caseStudy.outcomes}
+              highlightTags={caseStudy.highlightTags}
+            />
 
             {/* Body sections */}
             <div style={{ backgroundColor: "var(--color-paper)" }}>
