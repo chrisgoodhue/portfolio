@@ -78,8 +78,36 @@ const showcasesMeta = {
   },
 };
 
-// "Next project" cross-links between the two — both derived from each
-// other's shared meta object, not a lookup, so titles/colors can't drift.
+// ── Shared facts: Knowledge Discovery ───────────────────────────────────────
+// Source of truth: brief supplied 2026-08-21 ("From Playback to Knowledge
+// Discovery"). `year` and `team` were not supplied — left as explicit
+// placeholders rather than guessed. Confirm both before this ships; `year`
+// in particular renders in the hero eyebrow line as-is.
+const knowledgeDiscoveryMeta = {
+  slug: "vimeo-knowledge-discovery",
+  title: "From Playback to Knowledge Discovery",
+  subtitle: "Transforming Vimeo's player into an interactive platform for learning, navigation, and discovery.",
+  description:
+    "For decades, video players had been optimized for one thing: playback. But as Vimeo expanded into Enterprise, it became clear customers weren't simply watching videos — they were searching for information, revisiting discussions, and sharing knowledge. I saw an opportunity to transform the player from a passive viewing surface into an interactive tool for discovery.",
+  company: "Vimeo",
+  role: "Principal Product Designer",
+  year: "[confirm years]",
+  team: "",
+  themeColor: "#A78BFA",
+  themeColorDark: "#2E1065",
+  cardHighlights: [] as string[],
+  heroImage: {
+    kind: "image" as const,
+    label: "The knowledge discovery player",
+    description: "A hero shot of the evolved player — transcript, chapters, and navigation visible alongside playback.",
+    assetId: "knowledge-discovery-hero",
+  },
+};
+
+// "Next project" cross-links — a three-way cycle so each project points to
+// the next chapter: Viewer Experience → Knowledge Discovery → Showcases →
+// back to Viewer Experience. Derived from each other's shared meta object,
+// not a lookup, so titles/colors can't drift.
 const showcasesNextProject = {
   slug: viewerExperienceMeta.slug,
   title: viewerExperienceMeta.title,
@@ -89,6 +117,14 @@ const showcasesNextProject = {
 };
 
 const viewerExperienceNextProject = {
+  slug: knowledgeDiscoveryMeta.slug,
+  title: knowledgeDiscoveryMeta.title,
+  company: knowledgeDiscoveryMeta.company,
+  themeColor: knowledgeDiscoveryMeta.themeColor,
+  themeColorDark: knowledgeDiscoveryMeta.themeColorDark,
+};
+
+const knowledgeDiscoveryNextProject = {
   slug: showcasesMeta.slug,
   title: showcasesMeta.title,
   company: showcasesMeta.company,
@@ -723,13 +759,231 @@ export const viewerExperiencePortfolio: NarrativeCaseStudy = {
   nextProject: viewerExperienceNextProject,
 };
 
+// ── Knowledge Discovery: portfolio presentation ─────────────────────────────
+// ~9 beats. Source of truth: brief supplied 2026-08-21. No detailed
+// presentation built for this project yet — this route serves as both the
+// portfolio and, for now, the only presentation (no /full fallback exists).
+
+const knowledgeDiscoveryPortfolioSections: NarrativeCaseStudySection[] = [
+  {
+    type: "narrative",
+    id: "opportunity",
+    eyebrow: "01",
+    heading: "Video had become knowledge.",
+    body: "Vimeo's player had long been recognized for reliable, high-quality playback. But our customers had changed — Enterprise organizations increasingly used Vimeo for onboarding, compliance, training, internal communications, conferences, and education. These weren't videos people consumed from beginning to end. They were repositories of information.\n\nYet interacting with them remained surprisingly primitive. Finding a single answer often meant scrubbing through hours of playback, important moments couldn't easily be referenced, and live viewers couldn't catch up after joining late. Because more than 85% of Enterprise viewing occurred in embedded players, many of Vimeo's existing discovery features disappeared entirely outside Vimeo.com.",
+    keyTakeaway: "The player excelled at playback. It wasn't designed for knowledge discovery.",
+    beats: [
+      {
+        media: {
+          kind: "image",
+          assetId: "knowledge-discovery-problem-infographic",
+          label: "From passive playback to lost context",
+          description: "Infographic: Passive Playback → Scrubbing → Lost Context → Knowledge Discovery Platform.",
+        },
+        caption: "Interacting with long-form video remained primitive — the player excelled at playback, not at helping people find what they needed.",
+        scale: "wide",
+      },
+      {
+        media: {
+          kind: "animation",
+          assetId: "knowledge-discovery-evolution-overview",
+          label: "The player's evolution",
+          description: "Full-width animation showing the player evolving: Passive player → Transcript → Chapter navigation → Segment sharing → Live DVR.",
+        },
+        caption: "Four connected capabilities, developed over two years, turned the player into a platform for discovery.",
+        scale: "full-bleed",
+      },
+    ],
+  },
+  {
+    type: "narrative",
+    id: "vision",
+    eyebrow: "02",
+    heading: "Transform playback into knowledge discovery.",
+    body: "Rather than introducing isolated features, we asked a broader question: how might the player help people understand information instead of simply displaying video?\n\nThat vision shaped every decision that followed. Instead of designing unrelated capabilities, I built a cohesive interaction model centered on helping viewers search spoken content, navigate long-form video, share meaningful moments, and revisit live broadcasts.\n\nEach capability solved a different problem. Together, they transformed how viewers interacted with video.",
+    beats: [
+      {
+        media: {
+          kind: "animation",
+          assetId: "knowledge-discovery-vision-diagram",
+          label: "From discovery to four capabilities",
+          description: "Diagram: Knowledge Discovery → Interactive Transcripts → Navigation → Sharing → Live DVR.",
+        },
+        caption: "Four different problems, one shared interaction model.",
+        scale: "wide",
+      },
+    ],
+  },
+  {
+    type: "narrative",
+    id: "research",
+    eyebrow: "03",
+    heading: "How people actually use long-form video",
+    body: "I began by auditing the existing player experience across Vimeo.com and embedded players, mapping inconsistencies and identifying where discovery completely broke down.\n\nWorking alongside Product, Engineering, and Research, we combined design audits, usability testing, prototype validation, and A/B testing to understand how viewers expected to discover new functionality, where discovery controls should live, how transcript interactions should behave, how chapter navigation could become easier to scan, and how advanced functionality could remain approachable inside a constrained player.",
+    pullQuote: {
+      lines: ["Users weren't looking for more controls.", "They were looking for less effort."],
+    },
+    keyTakeaway: "That principle guided every interaction we designed.",
+    beats: [
+      {
+        media: {
+          kind: "image",
+          assetId: "knowledge-discovery-research-wall",
+          label: "Research wall",
+          description: "Design audit → Prototype testing → Maze → A/B testing → Interaction model.",
+        },
+        caption: "A combination of audits, prototype testing, and quantitative validation shaped the interaction model.",
+        scale: "wide",
+      },
+    ],
+  },
+  {
+    type: "prototype",
+    id: "interactive-transcripts",
+    eyebrow: "04",
+    heading: "Interactive Transcripts",
+    body: "Interactive transcripts became the foundation of the new discovery experience.\n\nRather than treating transcripts as accessibility artifacts, I designed them as navigation tools. Viewers could search spoken content, jump directly to relevant moments, follow synchronized playback, and personalize the experience with timestamps and language preferences.\n\nSearch evolved through testing too. Instead of isolating search results, viewers preferred seeing matches inline within the transcript, preserving conversational context while making navigation effortless.",
+    media: {
+      kind: "screen-recording",
+      assetId: "knowledge-discovery-transcript-evolution",
+      label: "Interactive transcript evolution",
+      description: "Show the transcript experience evolving: overlay concept → slide-in panel → inline search → final design.",
+    },
+    steps: [
+      "Overlay concept — explored directly on the video",
+      "Slide-in panel — preserved playback, established a reusable pattern",
+      "Inline search — matches shown in context, not isolated",
+      "Final design — search, navigate, and personalize in one panel",
+    ],
+    caption: "Extensive prototype testing shaped the final interaction model — transforming transcripts from passive documentation into an active exploration tool.",
+    mediaScale: "full-bleed",
+  },
+  {
+    type: "comparison",
+    id: "chapters-and-navigation",
+    eyebrow: "05",
+    heading: "Chapters & Navigation",
+    body: "The existing chapter experience contained unnecessary visual complexity and made scanning long-form content difficult. The redesign focused on clarity.",
+    beforeLabel: "Legacy chapter markers — complex, hard to scan",
+    afterLabel: "Duration-labeled chapters — shipped",
+    media: {
+      kind: "screen-recording",
+      assetId: "knowledge-discovery-chapters-before-after",
+      label: "Chapter navigation, before and after",
+      description: "Before/after comparison of the chapter experience.",
+    },
+    caption: "Showing the duration of each chapter made video structure immediately understandable, so users could identify relevant sections without scrubbing through timelines. Navigation became faster, mental models became simpler, and discovery became effortless.",
+  },
+  {
+    type: "comparison",
+    id: "segment-sharing",
+    eyebrow: "06",
+    heading: "Segment Sharing",
+    body: "Knowledge becomes more valuable when it can be shared. Building on the redesigned chapter experience, I introduced one-click sharing for individual moments within a video — rather than sending an entire two-hour recording, viewers could reference exactly the information another person needed.",
+    beforeLabel: "Rich editor concept — with preview and trimming",
+    afterLabel: "URL-based sharing — shipped MVP",
+    media: {
+      kind: "screen-recording",
+      assetId: "knowledge-discovery-sharing-tradeoff",
+      label: "Segment sharing, concept to MVP",
+      description: "Show the progression: editor concept → engineering tradeoff → final MVP.",
+    },
+    caption: "Early concepts envisioned a lightweight editing experience with preview and trimming. Engineering concerns about complexity led to a URL-based MVP that delivered immediate value while preserving a path to iterate — a deliberate tradeoff between the ideal experience and delivery velocity.",
+  },
+  {
+    type: "narrative",
+    id: "live-dvr",
+    eyebrow: "07",
+    heading: "Live DVR",
+    body: "Enterprise customers frequently joined live events after they had already begun. Previously, missing the beginning meant waiting for the recording.\n\nLive DVR changed that. Viewers could rewind up to four hours, explore previously broadcast content, follow synchronized transcripts, and instantly return to the live broadcast using a dedicated \"Skip to Live\" control.",
+    keyTakeaway: "At launch, Vimeo became the first platform to combine Live DVR with synchronized transcripts across both Vimeo.com and embedded players.",
+    beats: [
+      {
+        media: {
+          kind: "animation",
+          assetId: "knowledge-discovery-live-dvr",
+          label: "Live DVR",
+          description: "Show rewinding up to four hours of a live broadcast, browsing with synchronized transcripts, and returning to live via Skip to Live.",
+        },
+        caption: "Viewers could rewind, explore, and return to the live broadcast without losing their place.",
+        scale: "wide",
+      },
+    ],
+  },
+  {
+    type: "metrics",
+    id: "results",
+    eyebrow: "08",
+    heading: "Discovery, at Enterprise scale",
+    intro:
+      "Beyond adoption, the work translated into major Enterprise renewals and expansions, made Vimeo the first platform to pair Live DVR with synchronized transcripts, and became a differentiator for Enterprise Sales.",
+    items: [
+      {
+        value: "$4.5M+",
+        label: "Enterprise ARR influenced",
+        description: "Across major Enterprise renewals and expansions.",
+      },
+      {
+        value: "40,000+",
+        label: "Daily transcript views",
+        description: "Adoption reached well beyond Enterprise, including creators outside the segment the work was built for.",
+      },
+      {
+        value: "7,800+",
+        label: "Weekly segment shares",
+        description: "Viewers referencing exact moments instead of sending entire recordings.",
+      },
+      {
+        value: "50%+",
+        label: "Live events using DVR",
+        description: "More than half of live events made use of DVR.",
+      },
+    ],
+  },
+  {
+    type: "narrative",
+    id: "customer-response",
+    eyebrow: "09",
+    heading: "An unexpected audience",
+    body: "Creators and Enterprise customers consistently praised the experience for making long-form content dramatically easier to navigate, reference, and share.\n\nUnexpectedly, transcripts also found a passionate audience outside Enterprise — reinforcing that improving discoverability benefited every type of viewer.",
+    compact: true,
+    beats: [
+      {
+        media: {
+          kind: "image",
+          assetId: "knowledge-discovery-customer-proof",
+          label: "Customer quotes and social proof",
+          description: "Placeholder for customer quotes and social-proof moments once collected.",
+        },
+        caption: "Customer reflections on what discovery unlocked.",
+        scale: "contained",
+      },
+    ],
+  },
+];
+
+export const knowledgeDiscoveryPortfolio: NarrativeCaseStudy = {
+  ...knowledgeDiscoveryMeta,
+  sections: knowledgeDiscoveryPortfolioSections,
+  closingStatement: {
+    quote: "What if the player helped people think, not just watch?",
+    support:
+      "For years, video players had been optimized for playback. Reframing that question guided every decision — from transcripts to Live DVR — and turned one of Vimeo's most important products into a platform for knowledge discovery.",
+  },
+  nextProject: knowledgeDiscoveryNextProject,
+};
+
 // ── Registries ──────────────────────────────────────────────────────────
 // `narrativeCaseStudies` lists one entry per project — the portfolio
 // presentation, since that's what's linked from the homepage card and the
 // nav's Work dropdown. Detailed presentations are a secondary route, not a
 // separate nav-level "project".
 
-export const narrativeCaseStudies: NarrativeCaseStudy[] = [viewerExperiencePortfolio, showcasesPortfolio];
+export const narrativeCaseStudies: NarrativeCaseStudy[] = [
+  viewerExperiencePortfolio,
+  knowledgeDiscoveryPortfolio,
+  showcasesPortfolio,
+];
 
 export function getNarrativeCaseStudyBySlug(slug: string): NarrativeCaseStudy | undefined {
   return narrativeCaseStudies.find((cs) => cs.slug === slug);
@@ -789,5 +1043,30 @@ export const viewerExperienceCardData: CaseStudy = {
   themeColorDark: viewerExperiencePortfolio.themeColorDark,
   coverImage: "/images/vimeo-cover.jpg",
   outcomes: viewerExperienceCardMetrics,
+  sections: [],
+};
+
+const knowledgeDiscoveryMetricsSection = knowledgeDiscoveryPortfolio.sections.find(
+  (s): s is Extract<NarrativeCaseStudySection, { type: "metrics" }> => s.type === "metrics",
+);
+const knowledgeDiscoveryCardMetrics: Metric[] = (knowledgeDiscoveryMetricsSection?.items ?? [])
+  .slice(0, 3)
+  .map((m) => ({ value: m.value, label: m.label }));
+
+// Not yet added to the homepage grid (app/page.tsx) — that's a manually
+// laid-out 12-col grid and adding a 9th card means deciding what it
+// displaces. This adapter exists so the card is ready whenever that's
+// decided; the page itself is already live and routable without it.
+export const knowledgeDiscoveryCardData: CaseStudy = {
+  slug: knowledgeDiscoveryPortfolio.slug,
+  title: knowledgeDiscoveryPortfolio.title,
+  company: knowledgeDiscoveryPortfolio.company,
+  role: knowledgeDiscoveryPortfolio.role,
+  year: knowledgeDiscoveryPortfolio.year,
+  summary: knowledgeDiscoveryPortfolio.subtitle,
+  themeColor: knowledgeDiscoveryPortfolio.themeColor,
+  themeColorDark: knowledgeDiscoveryPortfolio.themeColorDark,
+  coverImage: "/images/knowledge-discovery-cover.jpg",
+  outcomes: knowledgeDiscoveryCardMetrics,
   sections: [],
 };
