@@ -54,6 +54,23 @@ export function Nav({ animateFromTop = false }: { animateFromTop?: boolean }) {
     [useLightNavText],
   );
 
+  // Same light/dark-hero logic as navLinkStyle, expressed as a mask fill
+  // instead of text color — the logo is now an icon (see AboutCard.tsx for
+  // the same mark), not the word "Portfolio".
+  const navLogoIconStyle = useMemo(
+    () =>
+      useLightNavText
+        ? ({
+            backgroundColor: "rgba(248, 247, 244, 0.92)",
+            filter: "drop-shadow(0 1px 3px rgba(0, 0, 0, 0.45))",
+          } as const)
+        : ({
+            backgroundColor: "var(--color-ink)",
+            opacity: 0.55,
+          } as const),
+    [useLightNavText],
+  );
+
   const [workOpen, setWorkOpen] = useState(false);
 
   // Close dropdown on navigation.
@@ -104,14 +121,34 @@ export function Nav({ animateFromTop = false }: { animateFromTop?: boolean }) {
         // Transparent — sits above page content; label color follows hero contrast
       }}
     >
-      {/* Logo / site name */}
+      {/* Logo — illustrated mark, replacing the old "Portfolio" text link.
+          Hidden on /about specifically: that page now has the real photo
+          bleeding into this same top-left corner, so the icon would just be
+          redundant there — the Link stays (still a working way home). */}
       <Link
         href="/"
-        className="text-label"
-        style={navLinkStyle}
+        aria-label="Home"
         onClick={handleHomeNavigationClick}
+        style={{ display: "inline-flex", alignItems: "center" }}
       >
-        Portfolio
+        {pathname !== "/about" && (
+          <span
+            style={{
+              display: "block",
+              height: "1.5rem",
+              aspectRatio: "598 / 721",
+              WebkitMaskImage: "url(/images/chris-icon.png)",
+              maskImage: "url(/images/chris-icon.png)",
+              WebkitMaskSize: "contain",
+              maskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              maskPosition: "center",
+              ...navLogoIconStyle,
+            }}
+          />
+        )}
       </Link>
 
       {/* Primary navigation */}

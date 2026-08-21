@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { canStartCardExpand, transitionStore } from "@/lib/transition-store";
 
 const ABOUT_THEME_COLOR = "#0A0A0A"; // --color-ink
-const companies = ["Vimeo", "Spotify", "NYT", "IDEO"];
+const companies = ["Vimeo", "PayPal", "American Express"];
 
 interface AboutCardProps {
   isAnimatingIn?: boolean;
@@ -135,23 +135,42 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
       >
           {/* Name + bio + companies */}
           <div>
-            {/* Avatar circle */}
+            {/* Avatar — illustrated mark, not the real photo. That lives on the
+                About page itself; this is the small recurring brand mark (see
+                the same icon in Nav.tsx's logo). Masked so it recolors with
+                the card's palette instead of shipping as a fixed-color image. */}
             <div
               style={{
+                position: "relative",
                 width: "4rem",
                 height: "4rem",
                 borderRadius: "50%",
                 backgroundColor: "rgba(248,247,244,0.08)",
                 border: "1px solid rgba(248,247,244,0.12)",
                 marginBottom: "1.5rem",
+                overflow: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                overflow: "hidden",
               }}
             >
-              {/* Replace with <Image> for actual photo */}
-              <span style={{ color: "rgba(248,247,244,0.2)", fontSize: "1.5rem" }}>↗</span>
+              <div
+                aria-hidden="true"
+                style={{
+                  height: "2.6rem",
+                  aspectRatio: "598 / 721",
+                  backgroundColor: "var(--color-paper)",
+                  opacity: 0.85,
+                  WebkitMaskImage: "url(/images/chris-icon.png)",
+                  maskImage: "url(/images/chris-icon.png)",
+                  WebkitMaskSize: "contain",
+                  maskSize: "contain",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskPosition: "center",
+                  maskPosition: "center",
+                }}
+              />
             </div>
 
             <h1
@@ -166,8 +185,8 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
                 marginBottom: "1rem",
               }}
             >
-              Your<br />
-              <span style={{ opacity: 0.45, fontStyle: "italic" }}>Name</span>
+              Chris<br />
+              <span style={{ opacity: 0.45, fontStyle: "italic" }}>Goodhue</span>
             </h1>
 
             <p
@@ -179,8 +198,8 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
                 marginBottom: "2rem",
               }}
             >
-              Principal Product Designer. Systems thinker, storyteller,
-              12 years making digital things feel inevitable.
+              Designer for half my life: pop-punk flyers in high school, a
+              decade at Vimeo, now Seller Systems at Stripe.
             </p>
 
             {/* Companies */}
