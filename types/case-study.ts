@@ -58,6 +58,11 @@ export interface CaseStudy {
   // When present, CaseStudyCard renders these as pills instead of the
   // metrics grid — for projects where no quantified outcomes were supplied.
   highlightTags?: string[];
+  // Placeholder card for a project that isn't written up yet — used to
+  // preview grid layout before the real case study exists. CaseStudyCard
+  // renders it inert (no click-through, no hover state, "Coming soon" in
+  // place of the arrow) instead of linking to a page that doesn't exist.
+  comingSoon?: boolean;
 }
 
 // Grid card variants ─ extensible for future card types

@@ -34,6 +34,7 @@ export function CaseStudyCard({
   // Start hidden when we know we're returning (prevents a 1-frame flash).
   const [contentVisible, setContentVisible] = useState(() => !isAnimatingIn);
   const [hovered, setHovered] = useState(false);
+  const comingSoon = !!caseStudy.comingSoon;
 
   // Subscribe to transition store — handles the return journey
   useEffect(() => {
@@ -61,6 +62,7 @@ export function CaseStudyCard({
   }, [isAnimatingIn]);
 
   const handleClick = useCallback(() => {
+    if (comingSoon) return;
     if (!cardRef.current) return;
     if (!canStartCardExpand()) return;
 
@@ -77,19 +79,19 @@ export function CaseStudyCard({
       width: rect.width,
       height: rect.height,
     });
-  }, [caseStudy.themeColor, caseStudy.slug]);
+  }, [caseStudy.themeColor, caseStudy.slug, comingSoon]);
 
   return (
     <div
       ref={cardRef}
       data-card-slug={caseStudy.slug}
       onClick={handleClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => !comingSoon && setHovered(true)}
+      onMouseLeave={() => !comingSoon && setHovered(false)}
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
-      role="button"
-      tabIndex={0}
-      aria-label={`Open case study: ${caseStudy.title}`}
+      role={comingSoon ? undefined : "button"}
+      tabIndex={comingSoon ? undefined : 0}
+      aria-label={comingSoon ? `${caseStudy.title} — coming soon` : `Open case study: ${caseStudy.title}`}
       style={{
         position: "relative",
         width: "100%",
@@ -98,7 +100,7 @@ export function CaseStudyCard({
         backgroundColor: caseStudy.themeColor,
         borderRadius: "var(--radius-xl)",
         overflow: "hidden",
-        cursor: "pointer",
+        cursor: comingSoon ? "default" : "pointer",
         // Prevent the card background/image from flashing while content is intentionally hidden.
         opacity: isAnimatingIn ? (contentVisible ? 1 : 0) : 1,
         transition: "opacity 0.35s ease-out",
@@ -260,37 +262,59 @@ export function CaseStudyCard({
         </motion.div>
       </motion.div>
 
-      {/* Arrow indicator — slides in on hover */}
-      <motion.div
-        animate={{
-          opacity: contentVisible ? (hovered ? 1 : 0.4) : 0,
-          x: hovered ? 0 : -4,
-        }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
-        style={{
-          position: "absolute",
-          bottom: "clamp(1.5rem, 4vw, 2.5rem)",
-          right: "clamp(1.5rem, 4vw, 2.5rem)",
-          width: "2.5rem",
-          height: "2.5rem",
-          borderRadius: "50%",
-          backgroundColor: `${caseStudy.themeColorDark}1a`,
-          border: `1px solid ${caseStudy.themeColorDark}22`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path
-            d="M2.5 7H11.5M11.5 7L7 2.5M11.5 7L7 11.5"
-            stroke={caseStudy.themeColorDark}
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </motion.div>
+      {/* Arrow indicator — slides in on hover (real cards only) */}
+      {!comingSoon && (
+        <motion.div
+          animate={{
+            opacity: contentVisible ? (hovered ? 1 : 0.4) : 0,
+            x: hovered ? 0 : -4,
+          }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          style={{
+            position: "absolute",
+            bottom: "clamp(1.5rem, 4vw, 2.5rem)",
+            right: "clamp(1.5rem, 4vw, 2.5rem)",
+            width: "2.5rem",
+            height: "2.5rem",
+            borderRadius: "50%",
+            backgroundColor: `${caseStudy.themeColorDark}1a`,
+            border: `1px solid ${caseStudy.themeColorDark}22`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M2.5 7H11.5M11.5 7L7 2.5M11.5 7L7 11.5"
+              stroke={caseStudy.themeColorDark}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </motion.div>
+      )}
+
+      {/* "Coming soon" label stands in for the arrow on placeholder cards —
+          static (no hover reveal) so it's clear up front, not on discovery. */}
+      {comingSoon && (
+        <div
+          className="text-label"
+          style={{
+            position: "absolute",
+            bottom: "clamp(1.5rem, 4vw, 2.5rem)",
+            right: "clamp(1.5rem, 4vw, 2.5rem)",
+            color: caseStudy.themeColorDark,
+            opacity: contentVisible ? 0.5 : 0,
+            border: `1px solid ${caseStudy.themeColorDark}33`,
+            borderRadius: "999px",
+            padding: "0.35rem 0.75rem",
+          }}
+        >
+          Coming soon
+        </div>
+      )}
     </div>
   );
 }
