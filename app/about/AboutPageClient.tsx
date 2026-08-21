@@ -2,25 +2,68 @@
 // Handles overlay transition: request fade when mounted from card, back button triggers collapse.
 
 import { useEffect, useRef } from "react";
-import { Container } from "@/components/Container";
+import Image from "next/image";
 import { transitionStore } from "@/lib/transition-store";
 
 const timeline = [
-  { year: "2023–2025", role: "Principal Product Designer", company: "Vimeo" },
-  { year: "2020–2023", role: "Senior Product Designer", company: "Spotify" },
-  { year: "2017–2020", role: "Product Designer", company: "The New York Times" },
-  { year: "2014–2017", role: "UX Designer", company: "IDEO" },
+  { year: "2026–Present", role: "Staff Product Designer, Seller Systems", company: "Stripe" },
+  { year: "2016–2026", role: "Principal Product Designer", company: "Vimeo" },
+  { year: "2016", role: "Senior Product Designer", company: "PayPal" },
+  { year: "2015–2016", role: "Senior Product Designer", company: "American Express" },
+  { year: "2008–2015", role: "Senior Designer", company: "Brooklyn United" },
 ];
 
 const capabilities = [
-  "Product Strategy",
+  "Design Direction",
   "Design Systems",
+  "Product Strategy & Ideation",
+  "Design Leadership & Mentorship",
   "User Research",
-  "Interaction Design",
+  "Interaction & Visual Design",
   "Prototyping",
-  "Design Leadership",
-  "Cross-platform Design",
-  "Information Architecture",
+  "Cross-functional Collaboration",
+];
+
+// Bio broken into numbered chapters instead of one flowing block — mirrors
+// the eyebrow-numbering already used on the case study Metrics sections
+// (see components/case-study/Metrics.tsx), so this page picks up a device
+// the rest of the site already established instead of inventing a new one.
+const chapters = [
+  {
+    number: "01",
+    title: "A Designer, Half My Life",
+    paragraphs: [
+      "I've been a designer for half my life. I spent the last decade at Vimeo, bringing order to a disconnected ecosystem and enhancing creator tools to help people grow audiences and showcase their work. Before that, I did a stint in fintech as a senior designer at PayPal and American Express.",
+    ],
+  },
+  {
+    number: "02",
+    title: "Where It Started",
+    paragraphs: [
+      "I come from a graphic design background, and it all started at a small digital agency in Brooklyn, where I became the designer I am today, making quality and craft central to everything I do. (Actually, it all started designing websites and flyers for pop punk bands in high school.)",
+    ],
+  },
+  {
+    number: "03",
+    title: "Now: Stripe",
+    paragraphs: [
+      "These days I'm at Stripe, working on Seller Systems within billing and commerce, an exciting place to be as design, technology, and the people who know how to use them shape what comes next.",
+    ],
+  },
+  {
+    number: "04",
+    title: "Off The Clock",
+    paragraphs: [
+      "I'm a Massachusetts native, a former Brooklynite, and now live in Miami (for the in-laws, not the looksmaxxing) with my family: my brilliant daughters, Ruby and Rosie; my talented designer/illustrator wife, Liz; and Boo, our giant goldendoodle who thinks he's a lap dog.",
+      "I love listening to music and playing easy Bob Dylan songs on guitar. I love watching movies too, though these days it's mostly Disney originals on repeat, and honestly, I'm not mad about it.",
+    ],
+  },
+];
+
+const contactLinks = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/chrisgoodhue/" },
+  { label: "Working Not Working", href: "https://www.workingnotworking.com/chrisgoodhue" },
+  { label: "Behance", href: "https://www.behance.net/chrisgoodhue" },
 ];
 
 export function AboutPageClient() {
@@ -45,173 +88,156 @@ export function AboutPageClient() {
   }, []);
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "var(--color-paper)",
-        // Fixed header offset (global nav)
-        paddingTop: "4.5rem",
-      }}
-    >
-
-      <div
-        style={{
-          borderBottom: "1px solid var(--color-border)",
-          padding: "6rem 0 5rem",
-        }}
-      >
-        <Container>
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12 lg:col-span-8">
-              <div
-                className="mb-10"
-                style={{
-                  width: "5rem",
-                  height: "5rem",
-                  borderRadius: "999rem",
-                  backgroundColor: "var(--color-ink)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <span style={{ color: "var(--color-paper)", opacity: 0.4, fontSize: "var(--text-2xl)" }}>
-                  ↗
-                </span>
-              </div>
-
-              <h1
-                className="text-display"
-                style={{ fontSize: "clamp(3.5rem, 9vw, 8rem)", lineHeight: 0.9 }}
-              >
-                Your<br />
-                <em style={{ fontStyle: "italic", opacity: 0.5 }}>Name</em>
-              </h1>
-
-              <p
-                className="mt-10 leading-relaxed"
-                style={{
-                  fontSize: "var(--text-xl)",
-                  maxWidth: "35rem",
-                  color: "var(--color-ink)",
-                  opacity: 0.7,
-                }}
-              >
-                Principal Product Designer with 10+ years crafting digital experiences at the
-                intersection of systems thinking and human-centered design. Currently focused on
-                scaling design practice at high-growth companies.
-              </p>
-            </div>
+    <main style={{ minHeight: "100vh", backgroundColor: "var(--color-paper)" }}>
+      <div className="flex flex-col lg:flex-row" style={{ gap: "var(--space-5)", paddingLeft: "var(--space-5)" }}>
+        {/* Photo — same inset as the homepage's cards (CardGrid's
+            var(--space-5) padding), not true edge-to-edge. Sticky + inset
+            top/bottom at lg+, so it stays put for the entire page (bio,
+            Experience, Capabilities, Contact) while the right column
+            scrolls past it. */}
+        <div
+          className="w-full lg:w-1/2 lg:sticky lg:top-[var(--space-5)] lg:h-[calc(100vh_-_(var(--space-5)*2))]"
+          style={{
+            aspectRatio: "1200 / 1791",
+            backgroundColor: "var(--color-ink)",
+            overflow: "hidden",
+            borderRadius: "var(--radius-2xl)",
+          }}
+        >
+          <div style={{ position: "relative", width: "100%", height: "100%" }}>
+            <Image
+              src="/images/chris-headshot.jpg"
+              alt="Chris Goodhue"
+              fill
+              sizes="(min-width: 64rem) 50vw, 100vw"
+              style={{ objectFit: "cover" }}
+              priority
+            />
           </div>
-        </Container>
-      </div>
+        </div>
 
-      <div style={{ borderBottom: "1px solid var(--color-border)", padding: "5rem 0" }}>
-        <Container>
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12 lg:col-span-3">
-              <p className="text-label" style={{ color: "var(--color-muted)" }}>
-                Experience
-              </p>
-            </div>
-            <div className="col-span-12 lg:col-span-9">
-              {timeline.map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-baseline justify-between py-6"
-                  style={{
-                    borderBottom:
-                      i < timeline.length - 1 ? "1px solid var(--color-border)" : "none",
-                  }}
+        {/* Everything else — the other half, scrolling normally */}
+        <div className="w-full lg:w-1/2" style={{ paddingLeft: "var(--space-10)", paddingRight: "var(--space-10)" }}>
+          <div className="pt-10 lg:pt-[calc(4.5rem_+_var(--space-10))]">
+            <h1
+              className="text-display mb-12"
+              style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)", lineHeight: 0.95 }}
+            >
+              Chris<br />
+              <em style={{ fontStyle: "italic", opacity: 0.5 }}>Goodhue</em>
+            </h1>
+
+            {chapters.map((chapter) => (
+              <div key={chapter.number} className="mb-14">
+                <p className="text-label mb-3" style={{ color: "var(--color-muted)" }}>
+                  {chapter.number}
+                </p>
+                <h2
+                  className="text-display mb-4"
+                  style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)" }}
                 >
-                  <div>
-                    <p
-                      className="text-display"
-                      style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-                    >
-                      {item.company}
-                    </p>
-                    <p className="text-label mt-1" style={{ color: "var(--color-muted)" }}>
-                      {item.role}
-                    </p>
-                  </div>
-                  <p className="text-label" style={{ color: "var(--color-muted)" }}>
-                    {item.year}
+                  {chapter.title}
+                </h2>
+                {chapter.paragraphs.map((p, i) => (
+                  <p
+                    key={i}
+                    className="leading-relaxed"
+                    style={{
+                      fontSize: "var(--text-lg)",
+                      color: "var(--color-ink)",
+                      opacity: 0.7,
+                      marginTop: i > 0 ? "1rem" : 0,
+                    }}
+                  >
+                    {p}
+                  </p>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ borderTop: "1px solid var(--color-border)", paddingTop: "var(--space-10)", paddingBottom: "var(--space-10)" }}>
+            <p className="text-label mb-6" style={{ color: "var(--color-muted)" }}>
+              Experience
+            </p>
+            {timeline.map((item, i) => (
+              <div
+                key={i}
+                className="flex items-baseline justify-between py-5"
+                style={{
+                  borderBottom: i < timeline.length - 1 ? "1px solid var(--color-border)" : "none",
+                }}
+              >
+                <div>
+                  <p className="text-display" style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}>
+                    {item.company}
+                  </p>
+                  <p className="text-label mt-1" style={{ color: "var(--color-muted)" }}>
+                    {item.role}
                   </p>
                 </div>
+                <p className="text-label" style={{ color: "var(--color-muted)" }}>
+                  {item.year}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ borderTop: "1px solid var(--color-border)", paddingTop: "var(--space-10)", paddingBottom: "var(--space-10)" }}>
+            <p className="text-label mb-6" style={{ color: "var(--color-muted)" }}>
+              Capabilities
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {capabilities.map((cap) => (
+                <span
+                  key={cap}
+                  className="text-label"
+                  style={{
+                    border: "1px solid var(--color-border)",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "var(--radius-sm)",
+                    color: "var(--color-ink)",
+                  }}
+                >
+                  {cap}
+                </span>
               ))}
             </div>
           </div>
-        </Container>
-      </div>
 
-      <div style={{ borderBottom: "1px solid var(--color-border)", padding: "5rem 0" }}>
-        <Container>
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12 lg:col-span-3">
-              <p className="text-label" style={{ color: "var(--color-muted)" }}>
-                Capabilities
-              </p>
-            </div>
-            <div className="col-span-12 lg:col-span-9">
-              <div className="flex flex-wrap gap-3">
-                {capabilities.map((cap) => (
-                  <span
-                    key={cap}
-                    className="text-label"
-                    style={{
-                      border: "1px solid var(--color-border)",
-                      padding: "0.5rem 1rem",
-                      borderRadius: "var(--radius-sm)",
-                      color: "var(--color-ink)",
-                    }}
-                  >
-                    {cap}
-                  </span>
-                ))}
-              </div>
+          <div style={{ borderTop: "1px solid var(--color-border)", paddingTop: "var(--space-10)", paddingBottom: "var(--space-13)" }}>
+            <p className="text-label mb-6" style={{ color: "var(--color-muted)" }}>
+              Contact
+            </p>
+            <a
+              href="mailto:christopher.goodhue@gmail.com"
+              className="text-display"
+              style={{
+                fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
+                display: "inline-block",
+                borderBottom: "2px solid var(--color-ink)",
+                paddingBottom: "0.25rem",
+              }}
+            >
+              christopher.goodhue@gmail.com
+            </a>
+
+            <div className="mt-8 flex flex-wrap gap-6">
+              {contactLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-label"
+                  style={{ color: "var(--color-muted)" }}
+                >
+                  {link.label} ↗
+                </a>
+              ))}
             </div>
           </div>
-        </Container>
-      </div>
-
-      <div style={{ padding: "5rem 0" }}>
-        <Container>
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12 lg:col-span-3">
-              <p className="text-label" style={{ color: "var(--color-muted)" }}>
-                Contact
-              </p>
-            </div>
-            <div className="col-span-12 lg:col-span-9">
-              <a
-                href="mailto:hello@yourname.com"
-                className="text-display"
-                style={{
-                  fontSize: "clamp(2rem, 5vw, 4rem)",
-                  display: "inline-block",
-                  borderBottom: "2px solid var(--color-ink)",
-                  paddingBottom: "0.25rem",
-                }}
-              >
-                hello@yourname.com
-              </a>
-
-              <div className="mt-10 flex gap-8">
-                {["LinkedIn", "Read.cv", "Dribbble"].map((link) => (
-                  <a
-                    key={link}
-                    href="#"
-                    className="text-label"
-                    style={{ color: "var(--color-muted)" }}
-                  >
-                    {link} ↗
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Container>
+        </div>
       </div>
     </main>
   );
