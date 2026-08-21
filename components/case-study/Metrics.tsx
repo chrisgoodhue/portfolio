@@ -76,6 +76,11 @@ export function Metrics({ section, themeColor, themeColorDark }: MetricsProps) {
       }}
     >
       <Container>
+        {section.eyebrow && (
+          <p className="text-label mb-6" style={{ color: "var(--color-paper)", opacity: 0.6 }}>
+            {section.eyebrow}
+          </p>
+        )}
         <h2
           className="mb-6"
           style={{

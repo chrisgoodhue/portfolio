@@ -533,7 +533,7 @@ const viewerExperiencePortfolioSections: NarrativeCaseStudySection[] = [
     id: "fragmented-ecosystem",
     eyebrow: "01",
     heading: "A fragmented viewing ecosystem",
-    body: "Vimeo's viewing experience wasn't one product. It was more than a dozen surfaces — public and private video pages, Live, Review, On Demand, Profiles, Channels, Portfolios, Groups, Showcases, Watch — each built independently, on its own codebase, by different teams at different times.\n\nInternally, the initiative was called \"Viewer Home.\" From the start, the opportunity was a shared viewing platform, not a redesigned page.\n\nThe problem wasn't a handful of bad pages. It was a fragmented ecosystem that kept solving the same underlying problems in different ways.",
+    body: "Vimeo's viewing experience had evolved into a collection of independently built surfaces, each with its own codebase, history, and team context.\n\nInternally, the initiative was called \"Viewer Home.\" From the start, the opportunity was a shared viewing platform, not a redesigned page.\n\nThe problem wasn't a handful of bad pages. It was a fragmented ecosystem that kept solving the same underlying problems in different ways.",
     keyTakeaway: "The problem wasn't that Vimeo needed a better page. It needed a better system.",
     beats: [
       {
@@ -636,7 +636,8 @@ const viewerExperiencePortfolioSections: NarrativeCaseStudySection[] = [
       label: "WYSIWYG page editor concept",
       description: "The interactive WYSIWYG editing prototype that tested well with users.",
     },
-    caption: "The strongest experience wasn't always the right implementation. Working directly with engineering helped us preserve the intent while reducing implementation cost.",
+    caption:
+      "The strongest experience wasn't always the right implementation. Working directly with engineering helped us preserve the intent while reducing implementation cost.\n\nThe WYSIWYG editor tested well with users, but engineering estimated a multi-quarter build. We preserved the underlying customization need with toggle-based settings and presets that could ship within the release scope.",
     secondaryBeat: {
       body: "When the question was behavior rather than visual polish, architecture reviews also produced lower-fidelity interaction prototypes — a shared language for working through component boundaries and edge cases with engineering.",
       media: {
@@ -654,7 +655,7 @@ const viewerExperiencePortfolioSections: NarrativeCaseStudySection[] = [
     id: "migrate-people",
     eyebrow: "06",
     heading: "Migrate people, not just technology",
-    body: "Vimeo had been burned before — unexpected UI changes had triggered public backlash and a wave of confused support tickets.\n\nI pushed for an opt-in, transitional rollout instead of a hard cutover — context and a softer path in, not an overnight replacement. Platform migration isn't only a technical problem; it's a user-adoption one.",
+    body: "Previous Vimeo redesigns had created confusion and support volume when workflows changed unexpectedly.\n\nI pushed for an opt-in, transitional rollout instead of a hard cutover — context and a softer path in, not an overnight replacement. Platform migration isn't only a technical problem; it's a user-adoption one.",
     beats: [
       {
         media: {
@@ -671,6 +672,7 @@ const viewerExperiencePortfolioSections: NarrativeCaseStudySection[] = [
   {
     type: "metrics",
     id: "outcomes",
+    eyebrow: "07",
     heading: "A platform that compounds",
     intro:
       "The platform shift was associated with significant improvements across viewing, engagement, and discovery — downstream results of the work rather than targets set at the outset.",
@@ -678,7 +680,7 @@ const viewerExperiencePortfolioSections: NarrativeCaseStudySection[] = [
       {
         value: "42%",
         label: "Platform unification",
-        description: "Migrated across major viewing surfaces — including private and public video, Showcases, Watch, Feed, and Staff Picks — with several collection surfaces still on the legacy experience.",
+        description: "The project's measure of how much of Vimeo's viewing ecosystem had moved onto the shared modular foundation.",
       },
       {
         value: "+400%",

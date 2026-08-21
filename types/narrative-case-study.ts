@@ -144,6 +144,8 @@ export interface MetricItem {
 export interface MetricsSectionData {
   type: "metrics";
   id: string;
+  /** Optional numbered eyebrow, matching the treatment used by the other section types — omitted on projects that don't number their beats. */
+  eyebrow?: string;
   heading: string;
   intro?: string;
   items: MetricItem[];
