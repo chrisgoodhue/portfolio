@@ -59,8 +59,8 @@ const viewerExperienceMeta = {
 // ── Shared facts: Showcases ─────────────────────────────────────────────────
 const showcasesMeta = {
   slug: "reimagining-showcases",
-  title: "Reimagining Showcases",
-  subtitle: "From rigid templates to a flexible creator system.",
+  title: "Designing for Creative Control",
+  subtitle: "Helping creators shape how audiences experience their work.",
   description:
     "How iterative design, AI-assisted prototyping, and user testing helped transform Vimeo Showcases into a modular experience that creators could customize and teams could evolve.",
   company: "Vimeo",
