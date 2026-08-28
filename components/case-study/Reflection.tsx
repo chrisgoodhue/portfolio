@@ -24,14 +24,8 @@ export function Reflection({ section }: ReflectionProps) {
     >
       <Container>
         <h2
-          className="mb-12"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            fontSize: "clamp(2rem, 4vw, 3.5rem)",
-            color: "var(--color-ink)",
-          }}
+          className="section-heading mb-12"
+          style={{ color: "var(--color-ink)" }}
         >
           {section.heading}
         </h2>
@@ -43,7 +37,7 @@ export function Reflection({ section }: ReflectionProps) {
                 style={{
                   fontFamily: "var(--font-body)",
                   fontWeight: 700,
-                  fontSize: "var(--text-xl)",
+                  fontSize: "var(--text-lg)",
                   color: "var(--color-ink)",
                   marginBottom: "0.75rem",
                 }}

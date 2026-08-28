@@ -92,7 +92,7 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
             <CaseStudyHero
               themeColor={caseStudy.themeColor}
               themeColorDark={caseStudy.themeColorDark}
-              eyebrow={`${caseStudy.company} — ${caseStudy.role} — ${caseStudy.year}`}
+              eyebrow={`${caseStudy.company} · ${caseStudy.role} · ${caseStudy.year}`}
               title={caseStudy.title}
               description={caseStudy.summary}
               image={{ kind: "image", label: "Hero image placeholder", assetId: `${caseStudy.slug}-hero` }}
@@ -112,8 +112,6 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
                   <CaseStudySection
                     section={section}
                     subsections={subsections}
-                    themeColor={caseStudy.themeColor}
-                    themeColorDark={caseStudy.themeColorDark}
                   />
                 </div>
               ))}
@@ -141,7 +139,7 @@ export function CaseStudyClient({ initialCaseStudy, initialSlug = "" }: CaseStud
                     </div>
                     <div style={{ textAlign: "right" }}>
                       <p className="text-label" style={{ color: "var(--color-muted)" }}>
-                        {caseStudy.company} — {caseStudy.year}
+                        {caseStudy.company} · {caseStudy.year}
                       </p>
                     </div>
                   </div>

@@ -9,8 +9,6 @@ import { Container } from "./Container";
 interface Props {
   section: SectionData;
   subsections?: SectionData[];
-  themeColor: string;
-  themeColorDark: string;
 }
 
 /**
@@ -51,15 +49,11 @@ function MediaSlot({
   label,
   scale,
   fullWidth,
-  themeColor,
-  themeColorDark,
 }: {
   kind: "Image" | "Video";
   label: string;
   scale?: MediaScale;
   fullWidth?: boolean;
-  themeColor: string;
-  themeColorDark: string;
 }) {
   const reduceMotion = useReducedMotion();
   const resolved = resolveScale(scale, fullWidth);
@@ -76,8 +70,8 @@ function MediaSlot({
           aspectRatio: "16/9",
           borderRadius: "var(--radius-sm)",
           overflow: "hidden",
-          backgroundColor: `${themeColor}1a`,
-          border: `1px dashed ${themeColorDark}40`,
+          backgroundColor: "var(--color-overlay)",
+          border: "1px dashed rgba(10, 10, 10, 0.25)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -95,7 +89,7 @@ function MediaSlot({
               top: "50%",
               width: "100%",
               height: "1px",
-              background: `linear-gradient(90deg, transparent, ${themeColorDark}55, transparent)`,
+              background: "linear-gradient(90deg, transparent, rgba(10, 10, 10, 0.35), transparent)",
             }}
             animate={{ opacity: [0.2, 0.6, 0.2] }}
             transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
@@ -105,11 +99,10 @@ function MediaSlot({
         <span
           className="text-label"
           style={{
-            color: themeColorDark,
-            opacity: 0.6,
+            color: "var(--color-muted)",
             marginBottom: "0.75rem",
             padding: "0.25rem 0.6rem",
-            border: `1px solid ${themeColorDark}33`,
+            border: "1px solid var(--color-border)",
             borderRadius: "999px",
           }}
         >
@@ -121,7 +114,7 @@ function MediaSlot({
             fontFamily: "var(--font-body)",
             fontWeight: 700,
             fontSize: "clamp(1rem, 2vw, 1.25rem)",
-            color: themeColorDark,
+            color: "var(--color-ink)",
             maxWidth: "32rem",
           }}
         >
@@ -135,23 +128,16 @@ function MediaSlot({
 /**
  * The single dramatic moment on an "outcome" section — a full-bleed,
  * color-inverted band with the numbers at real scale, replacing what used
- * to be a small in-column grid. Background is `themeColor` and text is
- * `themeColorDark` — the exact same pairing CaseStudyHero already uses for
- * this case study, so contrast is guaranteed correct for every case study
- * without auditing each one's colors individually (unlike reusing the
- * narrative system's Metrics component, which is built for the opposite
- * pairing and would render near-invisible label text here).
+ * to be a small in-column grid. Fixed ink background with paper text,
+ * matching the narrative system's Metrics component — theme color is
+ * reserved for the hero and homepage cards, not the case study body.
  */
 function OutcomeBand({
   heading,
   metrics,
-  themeColor,
-  themeColorDark,
 }: {
   heading?: string;
   metrics: { value: string; label: string }[];
-  themeColor: string;
-  themeColorDark: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
@@ -165,7 +151,7 @@ function OutcomeBand({
       style={{
         width: "100vw",
         marginLeft: "calc(-50vw + 50%)",
-        backgroundColor: themeColor,
+        backgroundColor: "var(--color-ink)",
         paddingTop: "clamp(4rem, 9vw, 7rem)",
         paddingBottom: "clamp(4rem, 9vw, 7rem)",
       }}
@@ -173,15 +159,8 @@ function OutcomeBand({
       <Container>
         {heading && (
           <h2
-            className="mb-14"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontWeight: 700,
-              letterSpacing: "-0.02em",
-              fontSize: "clamp(2rem, 4vw, 3.5rem)",
-              color: themeColorDark,
-              maxWidth: "42rem",
-            }}
+            className="section-heading mb-14"
+            style={{ color: "var(--color-paper)", maxWidth: "42rem" }}
           >
             {heading}
           </h2>
@@ -192,11 +171,11 @@ function OutcomeBand({
             <div key={m.label}>
               <div
                 className="text-metric"
-                style={{ color: themeColorDark, fontSize: "clamp(2.5rem, 6vw, 4.5rem)" }}
+                style={{ color: "var(--color-paper)", fontSize: "clamp(2.5rem, 6vw, 4.5rem)" }}
               >
                 {m.value}
               </div>
-              <div className="text-label mt-3" style={{ color: `${themeColorDark}88` }}>
+              <div className="text-label mt-3" style={{ color: "var(--color-paper)", opacity: 0.85 }}>
                 {m.label}
               </div>
             </div>
@@ -207,7 +186,7 @@ function OutcomeBand({
   );
 }
 
-export function CaseStudySection({ section, subsections, themeColor, themeColorDark }: Props) {
+export function CaseStudySection({ section, subsections }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
 
@@ -244,27 +223,15 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
             section.type === "approach" ||
             section.type === "design") ? (
             <h3
-              className="mb-8"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-                fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
-                color: "var(--color-ink)",
-              }}
+              className="subsection-heading mb-8"
+              style={{ color: "var(--color-ink)" }}
             >
               {section.title}
             </h3>
           ) : (
             <h2
-              className="mb-10"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 700,
-                letterSpacing: "-0.02em",
-                fontSize: "clamp(2rem, 4vw, 3.5rem)",
-                color: "var(--color-ink)",
-              }}
+              className="section-heading mb-10"
+              style={{ color: "var(--color-ink)" }}
             >
               {section.title}
             </h2>
@@ -279,7 +246,7 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
               style={{
                 fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
                 color: "var(--color-ink)",
-                borderLeft: `3px solid ${themeColor}`,
+                borderLeft: "3px solid var(--color-ink)",
                 paddingLeft: "2rem",
               }}
             >
@@ -287,7 +254,7 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
             </p>
             {section.quote.attribution && (
               <footer className="text-label mt-4 ml-10" style={{ color: "var(--color-muted)" }}>
-                — {section.quote.attribution}
+                - {section.quote.attribution}
               </footer>
             )}
           </blockquote>
@@ -314,8 +281,6 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
           <OutcomeBand
             heading={section.title}
             metrics={section.metrics!}
-            themeColor={themeColor}
-            themeColorDark={themeColorDark}
           />
         )}
 
@@ -326,8 +291,6 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
             label={section.image.alt}
             scale={section.image.scale}
             fullWidth={section.image.fullWidth}
-            themeColor={themeColor}
-            themeColorDark={themeColorDark}
           />
         )}
 
@@ -338,8 +301,6 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
             label={section.video.label ?? "Video placeholder"}
             scale={section.video.scale}
             fullWidth={section.video.fullWidth}
-            themeColor={themeColor}
-            themeColorDark={themeColorDark}
           />
         )}
 
@@ -353,14 +314,8 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
               >
                 {sub.title && (
                   <h3
-                    className="mb-6"
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontWeight: 700,
-                      letterSpacing: "-0.01em",
-                      fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
-                      color: "var(--color-ink)",
-                    }}
+                    className="subsection-heading mb-6"
+                    style={{ color: "var(--color-ink)" }}
                   >
                     {sub.title}
                   </h3>
@@ -386,8 +341,6 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
                     label={sub.image.alt}
                     scale={sub.image.scale}
                     fullWidth={sub.image.fullWidth}
-                    themeColor={themeColor}
-                    themeColorDark={themeColorDark}
                   />
                 )}
 
@@ -397,8 +350,6 @@ export function CaseStudySection({ section, subsections, themeColor, themeColorD
                     label={sub.video.label ?? "Video placeholder"}
                     scale={sub.video.scale}
                     fullWidth={sub.video.fullWidth}
-                    themeColor={themeColor}
-                    themeColorDark={themeColorDark}
                   />
                 )}
               </div>

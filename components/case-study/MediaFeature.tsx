@@ -16,8 +16,6 @@ import type { MediaPlaceholderData, MediaScale } from "@/types/narrative-case-st
 interface MediaFeatureProps {
   media: MediaPlaceholderData;
   caption?: string;
-  themeColor: string;
-  themeColorDark: string;
   scale?: MediaScale;
   aspect?: string;
 }
@@ -25,8 +23,6 @@ interface MediaFeatureProps {
 export function MediaFeature({
   media,
   caption,
-  themeColor,
-  themeColorDark,
   scale = "wide",
   aspect,
 }: MediaFeatureProps) {
@@ -45,10 +41,10 @@ export function MediaFeature({
 
   return (
     <figure className={wrapperClassName} style={wrapperStyle}>
-      <MediaPlaceholder data={media} themeColor={themeColor} themeColorDark={themeColorDark} aspect={aspect} />
+      <MediaPlaceholder data={media} aspect={aspect} />
       {caption && (
         <figcaption
-          className="text-label"
+          className="text-caption"
           style={{
             color: "var(--color-muted)",
             marginTop: "var(--space-6)",

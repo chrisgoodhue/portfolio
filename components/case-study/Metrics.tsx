@@ -15,8 +15,6 @@ import type { MetricsSectionData } from "@/types/narrative-case-study";
 
 interface MetricsProps {
   section: MetricsSectionData;
-  themeColor: string;
-  themeColorDark: string;
 }
 
 function parseMetricValue(raw: string): { prefix: string; number: number; suffix: string } | null {
@@ -57,7 +55,7 @@ function MetricValue({ value }: { value: string }) {
   return <span ref={ref}>{display}</span>;
 }
 
-export function Metrics({ section, themeColor, themeColorDark }: MetricsProps) {
+export function Metrics({ section }: MetricsProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
 
@@ -70,27 +68,20 @@ export function Metrics({ section, themeColor, themeColorDark }: MetricsProps) {
       style={{
         width: "100vw",
         marginLeft: "calc(-50vw + 50%)",
-        backgroundColor: themeColorDark,
+        backgroundColor: "var(--color-ink)",
         paddingTop: "clamp(4rem, 9vw, 7rem)",
         paddingBottom: "clamp(4rem, 9vw, 7rem)",
       }}
     >
       <Container>
         {section.eyebrow && (
-          <p className="text-label mb-6" style={{ color: "var(--color-paper)", opacity: 0.6 }}>
+          <p className="text-label mb-6" style={{ color: "var(--color-paper)", opacity: 0.65 }}>
             {section.eyebrow}
           </p>
         )}
         <h2
-          className="mb-6"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            fontSize: "clamp(2rem, 4vw, 3.5rem)",
-            color: "var(--color-paper)",
-            maxWidth: "42rem",
-          }}
+          className="section-heading mb-6"
+          style={{ color: "var(--color-paper)", maxWidth: "42rem" }}
         >
           {section.heading}
         </h2>
@@ -109,7 +100,7 @@ export function Metrics({ section, themeColor, themeColorDark }: MetricsProps) {
             <div key={item.label}>
               <div
                 className="text-metric"
-                style={{ color: themeColor, fontSize: "clamp(2.5rem, 6vw, 4.5rem)" }}
+                style={{ color: "var(--color-paper)", fontSize: "clamp(2.5rem, 6vw, 4.5rem)" }}
               >
                 <MetricValue value={item.value} />
               </div>
@@ -117,7 +108,7 @@ export function Metrics({ section, themeColor, themeColorDark }: MetricsProps) {
                 {item.label}
               </div>
               {item.description && (
-                <p className="mt-2 leading-relaxed" style={{ fontSize: "var(--text-sm)", color: "var(--color-paper)", opacity: 0.55 }}>
+                <p className="mt-2 leading-relaxed" style={{ fontSize: "var(--text-sm)", color: "var(--color-paper)", opacity: 0.65 }}>
                   {item.description}
                 </p>
               )}

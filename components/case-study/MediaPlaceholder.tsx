@@ -18,12 +18,10 @@ const KIND_LABEL: Record<MediaPlaceholderData["kind"], string> = {
 
 interface MediaPlaceholderProps {
   data: MediaPlaceholderData;
-  themeColor: string;
-  themeColorDark: string;
   aspect?: string;
 }
 
-export function MediaPlaceholder({ data, themeColor, themeColorDark, aspect }: MediaPlaceholderProps) {
+export function MediaPlaceholder({ data, aspect }: MediaPlaceholderProps) {
   const reduceMotion = useReducedMotion();
   const ratio = aspect ?? data.aspect ?? "16/9";
 
@@ -38,8 +36,8 @@ export function MediaPlaceholder({ data, themeColor, themeColorDark, aspect }: M
         aspectRatio: ratio,
         borderRadius: "var(--radius-sm)",
         overflow: "hidden",
-        backgroundColor: `${themeColor}1a`,
-        border: `1px dashed ${themeColorDark}40`,
+        backgroundColor: "var(--color-overlay)",
+        border: "1px dashed rgba(10, 10, 10, 0.25)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -57,7 +55,7 @@ export function MediaPlaceholder({ data, themeColor, themeColorDark, aspect }: M
             top: "50%",
             width: "100%",
             height: "1px",
-            background: `linear-gradient(90deg, transparent, ${themeColorDark}55, transparent)`,
+            background: "linear-gradient(90deg, transparent, rgba(10, 10, 10, 0.35), transparent)",
           }}
           animate={{ opacity: [0.2, 0.6, 0.2] }}
           transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
@@ -67,11 +65,10 @@ export function MediaPlaceholder({ data, themeColor, themeColorDark, aspect }: M
       <span
         className="text-label"
         style={{
-          color: themeColorDark,
-          opacity: 0.6,
+          color: "var(--color-muted)",
           marginBottom: "0.75rem",
           padding: "0.25rem 0.6rem",
-          border: `1px solid ${themeColorDark}33`,
+          border: "1px solid var(--color-border)",
           borderRadius: "999px",
         }}
       >
@@ -83,7 +80,7 @@ export function MediaPlaceholder({ data, themeColor, themeColorDark, aspect }: M
           fontFamily: "var(--font-body)",
           fontWeight: 700,
           fontSize: "clamp(1rem, 2vw, 1.25rem)",
-          color: themeColorDark,
+          color: "var(--color-ink)",
           maxWidth: "32rem",
         }}
       >
@@ -92,15 +89,12 @@ export function MediaPlaceholder({ data, themeColor, themeColorDark, aspect }: M
 
       {data.description && (
         <p
-          className="text-label"
+          className="text-caption"
           style={{
             marginTop: "0.75rem",
-            color: themeColorDark,
-            opacity: 0.55,
+            color: "var(--color-muted)",
             maxWidth: "28rem",
             lineHeight: 1.6,
-            textTransform: "none",
-            letterSpacing: "0.02em",
           }}
         >
           {data.description}

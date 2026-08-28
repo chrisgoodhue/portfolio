@@ -28,15 +28,8 @@ export function Outcome({ section }: OutcomeProps) {
     >
       <Container>
         <h2
-          className="mb-12"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            fontSize: "clamp(2rem, 4vw, 3.5rem)",
-            color: "var(--color-ink)",
-            maxWidth: "42rem",
-          }}
+          className="section-heading mb-12"
+          style={{ color: "var(--color-ink)", maxWidth: "42rem" }}
         >
           {section.heading}
         </h2>

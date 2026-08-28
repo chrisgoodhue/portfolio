@@ -52,7 +52,7 @@ export function NarrativeCaseStudyClient({ caseStudy, detailedHref }: NarrativeC
           <CaseStudyHero
             themeColor={caseStudy.themeColor}
             themeColorDark={caseStudy.themeColorDark}
-            eyebrow={`${caseStudy.company} — ${caseStudy.role} — ${caseStudy.year}`}
+            eyebrow={`${caseStudy.company} · ${caseStudy.role} · ${caseStudy.year}`}
             title={caseStudy.title}
             subtitle={caseStudy.subtitle}
             description={caseStudy.description}
@@ -68,31 +68,19 @@ export function NarrativeCaseStudyClient({ caseStudy, detailedHref }: NarrativeC
                 case "narrative":
                   return (
                     <div key={section.id} style={{ borderTop: "1px solid var(--color-border)" }}>
-                      <NarrativeSection
-                        section={section}
-                        themeColor={caseStudy.themeColor}
-                        themeColorDark={caseStudy.themeColorDark}
-                      />
+<NarrativeSection section={section} />
                     </div>
                   );
                 case "comparison":
                   return (
                     <div key={section.id} style={{ borderTop: "1px solid var(--color-border)" }}>
-                      <Comparison
-                        section={section}
-                        themeColor={caseStudy.themeColor}
-                        themeColorDark={caseStudy.themeColorDark}
-                      />
+<Comparison section={section} />
                     </div>
                   );
                 case "prototype":
                   return (
                     <div key={section.id} style={{ borderTop: "1px solid var(--color-border)" }}>
-                      <Prototype
-                        section={section}
-                        themeColor={caseStudy.themeColor}
-                        themeColorDark={caseStudy.themeColorDark}
-                      />
+<Prototype section={section} />
                     </div>
                   );
                 case "outcome":
@@ -104,11 +92,7 @@ export function NarrativeCaseStudyClient({ caseStudy, detailedHref }: NarrativeC
                 case "metrics":
                   return (
                     <div key={section.id} style={{ borderTop: "1px solid var(--color-border)" }}>
-                      <Metrics
-                        section={section}
-                        themeColor={caseStudy.themeColor}
-                        themeColorDark={caseStudy.themeColorDark}
-                      />
+<Metrics section={section} />
                     </div>
                   );
                 case "reflection":
@@ -132,8 +116,6 @@ export function NarrativeCaseStudyClient({ caseStudy, detailedHref }: NarrativeC
               href={`/case-studies/${caseStudy.nextProject.slug}`}
               title={caseStudy.nextProject.title}
               company={caseStudy.nextProject.company}
-              themeColor={caseStudy.nextProject.themeColor}
-              themeColorDark={caseStudy.nextProject.themeColorDark}
             />
 
             {/* Footer strip — matches legacy CaseStudyClient's footer exactly, plus an optional link to the full case study */}
@@ -164,7 +146,7 @@ export function NarrativeCaseStudyClient({ caseStudy, detailedHref }: NarrativeC
                       </Link>
                     )}
                     <p className="text-label" style={{ color: "var(--color-muted)" }}>
-                      {caseStudy.company} — {caseStudy.year}
+                      {caseStudy.company} · {caseStudy.year}
                     </p>
                   </div>
                 </div>

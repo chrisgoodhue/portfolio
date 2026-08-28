@@ -40,8 +40,7 @@ const headingStyle = {
 const captionStyle = {
   fontFamily: "var(--font-mono)",
   fontSize: "var(--text-xs)",
-  letterSpacing: "0.1em",
-  textTransform: "uppercase" as const,
+  letterSpacing: "0.02em",
   color: "var(--color-muted)",
   marginBottom: "var(--space-6)",
 };
@@ -155,181 +154,152 @@ export function ComponentsShowcase() {
       {/* Design tokens reference */}
       <section id="design-tokens" style={showcaseSectionStyle}>
         <Container>
+          <h2 style={headingStyle}>Design tokens</h2>
+          <p style={captionStyle}>Foundation for spacing, radius, type, and color across the portfolio.</p>
+
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "minmax(0, 1.5fr) minmax(0, 2fr)",
-              gap: "var(--space-10)",
-              alignItems: "flex-start",
+              fontSize: "var(--text-sm)",
+              color: "var(--color-ink)",
+              lineHeight: "var(--leading-relaxed)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--space-4)",
+              maxWidth: "42rem",
+              marginBottom: "var(--space-10)",
             }}
           >
-            {/* Left: explanation & usage */}
+            <p>
+              Tokens are the single source of truth for layout and visual style. Use them instead of raw values so
+              spacing, shape, typography, and color stay consistent, even as the system evolves.
+            </p>
+            <p>
+              Each group below shows the available tokens and how they&apos;re typically applied: compact vs. layout
+              spacing, card vs. chip radius, type hierarchy, and color roles for backgrounds, text, borders, and
+              tints.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--space-12)",
+              fontSize: "var(--text-sm)",
+              fontFamily: "var(--font-mono)",
+              color: "var(--color-ink)",
+            }}
+          >
+            {/* Spacing scale */}
             <div>
-              <h2 style={headingStyle}>Design tokens</h2>
-              <p style={captionStyle}>Foundation for spacing, radius, type, and color across the portfolio.</p>
+              <p style={{ fontWeight: 700, marginBottom: "var(--space-5)" }}>Spacing</p>
               <div
                 style={{
-                  fontSize: "var(--text-sm)",
-                  color: "var(--color-ink)",
-                  lineHeight: "var(--leading-relaxed)",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "var(--space-4)",
-                  maxWidth: "30rem",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(12rem, 1fr))",
+                  gap: "var(--space-6)",
                 }}
               >
-                <p>
-                  Tokens are the single source of truth for layout and visual style. Use them instead of raw values so
-                  spacing, shape, typography, and color stay consistent—even as the system evolves.
-                </p>
-                <p>
-                  Each group below shows the available tokens and how they’re typically applied: compact vs. layout
-                  spacing, card vs. chip radius, type hierarchy, and color roles for backgrounds, text, borders, and
-                  icons.
-                </p>
-              </div>
-            </div>
-
-            {/* Right: visuals */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--space-12)", // even more vertical space between token groups
-                fontSize: "var(--text-sm)",
-                fontFamily: "var(--font-mono)",
-                color: "var(--color-ink)",
-              }}
-            >
-              {/* Spacing scale (vertical bars stacked in a single column) */}
-              <div>
-                <p style={{ fontWeight: 700, marginBottom: "var(--space-3)" }}>Spacing</p>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                  gap: "var(--space-6)",
-                  }}
-                >
-                  {[
-                    { token: "--space-1", label: "2px · hairline spacing" },
-                    { token: "--space-2", label: "4px · tight spacing, icon offsets" },
-                    { token: "--space-4", label: "8px · small gaps & inner padding" },
-                    { token: "--space-5", label: "12px · vertical rhythm inside cards" },
-                    { token: "--space-6", label: "16px · default component padding" },
-                    { token: "--space-8", label: "24px · gaps between cards & sections" },
-                    { token: "--space-9", label: "32px · layout spacing" },
-                    { token: "--space-10", label: "40px · generous layout spacing" },
-                    { token: "--space-11", label: "48px · hero & large blocks" },
-                    { token: "--space-12", label: "64px · page section padding" },
-                    { token: "--space-13", label: "80px · extra spacious layouts" },
-                    { token: "--space-14", label: "96px · hero bands, page edges" },
-                  ].map(({ token, label }) => (
+                {[
+                  { token: "--space-1", label: "2px, hairline spacing" },
+                  { token: "--space-2", label: "4px, tight spacing, icon offsets" },
+                  { token: "--space-4", label: "8px, small gaps & inner padding" },
+                  { token: "--space-5", label: "12px, vertical rhythm inside cards" },
+                  { token: "--space-6", label: "16px, default component padding" },
+                  { token: "--space-8", label: "24px, gaps between cards & sections" },
+                  { token: "--space-9", label: "32px, layout spacing" },
+                  { token: "--space-10", label: "40px, generous layout spacing" },
+                  { token: "--space-11", label: "48px, hero & large blocks" },
+                  { token: "--space-12", label: "64px, page section padding" },
+                  { token: "--space-13", label: "80px, extra spacious layouts" },
+                  { token: "--space-14", label: "96px, hero bands, page edges" },
+                ].map(({ token, label }) => (
+                  <div
+                    key={token}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "var(--space-3)",
+                    }}
+                  >
                     <div
-                      key={token}
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "var(--space-3)",
+                        width: "0.75rem",
+                        height: `var(${token})`,
+                        borderRadius: "999rem",
+                        backgroundColor: "var(--color-border)",
+                        flexShrink: 0,
                       }}
-                    >
-                      <div
-                        style={{
-                          width: "0.75rem",
-                          height: `var(${token})`,
-                          borderRadius: "999rem",
-                          backgroundColor: "var(--color-border)",
-                        }}
-                      />
-                      <div style={{ textAlign: "left" }}>
-                        <div>{token}</div>
-                        <div style={{ opacity: 0.6 }}>{label}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Radius scale */}
-              <div>
-                <p style={{ fontWeight: 700, marginBottom: "var(--space-3)" }}>Radius</p>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-                    gap: "var(--space-6)",
-                    alignItems: "start",
-                  }}
-                >
-                  {[
-                    { token: "--radius-sm", label: "4px · small UI, chips" },
-                    { token: "--radius-md", label: "8px · buttons, inputs" },
-                    { token: "--radius-lg", label: "12px · larger surfaces" },
-                    { token: "--radius-xl", label: "16px · cards" },
-                    { token: "--radius-2xl", label: "24px · featured cards" },
-                    { token: "--radius-3xl", label: "32px · hero surfaces" },
-                  ].map(({ token, label }) => (
-                    <div key={token} style={{ textAlign: "center" }}>
-                      <div
-                        style={{
-                          width: "3.5rem",
-                          height: "3.5rem",
-                          borderRadius: `var(${token})`,
-                          border: "1px solid var(--color-border)",
-                          backgroundColor: "var(--color-paper)",
-                          boxShadow: "0 0 0 1px rgba(10,10,10,0.02)",
-                          margin: "0 auto var(--space-2)",
-                        }}
-                      />
+                    />
+                    <div style={{ textAlign: "left" }}>
                       <div>{token}</div>
                       <div style={{ opacity: 0.6 }}>{label}</div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
+            </div>
 
-              {/* Typography */}
-              <div>
-                <p style={{ fontWeight: 700, marginBottom: "var(--space-5)" }}>Typography</p>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "var(--space-8)", // larger, consistent spacing between type samples
-                    fontFamily: "var(--font-body)",
-                    color: "var(--color-ink)",
-                  }}
-                >
-                  <div>
-                <p
-                  className="text-display"
-                  style={{
-                    fontSize: "var(--text-display)",
-                    lineHeight: "var(--leading-snug)",
-                  }}
-                >
-                  Display / H1
-                </p>
-                <p
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    opacity: 0.7,
-                    marginTop: "var(--space-3)",
-                  }}
-                >
-                  --text-display, --font-display
-                </p>
-                  </div>
-                  <div>
-                    <p
+            {/* Radius scale */}
+            <div>
+              <p style={{ fontWeight: 700, marginBottom: "var(--space-5)" }}>Radius</p>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(6, minmax(0, 1fr))",
+                  gap: "var(--space-6)",
+                  alignItems: "start",
+                }}
+              >
+                {[
+                  { token: "--radius-sm", label: "4px, small UI, chips" },
+                  { token: "--radius-md", label: "8px, buttons, inputs" },
+                  { token: "--radius-lg", label: "12px, larger surfaces" },
+                  { token: "--radius-xl", label: "16px, cards" },
+                  { token: "--radius-2xl", label: "24px, featured cards" },
+                  { token: "--radius-3xl", label: "32px, hero surfaces" },
+                ].map(({ token, label }) => (
+                  <div key={token} style={{ textAlign: "center" }}>
+                    <div
                       style={{
-                        fontWeight: 700,
-                        letterSpacing: "-0.02em",
-                        fontSize: "var(--text-section)",
+                        width: "3.5rem",
+                        height: "3.5rem",
+                        borderRadius: `var(${token})`,
+                        border: "1px solid var(--color-border)",
+                        backgroundColor: "var(--color-paper)",
+                        boxShadow: "0 0 0 1px rgba(10,10,10,0.02)",
+                        margin: "0 auto var(--space-2)",
                       }}
-                    >
-                      Section heading / H2
-                    </p>
+                    />
+                    <div>{token}</div>
+                    <div style={{ opacity: 0.6 }}>{label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Typography */}
+            <div>
+              <p style={{ fontWeight: 700, marginBottom: "var(--space-5)" }}>Typography</p>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "var(--space-8)",
+                  fontFamily: "var(--font-body)",
+                  color: "var(--color-ink)",
+                }}
+              >
+                <div>
+                  <p
+                    className="text-display"
+                    style={{
+                      fontSize: "var(--text-display)",
+                      lineHeight: "var(--leading-snug)",
+                    }}
+                  >
+                    Display / H1
+                  </p>
                   <p
                     style={{
                       fontFamily: "var(--font-mono)",
@@ -337,19 +307,13 @@ export function ComponentsShowcase() {
                       marginTop: "var(--space-3)",
                     }}
                   >
-                    --text-section, --font-body
+                    --text-display, --font-display
                   </p>
-                  </div>
-                  <div>
-                    <p
-                      style={{
-                        fontWeight: 700,
-                        letterSpacing: "-0.01em",
-                        fontSize: "var(--text-subsection)",
-                      }}
-                    >
-                      Subsection heading / H3
-                    </p>
+                </div>
+                <div>
+                  <p className="section-heading" style={{ color: "var(--color-ink)" }}>
+                    Section heading / H2
+                  </p>
                   <p
                     style={{
                       fontFamily: "var(--font-mono)",
@@ -357,20 +321,48 @@ export function ComponentsShowcase() {
                       marginTop: "var(--space-3)",
                     }}
                   >
-                    --text-subsection, --font-body
+                    .section-heading (--text-section, --font-body)
                   </p>
-                  </div>
-                  <div>
-                    <p
-                      style={{
-                        fontSize: "var(--text-body)",
-                        lineHeight: "var(--leading-relaxed)",
-                        maxWidth: "36rem",
-                      }}
-                    >
-                      Body copy uses --text-body with --leading-relaxed. Use this for most narrative content and longer
-                      descriptions in case studies.
-                    </p>
+                </div>
+                <div>
+                  <p className="subsection-heading" style={{ color: "var(--color-ink)" }}>
+                    Subsection heading / H3
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      opacity: 0.7,
+                      marginTop: "var(--space-3)",
+                    }}
+                  >
+                    .subsection-heading (--text-subsection, --font-body)
+                  </p>
+                </div>
+                <div>
+                  <p className="text-metric" style={{ fontSize: "var(--text-metric)", color: "var(--color-ink)" }}>
+                    42%
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      opacity: 0.7,
+                      marginTop: "var(--space-3)",
+                    }}
+                  >
+                    .text-metric, for standout numbers. --text-metric, --font-display
+                  </p>
+                </div>
+                <div>
+                  <p
+                    style={{
+                      fontSize: "var(--text-body)",
+                      lineHeight: "var(--leading-relaxed)",
+                      maxWidth: "36rem",
+                    }}
+                  >
+                    Body copy uses --text-body with --leading-relaxed. Use this for most narrative content and longer
+                    descriptions in case studies.
+                  </p>
                   <p
                     style={{
                       fontFamily: "var(--font-mono)",
@@ -380,223 +372,192 @@ export function ComponentsShowcase() {
                   >
                     --text-body, --leading-relaxed
                   </p>
-                  </div>
+                </div>
+                <div>
+                  <p className="text-label" style={{ color: "var(--color-muted)" }}>
+                    Label / eyebrow
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      opacity: 0.7,
+                      marginTop: "var(--space-3)",
+                    }}
+                  >
+                    .text-label, short words/phrases only (uppercase, tracked out). --text-xs, --font-mono
+                  </p>
+                </div>
+                <div>
+                  <p className="text-caption" style={{ color: "var(--color-muted)", maxWidth: "34rem" }}>
+                    Caption / media description, a full sentence describing what an image or prototype shows.
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      opacity: 0.7,
+                      marginTop: "var(--space-3)",
+                    }}
+                  >
+                    .text-caption, for full-sentence captions (sentence case, not tracked out). --text-xs, --font-mono
+                  </p>
                 </div>
               </div>
+            </div>
 
-              {/* Colors & roles */}
-              <div>
-                <p style={{ fontWeight: 700, marginBottom: "var(--space-3)" }}>Colors &amp; roles</p>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-                    gap: "var(--space-6)",
-                    alignItems: "start",
-                  }}
-                >
-                  {[
-                    { token: "--background-page", label: "Page background" },
-                    { token: "--background-card", label: "Card background" },
-                    { token: "--text-primary", label: "Primary text" },
-                    { token: "--text-secondary", label: "Secondary text" },
-                    { token: "--border-subtle", label: "Subtle border" },
-                    { token: "--icon-primary", label: "Primary icon" },
-                    { token: "--color-ink", label: "Base ink" },
-                    { token: "--color-paper", label: "Base paper" },
-                  ].map(({ token, label }) => (
-                    <div key={token} style={{ textAlign: "center" }}>
-                      <div
-                        style={{
-                          width: "2.5rem",
-                          height: "2.5rem",
-                          borderRadius: "var(--radius-md)",
-                          backgroundColor: token.startsWith("--text") || token.startsWith("--icon")
-                            ? "var(--color-paper)"
-                            : `var(${token})`,
-                          border:
-                            token === "--background-page" ||
-                            token === "--background-card" ||
-                            token === "--border-subtle" ||
-                            token === "--color-paper"
-                              ? "1px solid var(--color-border)"
-                              : "none",
-                          margin: "0 auto var(--space-1)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          color:
-                            token === "--text-primary" || token === "--text-secondary"
-                              ? "var(--color-ink)"
-                              : "inherit",
-                        }}
-                      >
-                        {token.startsWith("--text") || token.startsWith("--icon") ? "A" : null}
-                      </div>
-                      <div>{label}</div>
-                      <div style={{ opacity: 0.6 }}>{token}</div>
+            {/* Colors & roles */}
+            <div>
+              <p style={{ fontWeight: 700, marginBottom: "var(--space-5)" }}>Colors &amp; roles</p>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
+                  gap: "var(--space-6)",
+                  alignItems: "start",
+                }}
+              >
+                {[
+                  { token: "--color-paper", label: "Page background", swatch: "var(--color-paper)", border: true, textColor: false },
+                  { token: "--color-ink", label: "Ink (text, headings)", swatch: "var(--color-ink)", border: false, textColor: false },
+                  { token: "--color-muted", label: "Secondary text", swatch: "var(--color-paper)", border: true, textColor: true, sample: "rgba(10, 10, 10, 0.6)" },
+                  { token: "--color-border", label: "Hairline borders", swatch: "var(--color-paper)", border: true, textColor: false, showBorder: "var(--color-border)" },
+                  { token: "--color-overlay", label: "Subtle fill / tint", swatch: "var(--color-overlay)", border: true, textColor: false },
+                ].map(({ token, label, swatch, border, textColor, sample, showBorder }) => (
+                  <div key={token} style={{ textAlign: "center" }}>
+                    <div
+                      style={{
+                        width: "2.5rem",
+                        height: "2.5rem",
+                        borderRadius: "var(--radius-md)",
+                        backgroundColor: swatch,
+                        border: showBorder
+                          ? `2px solid ${showBorder}`
+                          : border
+                          ? "1px solid var(--color-border)"
+                          : "none",
+                        margin: "0 auto var(--space-1)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: textColor ? sample : "inherit",
+                        fontFamily: "var(--font-body)",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {textColor ? "A" : null}
                     </div>
-                  ))}
-                </div>
+                    <div>{label}</div>
+                    <div style={{ opacity: 0.6 }}>{token}</div>
+                  </div>
+                ))}
               </div>
+              <p style={{ opacity: 0.6, marginTop: "var(--space-4)", maxWidth: "32rem" }}>
+                This is the whole palette outside a case study&apos;s own accent color. Theme color (a light/dark
+                pair set per case study) is reserved for the hero and the homepage cards, everything else on the
+                site, including the case study body, uses this fixed ink/paper system.
+              </p>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* Container + typography */}
-      <section style={showcaseSectionStyle}>
-        <Container>
-          <h2 style={headingStyle}>Container & typography</h2>
-          <p style={captionStyle}>Container constrains width; headings use DM Sans bold, H1 uses Playfair display</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-6)" }}>
-            <p className="text-label" style={{ color: "var(--color-muted)" }}>
-              Label / uppercase mono
-            </p>
-            <p className="text-display" style={{ fontSize: "var(--text-display)", color: "var(--color-ink)" }}>
-              H1 / Display (Playfair)
-            </p>
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 700,
-                letterSpacing: "-0.02em",
-                fontSize: "var(--text-2xl)",
-                color: "var(--color-ink)",
-              }}
-            >
-              H2 / Section heading (DM Sans)
-            </p>
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-                fontSize: "var(--text-xl)",
-                color: "var(--color-ink)",
-              }}
-            >
-              H3 / Subsection heading (DM Sans)
-            </p>
-            <p className="text-metric" style={{ fontSize: "var(--text-metric)", color: "var(--color-ink)" }}>
-              42%
-            </p>
-            <p style={{ fontSize: "var(--text-body)", lineHeight: "var(--leading-relaxed)", color: "var(--color-ink)", maxWidth: "40rem" }}>
-              Body copy at --text-body with --leading-relaxed. Container uses max-width and horizontal padding.
-            </p>
-          </div>
-        </Container>
-      </section>
 
       {/* Navigation (docs) */}
       <section id="components" style={showcaseSectionStyle}>
         <Container>
+          <h2 style={headingStyle}>Navigation</h2>
+          <p style={captionStyle}>Global header and primary site navigation.</p>
+
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "minmax(0, 1.5fr) minmax(0, 2fr)",
-              gap: "var(--space-10)",
-              alignItems: "flex-start",
+              fontSize: "var(--text-sm)",
+              color: "var(--color-ink)",
+              lineHeight: "var(--leading-relaxed)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--space-4)",
+              maxWidth: "42rem",
+              marginBottom: "var(--space-8)",
             }}
           >
-            {/* Left: spec */}
-            <div>
-              <h2 style={headingStyle}>Navigation</h2>
-              <p style={captionStyle}>Global header and primary site navigation.</p>
+            <p>
+              Fixed header that appears on every page. Shows site label on the left and primary destinations on the
+              right.
+            </p>
 
-              <div
+            <div>
+              <p className="text-label" style={{ color: "var(--color-muted)", marginBottom: "var(--space-2)" }}>
+                Tokens
+              </p>
+              <ul
                 style={{
-                  fontSize: "var(--text-sm)",
-                  color: "var(--color-ink)",
-                  lineHeight: "var(--leading-relaxed)",
+                  paddingLeft: "1.25rem",
+                  margin: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--space-4)",
-                  maxWidth: "30rem",
+                  gap: "var(--space-2)",
                 }}
               >
-                <p>
-                  Fixed header that appears on every page. Shows site label on the left and primary destinations on the
-                  right.
-                </p>
-
-                <div>
-                  <p className="text-label" style={{ color: "var(--color-muted)", marginBottom: "var(--space-2)" }}>
-                    Tokens
-                  </p>
-                  <ul
-                    style={{
-                      paddingLeft: "1.25rem",
-                      margin: 0,
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--space-2)",
-                    }}
-                  >
-                    <li>
-                      Spacing: <code>--space-6</code> (header padding), <code>--space-8</code> (gap between links)
-                    </li>
-                    <li>
-                      Colors: <code>--background-page</code>, <code>--text-secondary</code> (default),{" "}
-                      <code>--text-primary</code> (hover/active)
-                    </li>
-                    <li>
-                      Typography: <code>.text-label</code> (mono, uppercase) for links
-                    </li>
-                    <li>
-                      Border (optional): <code>--border-subtle</code> for a bottom rule
-                    </li>
-                  </ul>
-                </div>
-
-                <div>
-                  <p className="text-label" style={{ color: "var(--color-muted)", marginBottom: "var(--space-2)" }}>
-                    Usage
-                  </p>
-                  <ul
-                    style={{
-                      paddingLeft: "1.25rem",
-                      margin: 0,
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--space-2)",
-                    }}
-                  >
-                    <li>Use only for primary navigation (Home, About, Components, Contact).</li>
-                    <li>Don’t add secondary actions or CTAs here; keep those in page content.</li>
-                  </ul>
-                </div>
-              </div>
+                <li>
+                  Spacing: <code>--space-6</code> (header padding), <code>--space-8</code> (gap between links)
+                </li>
+                <li>
+                  Colors: <code>--color-paper</code>, <code>--color-muted</code> (default),{" "}
+                  <code>--color-ink</code> (hover/active)
+                </li>
+                <li>
+                  Typography: <code>.text-label</code> (mono, uppercase) for links
+                </li>
+                <li>
+                  Border (optional): <code>--color-border</code> for a bottom rule
+                </li>
+              </ul>
             </div>
 
-            {/* Right: visual example (non-fixed) */}
-            <div
-              style={{
-                borderRadius: "var(--radius-lg)",
-                border: "1px solid var(--color-border)",
-                backgroundColor: "var(--background-page)",
-                padding: "var(--space-6)",
-              }}
-            >
-              <div
+            <div>
+              <p className="text-label" style={{ color: "var(--color-muted)", marginBottom: "var(--space-2)" }}>
+                Usage
+              </p>
+              <ul
                 style={{
+                  paddingLeft: "1.25rem",
+                  margin: 0,
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "var(--space-8)",
+                  flexDirection: "column",
+                  gap: "var(--space-2)",
                 }}
               >
-                <span className="text-label" style={{ color: "var(--text-secondary)" }}>
-                  Portfolio
-                </span>
-                <nav style={{ display: "flex", alignItems: "center", gap: "var(--space-8)" }}>
-                  {["About", "Components", "Contact"].map((item) => (
-                    <span key={item} className="text-label" style={{ color: "var(--text-secondary)" }}>
-                      {item}
-                    </span>
-                  ))}
-                </nav>
-              </div>
+                <li>Use only for primary navigation (Home, About, Components, Contact).</li>
+                <li>Don&apos;t add secondary actions or CTAs here; keep those in page content.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            style={{
+              borderRadius: "var(--radius-lg)",
+              border: "1px solid var(--color-border)",
+              backgroundColor: "var(--color-paper)",
+              padding: "var(--space-6)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "var(--space-8)",
+              }}
+            >
+              <span className="text-label" style={{ color: "var(--color-muted)" }}>
+                Portfolio
+              </span>
+              <nav style={{ display: "flex", alignItems: "center", gap: "var(--space-8)" }}>
+                {["About", "Components", "Contact"].map((item) => (
+                  <span key={item} className="text-label" style={{ color: "var(--color-muted)" }}>
+                    {item}
+                  </span>
+                ))}
+              </nav>
             </div>
           </div>
         </Container>
@@ -627,25 +588,33 @@ export function ComponentsShowcase() {
       </section>
 
       {/* CaseStudyHero */}
-      <section style={{ ...showcaseSectionStyle, borderBottom: "none", paddingTop: "var(--space-12)" }}>
-        <h2 style={{ ...headingStyle, paddingLeft: "var(--space-10)", paddingRight: "var(--space-10)" }}>
-          CaseStudyHero
-        </h2>
-        <p style={{ ...captionStyle, paddingLeft: "var(--space-10)", paddingRight: "var(--space-10)" }}>
-          Hero with theme color, metadata, title, summary, outcomes, and 1:1 image area
-        </p>
-        <div style={{ marginTop: "var(--space-8)" }}>
-          <CaseStudyHero
-            themeColor={sampleCaseStudy.themeColor}
-            themeColorDark={sampleCaseStudy.themeColorDark}
-            eyebrow={`${sampleCaseStudy.company} — ${sampleCaseStudy.role} — ${sampleCaseStudy.year}`}
-            title={sampleCaseStudy.title}
-            description={sampleCaseStudy.summary}
-            image={{ kind: "image", label: "Hero image placeholder", assetId: `${sampleCaseStudy.slug}-hero` }}
-            metrics={sampleCaseStudy.outcomes}
-            highlightTags={sampleCaseStudy.highlightTags}
-          />
-        </div>
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>CaseStudyHero</h2>
+          <p style={captionStyle}>
+            Hero with theme color, metadata, title, summary, outcomes, and 1:1 image area. Runs full-bleed in
+            production, framed here at the container width.
+          </p>
+          <div
+            style={{
+              border: "1px solid var(--color-border)",
+              borderRadius: "var(--radius-xl)",
+              overflow: "hidden",
+            }}
+          >
+            <CaseStudyHero
+              themeColor={sampleCaseStudy.themeColor}
+              themeColorDark={sampleCaseStudy.themeColorDark}
+              eyebrow={`${sampleCaseStudy.company} · ${sampleCaseStudy.role} · ${sampleCaseStudy.year}`}
+              title={sampleCaseStudy.title}
+              description={sampleCaseStudy.summary}
+              image={{ kind: "image", label: "Hero image placeholder", assetId: `${sampleCaseStudy.slug}-hero` }}
+              metrics={sampleCaseStudy.outcomes}
+              highlightTags={sampleCaseStudy.highlightTags}
+              fullBleed={false}
+            />
+          </div>
+        </Container>
       </section>
 
       {/* CaseStudySection */}
@@ -656,8 +625,6 @@ export function ComponentsShowcase() {
           <div style={{ marginTop: "var(--space-8)" }}>
             <CaseStudySection
               section={sampleSection}
-              themeColor={sampleCaseStudy.themeColor}
-              themeColorDark={sampleCaseStudy.themeColorDark}
             />
           </div>
         </Container>
@@ -667,11 +634,20 @@ export function ComponentsShowcase() {
       <section style={showcaseSectionStyle}>
         <Container>
           <h2 style={headingStyle}>CardGrid</h2>
-          <p style={captionStyle}>Editorial grid: About + case study cards (subset for showcase)</p>
+          <p style={captionStyle}>
+            Editorial grid: About + case study cards (subset for showcase). Spans full-bleed in production, framed
+            here at the container width.
+          </p>
+          <div
+            style={{
+              border: "1px solid var(--color-border)",
+              borderRadius: "var(--radius-xl)",
+              overflow: "hidden",
+            }}
+          >
+            <CardGrid cards={showcaseCards} />
+          </div>
         </Container>
-        <div style={{ padding: "var(--space-2)" }}>
-          <CardGrid cards={showcaseCards} />
-        </div>
       </section>
 
       {/* How to add a new component */}
@@ -687,17 +663,32 @@ export function ComponentsShowcase() {
                 <code>--space-12</code>). Avoid raw pixel or rem values.
               </li>
               <li>
-                <strong>Use color roles, not raw hex.</strong> Choose from <code>--background-*</code>,{" "}
-                <code>--text-*</code>, <code>--border-*</code>, and <code>--icon-*</code> (for example:{" "}
-                <code>--background-card</code>, <code>--text-primary</code>, <code>--border-subtle</code>).
+                <strong>Use color roles, not raw hex.</strong> The whole palette is five tokens: <code>--color-paper</code>{" "}
+                (background), <code>--color-ink</code> (text, headings), <code>--color-muted</code> (secondary text),{" "}
+                <code>--color-border</code> (hairlines), and <code>--color-overlay</code> (subtle fills/tints).
               </li>
               <li>
                 <strong>Choose a radius from the scale.</strong> Apply <code>--radius-*</code> to shapes (
                 <code>--radius-md</code> for small UI, <code>--radius-xl</code>/<code>--radius-2xl</code> for cards).
               </li>
               <li>
-                <strong>Map typography to tokens.</strong> Use the same patterns as above: H1 = display, H2/H3 = DM Sans
-                bold with <code>--text-section</code>/<code>--text-subsection</code>, body = <code>--text-body</code>.
+                <strong>Reuse the shared heading classes, don&apos;t hand-roll them.</strong> Section/subsection
+                headings are <code>.section-heading</code> / <code>.subsection-heading</code> (both defined once in
+                globals.css), not a copy-pasted <code>fontWeight</code>/<code>letterSpacing</code>/<code>fontSize</code>{" "}
+                style object. H1 = <code>.text-display</code>, body = <code>--text-body</code>.
+              </li>
+              <li>
+                <strong>Pick the right small-text class.</strong> <code>.text-label</code> is uppercase and tracked
+                out, for short words/phrases only (an eyebrow, a tag). The moment the text runs to a full sentence,
+                a caption or a description, use <code>.text-caption</code> instead (sentence case). Uppercase does not
+                read well past a word or two.
+              </li>
+              <li>
+                <strong>Theme color is scoped to the hero and homepage cards only.</strong> A case study&apos;s
+                light/dark theme pair sets its <code>CaseStudyHero</code> and its <code>CaseStudyCard</code>. Every
+                other component in the case study body (sections, quotes, media placeholders, the metrics band, the
+                next-project footer) uses the fixed ink/paper palette above, regardless of which case study it&apos;s
+                in.
               </li>
               <li>
                 <strong>Add a demo to this page.</strong> Create a small example of the component here (like the card,

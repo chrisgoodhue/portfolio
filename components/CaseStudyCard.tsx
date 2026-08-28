@@ -91,7 +91,7 @@ export function CaseStudyCard({
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
       role={comingSoon ? undefined : "button"}
       tabIndex={comingSoon ? undefined : 0}
-      aria-label={comingSoon ? `${caseStudy.title} — coming soon` : `Open case study: ${caseStudy.title}`}
+      aria-label={comingSoon ? `${caseStudy.title}, coming soon` : `Open case study: ${caseStudy.title}`}
       style={{
         position: "relative",
         width: "100%",
@@ -147,7 +147,7 @@ export function CaseStudyCard({
           <span
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(3rem, 8vw, 6rem)",
+              fontSize: "var(--text-display)",
               fontWeight: 900,
               letterSpacing: "-0.04em",
               color: caseStudy.themeColorDark,
@@ -182,9 +182,9 @@ export function CaseStudyCard({
             <div style={{ marginBottom: "1.5rem" }}>
               <p
                 className="text-label"
-                style={{ color: `${caseStudy.themeColorDark}77`, marginBottom: "0.75rem" }}
+                style={{ color: caseStudy.themeColorDark, marginBottom: "0.75rem" }}
               >
-                {caseStudy.company} — {caseStudy.year}
+                {caseStudy.company} · {caseStudy.year}
               </p>
               <h2
                 className="mb-0"
@@ -193,7 +193,7 @@ export function CaseStudyCard({
                   fontWeight: 700,
                   letterSpacing: "-0.02em",
                   color: caseStudy.themeColorDark,
-                  fontSize: "clamp(1.375rem, 2.5vw, 2rem)",
+                  fontSize: "var(--text-subsection)",
                   lineHeight: 1.05,
                   marginBottom: "0.75rem",
                 }}
@@ -204,7 +204,7 @@ export function CaseStudyCard({
                 style={{
                   fontSize: "var(--text-sm)",
                   lineHeight: 1.6,
-                  color: `${caseStudy.themeColorDark}99`,
+                  color: caseStudy.themeColorDark,
                   maxWidth: "28rem",
                 }}
               >
@@ -246,7 +246,7 @@ export function CaseStudyCard({
                     <div
                       className="text-label"
                       style={{
-                        color: `${caseStudy.themeColorDark}66`,
+                        color: caseStudy.themeColorDark,
                         marginTop: "0.25rem",
                         maxWidth: "7rem",
                         lineHeight: 1.3,

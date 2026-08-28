@@ -1,6 +1,6 @@
 // app/page.tsx
 import { CardGrid } from "@/components/CardGrid";
-import { showcasesCardData, viewerExperienceCardData, knowledgeDiscoveryCardData } from "@/lib/narrative-case-studies";
+import { showcasesCardData, viewerExperienceCardData, knowledgeDiscoveryCardData, communityCardData, playerCardData } from "@/lib/narrative-case-studies";
 import type { CaseStudy, GridCard } from "@/types/case-study";
 
 // Placeholder cards for projects that aren't written up yet — added purely
@@ -10,21 +10,6 @@ import type { CaseStudy, GridCard } from "@/types/case-study";
 // of the arrow) since there's no page at these slugs yet. Replace each with
 // its real *CardData adapter (see lib/narrative-case-studies.ts) as it's
 // written, and delete this block once the last one is.
-const playerCardData: CaseStudy = {
-  slug: "vimeo-player-platform",
-  title: "Building the Player Behind Millions of Videos",
-  company: "Vimeo",
-  role: "Principal Product Designer",
-  year: "[TBD]",
-  summary: "Modernizing Vimeo's core player through accessibility, customization, and platform thinking.",
-  themeColor: "#34D399",
-  themeColorDark: "#064E3B",
-  coverImage: "",
-  outcomes: [],
-  sections: [],
-  comingSoon: true,
-};
-
 const personalOffersCardData: CaseStudy = {
   slug: "vimeo-personal-offers",
   title: "Making Every Offer Feel Personal",
@@ -40,12 +25,12 @@ const personalOffersCardData: CaseStudy = {
   comingSoon: true,
 };
 
-// Staggered rhythm: each row flips the big/small emphasis instead of
-// repeating the same split, so the page has some visual movement going
-// down it rather than reading as a uniform tile grid.
-//   Row 1 — About (4)            + Featured (8)              [narrow → wide]
-//   Row 2 — Knowledge Disc. (8)   + Showcases (4)             [wide → narrow]
-//   Row 3 — Player (6)            + Personal Offers (6)       [even split]
+// Staggered rhythm: each row flips the emphasis instead of repeating the
+// same split, so the page has some visual movement going down it rather
+// than reading as a uniform tile grid.
+//   Row 1 — About (4)              + Featured (8)                          [narrow → wide]
+//   Row 2 — Knowledge Disc. (6)     + Showcases (6)                        [even split]
+//   Row 3 — Community Strategy (4) + Player (4) + Personal Offers (4)      [three even]
 // Same at every breakpoint (colSpan === colSpan2xl).
 const cards: GridCard[] = [
   {
@@ -68,31 +53,37 @@ const cards: GridCard[] = [
     type: "case-study",
     // Replaces the old "vimeo-engagement" card (Empowering Viewers with
     // Video Engagement — see lib/case-studies.ts) — same underlying
-    // project, now told through the narrative system. Given the wide slot
-    // this row — it's the newest full case study, worth the emphasis.
-    colSpan: 8,
-    colSpan2xl: 8,
+    // project, now told through the narrative system.
+    colSpan: 6,
+    colSpan2xl: 6,
     caseStudy: knowledgeDiscoveryCardData,
   },
   {
     id: "showcases",
     type: "case-study",
+    colSpan: 6,
+    colSpan2xl: 6,
+    caseStudy: showcasesCardData,
+  },
+  {
+    id: "community-strategy",
+    type: "case-study",
     colSpan: 4,
     colSpan2xl: 4,
-    caseStudy: showcasesCardData,
+    caseStudy: communityCardData,
   },
   {
     id: "player-platform",
     type: "case-study",
-    colSpan: 6,
-    colSpan2xl: 6,
+    colSpan: 4,
+    colSpan2xl: 4,
     caseStudy: playerCardData,
   },
   {
     id: "personal-offers",
     type: "case-study",
-    colSpan: 6,
-    colSpan2xl: 6,
+    colSpan: 4,
+    colSpan2xl: 4,
     caseStudy: personalOffersCardData,
   },
 ];

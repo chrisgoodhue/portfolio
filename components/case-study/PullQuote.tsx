@@ -7,13 +7,12 @@
 
 interface PullQuoteProps {
   lines: string[];
-  themeColor: string;
   attribution?: string;
 }
 
-export function PullQuote({ lines, themeColor, attribution }: PullQuoteProps) {
+export function PullQuote({ lines, attribution }: PullQuoteProps) {
   return (
-    <blockquote style={{ borderLeft: `3px solid ${themeColor}`, paddingLeft: "2rem" }}>
+    <blockquote style={{ borderLeft: "3px solid var(--color-ink)", paddingLeft: "2rem" }}>
       {lines.map((line, i) => (
         <p
           key={i}
@@ -25,7 +24,7 @@ export function PullQuote({ lines, themeColor, attribution }: PullQuoteProps) {
       ))}
       {attribution && (
         <footer className="text-label mt-4" style={{ color: "var(--color-muted)" }}>
-          — {attribution}
+          - {attribution}
         </footer>
       )}
     </blockquote>

@@ -22,11 +22,9 @@ import type { NarrativeSectionData } from "@/types/narrative-case-study";
 
 interface NarrativeSectionProps {
   section: NarrativeSectionData;
-  themeColor: string;
-  themeColorDark: string;
 }
 
-export function NarrativeSection({ section, themeColor, themeColorDark }: NarrativeSectionProps) {
+export function NarrativeSection({ section }: NarrativeSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
   const compact = !!section.compact;
@@ -35,12 +33,9 @@ export function NarrativeSection({ section, themeColor, themeColorDark }: Narrat
   const textBlock = (
     <>
       <h2
-        className={mediaFirst ? "mt-10 mb-6" : "mb-8"}
+        className={`section-heading ${mediaFirst ? "mt-10 mb-6" : "mb-8"}`}
         style={{
-          fontFamily: "var(--font-body)",
-          fontWeight: 700,
-          letterSpacing: "-0.02em",
-          fontSize: compact ? "clamp(1.6rem, 3vw, 2.25rem)" : "clamp(2rem, 4vw, 3.5rem)",
+          fontSize: compact ? "clamp(1.6rem, 3vw, 2.25rem)" : undefined,
           color: "var(--color-ink)",
           maxWidth: "42rem",
         }}
@@ -62,14 +57,14 @@ export function NarrativeSection({ section, themeColor, themeColorDark }: Narrat
 
       {section.pullQuote && (
         <div className="mt-10">
-          <PullQuote lines={section.pullQuote.lines} themeColor={themeColor} attribution={section.pullQuote.attribution} />
+          <PullQuote lines={section.pullQuote.lines} attribution={section.pullQuote.attribution} />
         </div>
       )}
 
       {section.keyTakeaway && (
         <p
           className="text-display-italic mt-10"
-          style={{ color: themeColorDark, fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)", maxWidth: "38rem" }}
+          style={{ color: "var(--color-ink)", fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)", maxWidth: "38rem" }}
         >
           {section.keyTakeaway}
         </p>
@@ -83,14 +78,8 @@ export function NarrativeSection({ section, themeColor, themeColorDark }: Narrat
         <div key={i}>
           {beat.heading && (
             <h3
-              className="mb-6"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-                fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
-                color: "var(--color-ink)",
-              }}
+              className="subsection-heading mb-6"
+              style={{ color: "var(--color-ink)" }}
             >
               {beat.heading}
             </h3>
@@ -111,8 +100,6 @@ export function NarrativeSection({ section, themeColor, themeColorDark }: Narrat
           <MediaFeature
             media={beat.media}
             caption={beat.caption}
-            themeColor={themeColor}
-            themeColorDark={themeColorDark}
             scale={beat.scale ?? "wide"}
           />
         </div>

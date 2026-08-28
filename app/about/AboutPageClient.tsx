@@ -6,11 +6,11 @@ import Image from "next/image";
 import { transitionStore } from "@/lib/transition-store";
 
 const timeline = [
-  { year: "2026–Present", role: "Staff Product Designer, Seller Systems", company: "Stripe" },
-  { year: "2016–2026", role: "Principal Product Designer", company: "Vimeo" },
+  { year: "2026-Present", role: "Staff Product Designer, Seller Systems", company: "Stripe" },
+  { year: "2016-2026", role: "Principal Product Designer", company: "Vimeo" },
   { year: "2016", role: "Senior Product Designer", company: "PayPal" },
-  { year: "2015–2016", role: "Senior Product Designer", company: "American Express" },
-  { year: "2008–2015", role: "Senior Designer", company: "Brooklyn United" },
+  { year: "2015-2016", role: "Senior Product Designer", company: "American Express" },
+  { year: "2008-2015", role: "Senior Designer", company: "Brooklyn United" },
 ];
 
 const capabilities = [

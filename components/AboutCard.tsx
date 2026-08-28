@@ -180,7 +180,7 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
                 fontWeight: 900,
                 letterSpacing: "-0.03em",
                 color: "var(--color-paper)",
-                fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)",
+                fontSize: "var(--text-section)",
                 lineHeight: 1,
                 marginBottom: "1rem",
               }}

@@ -43,6 +43,12 @@ interface CaseStudyHeroProps {
   highlightTags?: string[];
   /** Narrative-only. Rendered as a quiet closing line, bookending the eyebrow at the top. */
   team?: string;
+  /**
+   * When false, renders as a normal block instead of breaking out to full viewport width at lg+.
+   * Defaults to true (real case-study usage). The components showcase page passes false so the
+   * hero sits inside its bordered preview frame instead of escaping it.
+   */
+  fullBleed?: boolean;
 }
 
 export function CaseStudyHero({
@@ -56,6 +62,7 @@ export function CaseStudyHero({
   metrics,
   highlightTags,
   team,
+  fullBleed = true,
 }: CaseStudyHeroProps) {
   const hasMetrics = !!metrics && metrics.length > 0;
   const hasTags = !hasMetrics && !!highlightTags && highlightTags.length > 0;
@@ -64,13 +71,14 @@ export function CaseStudyHero({
     <div
       className={[
         "relative flex w-full min-w-0 max-w-full flex-col overflow-x-hidden",
-        "min-h-0 lg:min-h-screen",
+        fullBleed ? "min-h-0 lg:min-h-screen" : "min-h-0 lg:min-h-[32rem]",
         /* Match Container: px-6 / md:px-10 */
-        "px-[var(--space-8)] md:px-[var(--space-10)] lg:pl-[var(--space-10)] lg:pr-0",
+        "px-[var(--space-8)] md:px-[var(--space-10)]",
+        fullBleed ? "lg:pl-[var(--space-10)] lg:pr-0" : "lg:px-[var(--space-10)]",
         "pt-[var(--space-14)] pb-[var(--space-12)]",
-        /* Full-bleed breakout only at lg+ — avoids uneven L/R inset on small screens */
-        "lg:w-[calc(100vw+20px)] lg:ml-[calc(-50vw+50%)]",
-      ].join(" ")}
+        /* Full-bleed breakout only at lg+, and only when not previewed in a contained frame */
+        fullBleed ? "lg:w-[calc(100vw+20px)] lg:ml-[calc(-50vw+50%)]" : "",
+      ].filter(Boolean).join(" ")}
       style={{ backgroundColor: themeColor }}
     >
       {/* Desktop/tablet: square image anchored right, flush top/right/bottom. Height = 100% hero → width = height (1:1). */}
@@ -83,7 +91,7 @@ export function CaseStudyHero({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
           >
-            <MediaPlaceholder data={image} themeColor={themeColor} themeColorDark={themeColorDark} aspect="1/1" />
+            <MediaPlaceholder data={image} aspect="1/1" />
           </motion.div>
         </div>
       </div>
@@ -95,7 +103,7 @@ export function CaseStudyHero({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
       >
-        <p className="text-label mb-[var(--space-8)]" style={{ color: `${themeColorDark}88` }}>
+        <p className="text-label mb-[var(--space-8)]" style={{ color: themeColorDark }}>
           {eyebrow}
         </p>
 
@@ -117,7 +125,7 @@ export function CaseStudyHero({
 
         <p
           className="mt-[var(--space-8)] text-lg leading-relaxed"
-          style={{ color: `${themeColorDark}cc`, maxWidth: "37.5rem" }}
+          style={{ color: themeColorDark, maxWidth: "37.5rem" }}
         >
           {description}
         </p>
@@ -134,7 +142,7 @@ export function CaseStudyHero({
                 </div>
                 <div
                   className="text-label mt-[var(--space-4)]"
-                  style={{ color: `${themeColorDark}88`, maxWidth: "10.625rem" }}
+                  style={{ color: themeColorDark, maxWidth: "10.625rem" }}
                 >
                   {metric.label}
                 </div>
@@ -163,8 +171,8 @@ export function CaseStudyHero({
         )}
 
         {team && (
-          <p className="text-label mt-[var(--space-8)]" style={{ color: `${themeColorDark}70` }}>
-            Team — {team}
+          <p className="text-label mt-[var(--space-8)]" style={{ color: themeColorDark }}>
+            Team: {team}
           </p>
         )}
       </motion.div>
@@ -176,7 +184,7 @@ export function CaseStudyHero({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
       >
-        <MediaPlaceholder data={image} themeColor={themeColor} themeColorDark={themeColorDark} aspect="1/1" />
+        <MediaPlaceholder data={image} aspect="1/1" />
       </motion.div>
     </div>
   );

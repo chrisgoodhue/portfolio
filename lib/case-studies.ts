@@ -7,11 +7,11 @@ const allCaseStudies: CaseStudy[] = [
     title: "Reimagining the Vimeo Viewing Experience",
     company: "Vimeo",
     role: "Principal Product Designer",
-    year: "2023–2025",
+    year: "2023-2025",
     summary:
-      "Rebuilt Vimeo’s fragmented viewing ecosystem into a unified modular platform — turning disconnected surfaces into a single scalable viewer foundation.",
+      "Rebuilt Vimeo’s fragmented viewing ecosystem into a unified modular platform. That turned disconnected surfaces into a single scalable viewer foundation.",
     themeColor: "#1AB7EA",
-    themeColorDark: "#0A4A60",
+    themeColorDark: "#094356",
     coverImage: "/images/vimeo-cover.jpg",
     outcomes: [
       { value: "42%", label: "Platform Unification" },
@@ -24,14 +24,14 @@ const allCaseStudies: CaseStudy[] = [
         id: "hero",
         type: "hero",
         title: "Reimagining the Vimeo Viewing Experience",
-        body: "A platform overhaul that unified Vimeo's fragmented viewing surfaces into a cohesive viewer experience — spanning web, OTT, and mobile.",
+        body: "A platform overhaul that unified Vimeo's fragmented viewing surfaces into a cohesive viewer experience, spanning web, OTT, and mobile.",
       },
       {
         id: "problem",
         type: "problem",
         title: "The Problem",
         body:
-          "Vimeo’s viewing ecosystem had been shaped by years of independent investments in Watch, Showcases, single video pages, and discovery. Each surface had its own layout, interaction patterns, and codebase, so what “watching on Vimeo” meant depended entirely on where you entered the product. For viewers, moving between surfaces often felt like switching products — interactions changed, layouts jumped around, and muscle memory never had a chance to form. For internal teams, each surface lived in its own codebase, so designers and engineers kept rebuilding the same patterns, slowing delivery and making it hard to invest confidently in the viewing experience.",
+          "Vimeo’s viewing ecosystem had been shaped by years of independent investments in Watch, Showcases, single video pages, and discovery. Each surface had its own layout, interaction patterns, and codebase, so what “watching on Vimeo” meant depended entirely on where you entered the product. For viewers, moving between surfaces often felt like switching products. Interactions changed, layouts jumped around, and muscle memory never had a chance to form. For internal teams, each surface lived in its own codebase, so designers and engineers kept rebuilding the same patterns, slowing delivery and making it hard to invest confidently in the viewing experience.",
         image: {
           src: "/images/vimeo-context.jpg",
           alt: "Vimeo platform fragmentation diagram",
@@ -43,7 +43,7 @@ const allCaseStudies: CaseStudy[] = [
         type: "solution",
         title: "The Solution",
         body:
-          "I defined a single modular viewing platform — a shared set of components, layout rules, and interaction patterns — that could power every surface. Instead of redesigning pages one by one, we designed once and deployed everywhere, so new capabilities and refinements automatically propagated across the ecosystem.",
+          "I defined a single modular viewing platform (a shared set of components, layout rules, and interaction patterns) that could power every surface. Instead of redesigning pages one by one, we designed once and deployed everywhere, so new capabilities and refinements automatically propagated across the ecosystem.",
         image: {
           src: "/images/vimeo-solution.jpg",
           alt: "Overview of the unified modular viewing platform",
@@ -62,7 +62,7 @@ const allCaseStudies: CaseStudy[] = [
         type: "approach",
         title: "Audit & Pattern Mapping",
         body:
-          "I began with a cross-surface audit, mapping every viewer state across Watch, Showcases, single video pages, and discovery. That work revealed a small set of recurring patterns — playback, metadata, comments, transcripts, related content — that were implemented differently everywhere.",
+          "I began with a cross-surface audit, mapping every viewer state across Watch, Showcases, single video pages, and discovery. That work revealed a small set of recurring patterns (playback, metadata, comments, transcripts, related content) that were implemented differently everywhere.",
         image: {
           src: "/images/vimeo-approach-audit.jpg",
           alt: "Audit and mapping of viewing surfaces and shared patterns",
@@ -86,7 +86,7 @@ const allCaseStudies: CaseStudy[] = [
         type: "approach",
         title: "Prototypes & User Testing",
         body:
-          "I created animated prototypes to explore interaction details — panel behavior, action placement, and how content should enter and exit — and tested them with viewers to avoid shipping jarring transitions. These prototypes also helped me align leaders on the experience before engineering invested in implementation.",
+          "I created animated prototypes to explore interaction details (panel behavior, action placement, and how content should enter and exit) and tested them with viewers to avoid shipping jarring transitions. These prototypes also helped me align leaders on the experience before engineering invested in implementation.",
         image: {
           src: "/images/vimeo-approach-prototypes.gif",
           alt: "Animated prototype of viewer transitions and panel interactions",
@@ -149,35 +149,17 @@ const allCaseStudies: CaseStudy[] = [
         },
       },
       {
-        id: "design-community",
-        type: "design",
-        title: "Community Discovery",
-        body:
-          "Redesigned discovery surfaces to revive browsing inside Vimeo’s logged‑in experience, using the modular system at scale. The Feed and Watch now share the same viewer language, making it easier to move from “just looking” to committed viewing and bookings.",
-        image: {
-          src: "/images/vimeo-design-community.jpg",
-          alt: "Community discovery and feed exploration surfaces",
-          fullWidth: true,
-        },
-      },
-      {
         id: "outcome",
         type: "outcome",
         title: "Impact",
-        metrics: [
-          { value: "42%", label: "Platform Unification" },
-          { value: "+400%", label: "Increase in Video Views" },
-          { value: "+98%", label: "Increase in Watch Page Visits" },
-          { value: "+183%", label: "Increase in Community Bookings" },
-        ],
         body:
-          "42% Platform Unification\nLaunched 5 of 12 core viewing surfaces on a shared codebase.\n\n+400% Increase in Video Views\nThe new Feed dramatically increased video consumption and discovery.\n\n+98% Increase in Watch Page Visits\nMonthly visits grew from 905k to 1.8M after redesigning entry points and layouts.\n\n+183% Increase in Community Bookings\nImproved discovery and clarity led to increased conversion for paid community events.",
+          "This team's job was building the structural foundation, not chasing a single growth number \u2014 so the honest measure of success is what that foundation made possible afterward.\n\nPrivate Video, Public Video, and Showcases' viewing experience moved onto one shared component set, directly cutting the engineering cost of every viewing feature built since. After the team was disbanded, I stayed on to lead Showcases' customization work individually, building on the same foundation. Two years later, an entirely different team \u2014 with no connection to the original effort \u2014 reused the same components to rebuild Watch, Feed, Staff Picks, and navigation as part of a separate initiative with its own strategy.\n\nA system's real test isn't whether it ships. It's whether it outlives the team that built it. This one did, twice.",
       },
       {
         id: "reflection",
         type: "reflection",
         title: "Reflection",
-        body: "The hardest part of this project wasn't the design — it was building alignment across three platform teams with different roadmaps and stakeholders. The design system became as much a governance artifact as a design one.",
+        body: "The hardest part of this project wasn't the design. It was building alignment across three platform teams with different roadmaps and stakeholders. The design system became as much a governance artifact as a design one.",
       },
     ],
   },

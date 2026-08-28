@@ -13,11 +13,9 @@ import type { ComparisonSectionData } from "@/types/narrative-case-study";
 
 interface ComparisonProps {
   section: ComparisonSectionData;
-  themeColor: string;
-  themeColorDark: string;
 }
 
-export function Comparison({ section, themeColor, themeColorDark }: ComparisonProps) {
+export function Comparison({ section }: ComparisonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
 
@@ -34,15 +32,8 @@ export function Comparison({ section, themeColor, themeColorDark }: ComparisonPr
           {section.eyebrow}
         </p>
         <h2
-          className="mb-8"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            fontSize: "clamp(2rem, 4vw, 3.5rem)",
-            color: "var(--color-ink)",
-            maxWidth: "42rem",
-          }}
+          className="section-heading mb-8"
+          style={{ color: "var(--color-ink)", maxWidth: "42rem" }}
         >
           {section.heading}
         </h2>
@@ -64,9 +55,8 @@ export function Comparison({ section, themeColor, themeColorDark }: ComparisonPr
           <span
             className="text-label"
             style={{
-              color: themeColorDark,
-              opacity: 0.6,
-              border: `1px solid ${themeColorDark}33`,
+              color: "var(--color-muted)",
+              border: "1px solid var(--color-border)",
               borderRadius: "999px",
               padding: "0.35rem 0.75rem",
             }}
@@ -79,8 +69,8 @@ export function Comparison({ section, themeColor, themeColorDark }: ComparisonPr
           <span
             className="text-label"
             style={{
-              color: themeColorDark,
-              border: `1px solid ${themeColorDark}66`,
+              color: "var(--color-ink)",
+              border: "1px solid rgba(10, 10, 10, 0.25)",
               borderRadius: "999px",
               padding: "0.35rem 0.75rem",
             }}
@@ -92,8 +82,6 @@ export function Comparison({ section, themeColor, themeColorDark }: ComparisonPr
         <MediaFeature
           media={section.media}
           caption={section.caption}
-          themeColor={themeColor}
-          themeColorDark={themeColorDark}
           scale="wide"
         />
 
@@ -113,8 +101,6 @@ export function Comparison({ section, themeColor, themeColorDark }: ComparisonPr
             <MediaFeature
               media={section.secondaryBeat.media}
               caption={section.secondaryBeat.caption}
-              themeColor={themeColor}
-              themeColorDark={themeColorDark}
               scale={section.secondaryBeat.scale ?? "contained"}
             />
           </div>

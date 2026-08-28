@@ -37,7 +37,7 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio — Principal Product Designer",
+  title: "Portfolio - Principal Product Designer",
   description: "Selected work in product design, systems, and experience design.",
 };
 
