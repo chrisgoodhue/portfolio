@@ -7,11 +7,30 @@ import { Container } from "@/components/Container";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { AboutCard } from "@/components/AboutCard";
 import { CaseStudyHero } from "@/components/case-study/CaseStudyHero";
+import { NarrativeSection } from "@/components/case-study/NarrativeSection";
+import { PullQuote } from "@/components/case-study/PullQuote";
+import { MediaFeature } from "@/components/case-study/MediaFeature";
+import { Comparison } from "@/components/case-study/Comparison";
+import { Prototype } from "@/components/case-study/Prototype";
+import { Metrics } from "@/components/case-study/Metrics";
+import { Outcome } from "@/components/case-study/Outcome";
+import { Reflection } from "@/components/case-study/Reflection";
+import { ClosingStatement } from "@/components/case-study/ClosingStatement";
+import { NextProject } from "@/components/case-study/NextProject";
 import { CaseStudySection } from "@/components/CaseStudySection";
 import { CardGrid } from "@/components/CardGrid";
 import { caseStudies } from "@/lib/case-studies";
+import { narrativeCaseStudies, showcasesDetailed } from "@/lib/narrative-case-studies";
 import type { CaseStudy, CaseStudySection as SectionData } from "@/types/case-study";
 import type { GridCard } from "@/types/case-study";
+import type {
+  NarrativeSectionData,
+  ComparisonSectionData,
+  PrototypeSectionData,
+  MetricsSectionData,
+  OutcomeSectionData,
+  ReflectionSectionData,
+} from "@/types/narrative-case-study";
 
 const showcaseSectionStyle = {
   paddingTop: "var(--space-13)", // 80px
@@ -61,6 +80,52 @@ export function ComponentsShowcase() {
     { id: "card2", type: "case-study", colSpan: 6, caseStudy: caseStudies[1] },
     { id: "card3", type: "case-study", colSpan: 6, caseStudy: caseStudies[2] },
   ];
+
+  // Narrative-system samples, pulled from the real case studies the same
+  // way sampleCaseStudy/sampleSection are above, so these demos can't drift
+  // from what's actually on the site.
+  const allNarrativeSections = narrativeCaseStudies.flatMap((cs) => cs.sections);
+
+  const sampleNarrativeSection = allNarrativeSections.find(
+    (s): s is NarrativeSectionData =>
+      s.type === "narrative" && (!s.beats || s.beats.every((b) => b.scale !== "full-bleed")),
+  )!;
+
+  const sectionWithPullQuote = allNarrativeSections.find(
+    (s): s is NarrativeSectionData => s.type === "narrative" && !!s.pullQuote,
+  )!;
+  const samplePullQuote = sectionWithPullQuote.pullQuote!;
+
+  const sampleComparisonSection = allNarrativeSections.find(
+    (s): s is ComparisonSectionData => s.type === "comparison",
+  )!;
+
+  const samplePrototypeSectionRaw = allNarrativeSections.find(
+    (s): s is PrototypeSectionData => s.type === "prototype",
+  )!;
+  // Every real prototype beat is mediaScale: "full-bleed" (each project's
+  // single most-emphasized moment), shown at "wide" here instead so it fits
+  // this page's layout; the real content (heading/body/steps/caption) is untouched.
+  const samplePrototypeSection: PrototypeSectionData = {
+    ...samplePrototypeSectionRaw,
+    mediaScale: "wide",
+  };
+
+  const sampleMetricsSection = allNarrativeSections.find(
+    (s): s is MetricsSectionData => s.type === "metrics",
+  )!;
+
+  // Outcome/Reflection are only used on Showcases' full/detailed page; no
+  // portfolio presentation uses either section type.
+  const sampleOutcomeSection = showcasesDetailed.sections.find(
+    (s): s is OutcomeSectionData => s.type === "outcome",
+  )!;
+  const sampleReflectionSection = showcasesDetailed.sections.find(
+    (s): s is ReflectionSectionData => s.type === "reflection",
+  )!;
+
+  const sampleClosingStatement = narrativeCaseStudies[0].closingStatement!;
+  const sampleNextProject = narrativeCaseStudies[0].nextProject;
 
   return (
     <main
@@ -615,6 +680,137 @@ export function ComponentsShowcase() {
             />
           </div>
         </Container>
+      </section>
+
+      {/* NarrativeSection */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>NarrativeSection</h2>
+          <p style={captionStyle}>
+            The workhorse of the narrative case study system: eyebrow, heading, body, with optional pull quote, key
+            takeaway, and media beats.
+          </p>
+        </Container>
+        <NarrativeSection section={sampleNarrativeSection} />
+      </section>
+
+      {/* PullQuote */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>PullQuote</h2>
+          <p style={captionStyle}>
+            A short, emphasized statement used at the moments a narrative pivots. Reused inside both
+            NarrativeSection and Prototype.
+          </p>
+          <PullQuote lines={samplePullQuote.lines} attribution={samplePullQuote.attribution} />
+        </Container>
+      </section>
+
+      {/* MediaFeature */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>MediaFeature</h2>
+          <p style={captionStyle}>
+            The atomic media placeholder plus caption, reused by NarrativeSection, Prototype, and Comparison. Shown
+            here at its default wide scale.
+          </p>
+          <MediaFeature
+            media={sampleComparisonSection.media}
+            caption={sampleComparisonSection.caption}
+            scale="wide"
+          />
+        </Container>
+      </section>
+
+      {/* Comparison */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>Comparison</h2>
+          <p style={captionStyle}>Labeled before/after treatment, built around a single MediaFeature.</p>
+        </Container>
+        <Comparison section={sampleComparisonSection} />
+      </section>
+
+      {/* Prototype */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>Prototype</h2>
+          <p style={captionStyle}>
+            The emphasized treatment reserved for the most important asset in a case study: a tinted section, media,
+            and a numbered walkthrough. Real usage runs the media full-bleed; shown here at wide scale to fit this
+            page.
+          </p>
+        </Container>
+        <Prototype section={samplePrototypeSection} />
+      </section>
+
+      {/* Metrics */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>Metrics</h2>
+          <p style={captionStyle}>
+            A full-width, color-inverted band for projects with real numeric outcomes. Runs full-bleed in
+            production, framed here at the container width.
+          </p>
+          <div
+            style={{
+              border: "1px solid var(--color-border)",
+              borderRadius: "var(--radius-xl)",
+              overflow: "hidden",
+            }}
+          >
+            <Metrics section={sampleMetricsSection} fullBleed={false} />
+          </div>
+        </Container>
+      </section>
+
+      {/* Outcome */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>Outcome</h2>
+          <p style={captionStyle}>
+            Qualitative outcomes for projects with nothing numeric to report. Used only on the Showcases full case
+            study page.
+          </p>
+        </Container>
+        <Outcome section={sampleOutcomeSection} />
+      </section>
+
+      {/* Reflection */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>Reflection</h2>
+          <p style={captionStyle}>
+            Closing reflection items for a detailed case study page. Also used only on the Showcases full case study
+            page.
+          </p>
+        </Container>
+        <Reflection section={sampleReflectionSection} />
+      </section>
+
+      {/* ClosingStatement */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>ClosingStatement</h2>
+          <p style={captionStyle}>
+            The short closing coda for a portfolio case study presentation: one emphasized line, one supporting
+            sentence.
+          </p>
+        </Container>
+        <ClosingStatement statement={sampleClosingStatement} />
+      </section>
+
+      {/* NextProject */}
+      <section style={showcaseSectionStyle}>
+        <Container>
+          <h2 style={headingStyle}>NextProject</h2>
+          <p style={captionStyle}>Footer teaser linking to the next case study.</p>
+        </Container>
+        <NextProject
+          href={`/case-studies/${sampleNextProject.slug}`}
+          title={sampleNextProject.title}
+          company={sampleNextProject.company}
+        />
       </section>
 
       {/* CaseStudySection */}

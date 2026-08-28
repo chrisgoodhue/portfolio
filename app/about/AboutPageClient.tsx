@@ -33,7 +33,7 @@ const chapters = [
     number: "01",
     title: "A Designer, Half My Life",
     paragraphs: [
-      "I've been a designer for half my life. I spent the last decade at Vimeo, bringing order to a disconnected ecosystem and enhancing creator tools to help people grow audiences and showcase their work. Before that, I did a stint in fintech as a senior designer at PayPal and American Express.",
+      "I've been a designer for half my life. The shape of it keeps repeating: find the part of the product that's quietly turned into a mess, usually a handful of surfaces all solving the same problem differently, and build the system underneath it sturdy enough to outlast the team that built it. A decade of that at Vimeo is the best evidence I have. A piece of what I shipped there got picked up by a completely different team, with no connection to the original effort, two years after that team disbanded. Before Vimeo, I did a shorter stint in fintech at PayPal and American Express.",
     ],
   },
   {
@@ -45,9 +45,9 @@ const chapters = [
   },
   {
     number: "03",
-    title: "Now: Stripe",
+    title: "These Days",
     paragraphs: [
-      "These days I'm at Stripe, working on Seller Systems within billing and commerce, an exciting place to be as design, technology, and the people who know how to use them shape what comes next.",
+      "These days I lead design for Seller Systems at Stripe: the tools our account executives use to create, configure, and get deals approved for Stripe's customers. It's the same kind of problem that's always pulled me in, a workflow with too many steps and too many handoffs, just aimed at our own sales team instead of the public.",
     ],
   },
   {

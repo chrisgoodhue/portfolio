@@ -199,7 +199,8 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
               }}
             >
               Designer for half my life: pop-punk flyers in high school, a
-              decade at Vimeo, now Seller Systems at Stripe.
+              decade untangling Vimeo&apos;s viewing platform, now doing the
+              same for Stripe&apos;s Seller Systems.
             </p>
 
             {/* Companies */}

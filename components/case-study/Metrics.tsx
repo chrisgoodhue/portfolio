@@ -15,6 +15,13 @@ import type { MetricsSectionData } from "@/types/narrative-case-study";
 
 interface MetricsProps {
   section: MetricsSectionData;
+  /**
+   * When false, renders as a normal-width block instead of breaking out to
+   * full viewport width. Defaults to true (real case-study usage). The
+   * components showcase page passes false so this sits inside its bordered
+   * preview frame instead of escaping it.
+   */
+  fullBleed?: boolean;
 }
 
 function parseMetricValue(raw: string): { prefix: string; number: number; suffix: string } | null {
@@ -55,7 +62,7 @@ function MetricValue({ value }: { value: string }) {
   return <span ref={ref}>{display}</span>;
 }
 
-export function Metrics({ section }: MetricsProps) {
+export function Metrics({ section, fullBleed = true }: MetricsProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
 
@@ -66,8 +73,7 @@ export function Metrics({ section }: MetricsProps) {
       animate={inView ? { opacity: 1 } : {}}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       style={{
-        width: "100vw",
-        marginLeft: "calc(-50vw + 50%)",
+        ...(fullBleed ? { width: "100vw", marginLeft: "calc(-50vw + 50%)" } : {}),
         backgroundColor: "var(--color-ink)",
         paddingTop: "clamp(4rem, 9vw, 7rem)",
         paddingBottom: "clamp(4rem, 9vw, 7rem)",
