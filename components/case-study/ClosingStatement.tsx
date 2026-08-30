@@ -29,7 +29,7 @@ export function ClosingStatement({ statement }: ClosingStatementProps) {
     >
       <Container>
         <p
-          className="text-display-italic"
+          className="text-callout"
           style={{ color: "var(--color-ink)", fontSize: "clamp(1.5rem, 3.2vw, 2.5rem)", maxWidth: "44rem" }}
         >
           {statement.quote}

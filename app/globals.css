@@ -32,11 +32,13 @@
 
   /* ── Spacing (Atlassian-style 8px base scale) ────────────────────────── */
   /* Ref: https://atlassian.design/foundations/spacing */
+  /* --space-1 (2px), --space-2 (4px), and --space-5 (12px) used to break
+     the 8px grid this scale is supposed to follow. Retired rather than
+     rounded in place, since rounding either one lands exactly on a value
+     another token already owns (0px or 8px) — a renamed duplicate isn't
+     actually clean. Former usages now point at --space-0 or --space-4. */
   --space-0: 0;         /*   0px */
-  --space-1: 0.125rem;  /*   2px */
-  --space-2: 0.25rem;   /*   4px */
   --space-4: 0.5rem;    /*   8px */
-  --space-5: 0.75rem;   /*  12px */
   --space-6: 1rem;      /*  16px */
   --space-8: 1.5rem;    /*  24px */
   --space-9: 2rem;      /*  32px */
@@ -55,11 +57,17 @@
   --radius-3xl: 2rem;     /* 32 */
 
   /* ── Typography scale (rem) ──────────────────────────────────────────── */
+  /* --text-xl was unused everywhere (not even in the design-token demo
+     page) — removed rather than rounded. --text-lg was an exact duplicate
+     of --text-body (both 1.125rem); its 3 real usages now point at
+     --text-body directly instead of carrying two names for one value.
+     --text-xs and --text-sm stay off the 8px grid on purpose: rounding
+     either one lands on a real legibility tradeoff (sitewide label/caption
+     size, and the step between secondary text and body copy), not just a
+     density change like the spacing scale had. */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
   --text-2xl: 1.5rem;
   --text-3xl: 2rem;
   --text-4xl: 2.5rem;
@@ -67,7 +75,7 @@
   --text-6xl: 4rem;
   --text-display: clamp(2.5rem, 7vw, 6rem);
   --text-section: clamp(2rem, 4vw, 3.5rem);
-  --text-subsection: clamp(1.3rem, 2.5vw, 1.8rem);
+  --text-subsection: clamp(1.5rem, 2.5vw, 2rem);
   --text-metric: clamp(2rem, 4vw, 3.5rem);
   --text-body: 1.125rem;
 
@@ -135,9 +143,12 @@ body.is-transitioning {
   line-height: 0.95;
 }
 
-.text-display-italic {
+/* Was .text-display-italic — italic dropped (pull quotes already read as
+   quotes from their border-left + indent; the hero subtitle and key
+   takeaway didn't need it once italic stopped being the one thing telling
+   them apart from a title). Renamed since it isn't italic anymore. */
+.text-callout {
   font-family: var(--font-display);
-  font-style: italic;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1;

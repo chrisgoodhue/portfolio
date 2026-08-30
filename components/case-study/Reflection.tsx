@@ -37,7 +37,7 @@ export function Reflection({ section }: ReflectionProps) {
                 style={{
                   fontFamily: "var(--font-body)",
                   fontWeight: 700,
-                  fontSize: "var(--text-lg)",
+                  fontSize: "var(--text-body)",
                   color: "var(--color-ink)",
                   marginBottom: "0.75rem",
                 }}

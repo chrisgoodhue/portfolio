@@ -21,6 +21,7 @@
 
 import { motion } from "framer-motion";
 import { MediaPlaceholder } from "./MediaPlaceholder";
+import { navShouldUseLightForeground } from "@/lib/nav-contrast";
 import type { MediaPlaceholderData } from "@/types/narrative-case-study";
 
 interface HeroMetric {
@@ -33,9 +34,10 @@ interface CaseStudyHeroProps {
   themeColorDark: string;
   eyebrow: string;
   title: string;
-  /** Narrative-only italic line between title and description. */
+  /** Narrative-only line between title and description. */
   subtitle?: string;
-  description: string;
+  /** No longer rendered in the hero (dropped for text density) but kept on the data model for future use (e.g. meta descriptions). */
+  description?: string;
   image: MediaPlaceholderData;
   /** Quantified outcomes — takes precedence over `highlightTags` when present. */
   metrics?: HeroMetric[];
@@ -57,7 +59,6 @@ export function CaseStudyHero({
   eyebrow,
   title,
   subtitle,
-  description,
   image,
   metrics,
   highlightTags,
@@ -66,6 +67,16 @@ export function CaseStudyHero({
 }: CaseStudyHeroProps) {
   const hasMetrics = !!metrics && metrics.length > 0;
   const hasTags = !hasMetrics && !!highlightTags && highlightTags.length > 0;
+  // Text can overlap the hero image as the block resizes (see the image
+  // wrapper below), and the image's own brightness varies shot to shot — a
+  // plain color that reads fine against the gradient can wash out against a
+  // light patch of photo. Same fix Nav.tsx already applies to its own
+  // labels over these heroes: a soft drop shadow, added only for light
+  // (photo-safe) foreground colors, not dark-on-paper ones.
+  const useLightForeground = navShouldUseLightForeground(themeColor);
+  const textShadowStyle = useLightForeground
+    ? { textShadow: "0 1px 6px rgba(0, 0, 0, 0.55)" }
+    : undefined;
 
   return (
     <div
@@ -79,14 +90,36 @@ export function CaseStudyHero({
         /* Full-bleed breakout only at lg+, and only when not previewed in a contained frame */
         fullBleed ? "lg:w-[calc(100vw+20px)] lg:ml-[calc(-50vw+50%)]" : "",
       ].filter(Boolean).join(" ")}
-      style={{ backgroundColor: themeColor }}
+      // Spotify-style "Now Playing" treatment: the theme color washes in at
+      // the top and fades into the site's base ink by the bottom of the
+      // block, instead of filling the whole hero as a flat, uniformly
+      // intense color. Text is bottom-anchored (see the module comment
+      // above) so it always sits against the darkest part of the fade.
+      style={{ background: `linear-gradient(180deg, ${themeColor} 0%, var(--color-ink) 100%)` }}
     >
       {/* Desktop/tablet: square image anchored right, flush top/right/bottom. Height = 100% hero → width = height (1:1). */}
       <div className="hidden lg:block absolute top-0 right-0 bottom-0 left-0 pointer-events-none" aria-hidden>
         <div className="h-full w-full flex justify-end items-stretch">
           <motion.div
             className="h-full flex-shrink-0"
-            style={{ aspectRatio: "1 / 1", width: "auto", minWidth: 0 }}
+            style={{
+              aspectRatio: "1 / 1",
+              width: "auto",
+              minWidth: 0,
+              // Legibility fix, take two: a flat scrim clipped to the image's
+              // own rounded rectangle just drew a hard bar right at the
+              // image's edge — the seam between "background" and "darkened
+              // image" was more visible than the low-contrast text it was
+              // meant to fix. A feathered mask instead: the image itself
+              // fades to transparent over its first ~28%, letting the hero's
+              // own smooth gradient show through underneath. No second layer,
+              // no boundary — the image just quietly thins out into the
+              // background exactly where text is likely to cross it.
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 28%)",
+              maskImage: "linear-gradient(to right, transparent 0%, black 28%)",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
@@ -103,32 +136,35 @@ export function CaseStudyHero({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
       >
-        <p className="text-label mb-[var(--space-8)]" style={{ color: themeColorDark }}>
+        <p className="text-label mb-[var(--space-8)]" style={{ color: themeColorDark, ...textShadowStyle }}>
           {eyebrow}
         </p>
 
         <h1
           className="text-display"
-          style={{ color: themeColorDark, fontSize: "clamp(2.5rem, 7vw, 6rem)", maxWidth: "56rem" }}
+          style={{ color: themeColorDark, fontSize: "clamp(2.5rem, 7vw, 6rem)", maxWidth: "56rem", ...textShadowStyle }}
         >
           {title}
         </h1>
 
         {subtitle && (
           <p
-            className="text-display-italic mt-[var(--space-7)]"
-            style={{ color: themeColorDark, fontSize: "clamp(1.25rem, 2.5vw, 1.875rem)", maxWidth: "42rem" }}
+            className="text-callout mt-[var(--space-8)]"
+            // Body font, not the shared class's serif: a tagline, not a
+            // title or a quote, per the "serif only for page titles and
+            // pull quotes" rule. Keeps the class's weight/tracking, just
+            // swaps the typeface.
+            style={{
+              fontFamily: "var(--font-body)",
+              color: themeColorDark,
+              fontSize: "clamp(1.25rem, 2.5vw, 1.875rem)",
+              maxWidth: "42rem",
+              ...textShadowStyle,
+            }}
           >
             {subtitle}
           </p>
         )}
-
-        <p
-          className="mt-[var(--space-8)] text-lg leading-relaxed"
-          style={{ color: themeColorDark, maxWidth: "37.5rem" }}
-        >
-          {description}
-        </p>
 
         {hasMetrics && (
           <div className="mt-[var(--space-10)] flex flex-wrap gap-[var(--space-10)]">
@@ -136,13 +172,13 @@ export function CaseStudyHero({
               <div key={metric.label}>
                 <div
                   className="text-metric"
-                  style={{ color: themeColorDark, fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)" }}
+                  style={{ color: themeColorDark, fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)", ...textShadowStyle }}
                 >
                   {metric.value}
                 </div>
                 <div
                   className="text-label mt-[var(--space-4)]"
-                  style={{ color: themeColorDark, maxWidth: "10.625rem" }}
+                  style={{ color: themeColorDark, maxWidth: "10.625rem", ...textShadowStyle }}
                 >
                   {metric.label}
                 </div>
@@ -162,6 +198,7 @@ export function CaseStudyHero({
                   border: `1px solid ${themeColorDark}33`,
                   borderRadius: "999px",
                   padding: "0.35rem 0.75rem",
+                  ...textShadowStyle,
                 }}
               >
                 {tag}
@@ -171,7 +208,7 @@ export function CaseStudyHero({
         )}
 
         {team && (
-          <p className="text-label mt-[var(--space-8)]" style={{ color: themeColorDark }}>
+          <p className="text-label mt-[var(--space-8)]" style={{ color: themeColorDark, ...textShadowStyle }}>
             Team: {team}
           </p>
         )}

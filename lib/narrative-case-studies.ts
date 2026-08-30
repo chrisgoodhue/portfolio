@@ -50,8 +50,17 @@ const viewerExperienceMeta = {
   role: "Principal Product Designer",
   year: "2023-2025",
   team: "3 PMs, 2 UX Researchers, 8 Engineers, 2 Designers",
-  themeColor: "#1AB7EA",
-  themeColorDark: "#094356",
+  // Re-derived after the hero image was replaced with a 6-panel grid of
+  // real Vimeo screens (staff picks feed, a video page, two differently
+  // branded Showcases/live channels, comments, a private-video password
+  // gate). The most prominent non-neutral color this time is Vimeo's own
+  // product cyan (the "New" upload button chrome, repeated across three of
+  // the six screens) — darkened the same Spotify-Color-Extractor way as
+  // before for a background wash, rather than the flat, full-saturation
+  // brand blue this replaced originally. themeColorDark stays the light
+  // foreground color for the dark gradient CaseStudyHero renders.
+  themeColor: "#17454F",
+  themeColorDark: "#F8F7F4",
   // Non-numeric. The project's real growth metrics belong to the later
   // Community team's work (see Community Strategy below), not this one.
   // See "outcomes" section, eyebrow 07, for the correction and why.
@@ -546,15 +555,15 @@ const viewerExperiencePortfolioSections: NarrativeCaseStudySection[] = [
     id: "prove-the-system",
     eyebrow: "03",
     heading: "Prove the system",
-    body: "This wasn't a big-bang redesign. Private video was the first implementation of the new system, the foundational surface where shared components and patterns were established. Public video followed, validating those patterns at much larger scale.\n\nStaff Picks came next as the first Channel migrated to the new patterns, not a unique design, but a validation point before applying those patterns more broadly. Other Channels stayed on the legacy experience until that validation held up.",
+    body: "We rolled this out in phases, not all at once. Private video was the first implementation of the new system, the foundational surface where shared components and patterns were established. Public video followed, validating those patterns at much larger scale.\n\nShowcases followed as the third phase, the same foundation applied to a collection experience rather than a single video. It was validated the same incremental way, not treated as a special case.",
     keyTakeaway: "Live was deprioritized, not ignored. It already worked well embedded, its audience was comparatively small, and its complexity risked slowing the migration. The plan was to fold it in later.",
     beats: [
       {
         media: {
           kind: "animation",
           assetId: "viewer-experience-phased-migration",
-          label: "Phased migration: Private → Public → Staff Picks",
-          description: "Show Private Video → Public Video → Staff Picks, with shared components accumulating as the system matures.",
+          label: "Phased migration: Private → Public → Showcases",
+          description: "Show Private Video → Public Video → Showcases, with shared components accumulating as the system matures.",
         },
         caption: "The platform was validated incrementally, starting with foundational video experiences before expanding into collection surfaces.",
         scale: "wide",

@@ -44,7 +44,7 @@ const pageTitleStyle = {
   fontSize: "var(--text-3xl)",
   letterSpacing: "-0.03em",
   color: "var(--color-ink)",
-  marginBottom: "var(--space-2)",
+  marginBottom: "var(--space-4)",
 };
 
 const headingStyle = {
@@ -53,7 +53,7 @@ const headingStyle = {
   fontSize: "var(--text-2xl)",
   letterSpacing: "-0.02em",
   color: "var(--color-ink)",
-  marginBottom: "var(--space-2)",
+  marginBottom: "var(--space-4)",
 };
 
 const captionStyle = {
@@ -196,7 +196,7 @@ export function ComponentsShowcase() {
                   margin: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--space-2)",
+                  gap: "var(--space-4)",
                   fontSize: "var(--text-sm)",
                   color: "var(--color-ink)",
                 }}
@@ -257,7 +257,7 @@ export function ComponentsShowcase() {
           >
             {/* Spacing scale */}
             <div>
-              <p style={{ fontWeight: 700, marginBottom: "var(--space-5)" }}>Spacing</p>
+              <p style={{ fontWeight: 700, marginBottom: "var(--space-4)" }}>Spacing</p>
               <div
                 style={{
                   display: "grid",
@@ -266,10 +266,8 @@ export function ComponentsShowcase() {
                 }}
               >
                 {[
-                  { token: "--space-1", label: "2px, hairline spacing" },
-                  { token: "--space-2", label: "4px, tight spacing, icon offsets" },
-                  { token: "--space-4", label: "8px, small gaps & inner padding" },
-                  { token: "--space-5", label: "12px, vertical rhythm inside cards" },
+                  { token: "--space-0", label: "0px, no gap" },
+                  { token: "--space-4", label: "8px, small gaps, icon offsets & vertical rhythm inside cards" },
                   { token: "--space-6", label: "16px, default component padding" },
                   { token: "--space-8", label: "24px, gaps between cards & sections" },
                   { token: "--space-9", label: "32px, layout spacing" },
@@ -307,7 +305,7 @@ export function ComponentsShowcase() {
 
             {/* Radius scale */}
             <div>
-              <p style={{ fontWeight: 700, marginBottom: "var(--space-5)" }}>Radius</p>
+              <p style={{ fontWeight: 700, marginBottom: "var(--space-4)" }}>Radius</p>
               <div
                 style={{
                   display: "grid",
@@ -333,7 +331,7 @@ export function ComponentsShowcase() {
                         border: "1px solid var(--color-border)",
                         backgroundColor: "var(--color-paper)",
                         boxShadow: "0 0 0 1px rgba(10,10,10,0.02)",
-                        margin: "0 auto var(--space-2)",
+                        margin: "0 auto var(--space-4)",
                       }}
                     />
                     <div>{token}</div>
@@ -345,7 +343,7 @@ export function ComponentsShowcase() {
 
             {/* Typography */}
             <div>
-              <p style={{ fontWeight: 700, marginBottom: "var(--space-5)" }}>Typography</p>
+              <p style={{ fontWeight: 700, marginBottom: "var(--space-4)" }}>Typography</p>
               <div
                 style={{
                   display: "flex",
@@ -471,7 +469,7 @@ export function ComponentsShowcase() {
 
             {/* Colors & roles */}
             <div>
-              <p style={{ fontWeight: 700, marginBottom: "var(--space-5)" }}>Colors &amp; roles</p>
+              <p style={{ fontWeight: 700, marginBottom: "var(--space-4)" }}>Colors &amp; roles</p>
               <div
                 style={{
                   display: "grid",
@@ -499,7 +497,7 @@ export function ComponentsShowcase() {
                           : border
                           ? "1px solid var(--color-border)"
                           : "none",
-                        margin: "0 auto var(--space-1)",
+                        margin: "0 auto var(--space-0)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -550,7 +548,7 @@ export function ComponentsShowcase() {
             </p>
 
             <div>
-              <p className="text-label" style={{ color: "var(--color-muted)", marginBottom: "var(--space-2)" }}>
+              <p className="text-label" style={{ color: "var(--color-muted)", marginBottom: "var(--space-4)" }}>
                 Tokens
               </p>
               <ul
@@ -559,7 +557,7 @@ export function ComponentsShowcase() {
                   margin: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--space-2)",
+                  gap: "var(--space-4)",
                 }}
               >
                 <li>
@@ -579,7 +577,7 @@ export function ComponentsShowcase() {
             </div>
 
             <div>
-              <p className="text-label" style={{ color: "var(--color-muted)", marginBottom: "var(--space-2)" }}>
+              <p className="text-label" style={{ color: "var(--color-muted)", marginBottom: "var(--space-4)" }}>
                 Usage
               </p>
               <ul
@@ -588,7 +586,7 @@ export function ComponentsShowcase() {
                   margin: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--space-2)",
+                  gap: "var(--space-4)",
                 }}
               >
                 <li>Use only for primary navigation (Home, About, Components, Contact).</li>
@@ -855,7 +853,7 @@ export function ComponentsShowcase() {
             <ol style={{ paddingLeft: "1.25rem", lineHeight: "var(--leading-relaxed)", display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
               <li>
                 <strong>Pick spacing from tokens only.</strong> Use <code>--space-*</code> for padding, gaps, and margins
-                (for example: inner padding with <code>--space-4</code> / <code>--space-5</code>, section spacing with{" "}
+                (for example: inner padding with <code>--space-4</code>, section spacing with{" "}
                 <code>--space-12</code>). Avoid raw pixel or rem values.
               </li>
               <li>

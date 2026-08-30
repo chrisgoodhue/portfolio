@@ -6,8 +6,10 @@
 // description) so the page can be evaluated for rhythm and craft before
 // real media exists. Swap for <video>/<Image> per assetId when ready.
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import type { MediaPlaceholderData } from "@/types/narrative-case-study";
+import { MEDIA_ASSETS } from "@/lib/media-assets";
 
 const KIND_LABEL: Record<MediaPlaceholderData["kind"], string> = {
   "screen-recording": "Screen Recording",
@@ -24,6 +26,29 @@ interface MediaPlaceholderProps {
 export function MediaPlaceholder({ data, aspect }: MediaPlaceholderProps) {
   const reduceMotion = useReducedMotion();
   const ratio = aspect ?? data.aspect ?? "16/9";
+  const asset = MEDIA_ASSETS[data.assetId];
+
+  if (asset) {
+    return (
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: ratio,
+          borderRadius: "var(--radius-sm)",
+          overflow: "hidden",
+        }}
+      >
+        <Image
+          src={asset.src}
+          alt={data.label}
+          fill
+          sizes="(min-width: 64rem) 50vw, 100vw"
+          style={{ objectFit: "cover" }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div

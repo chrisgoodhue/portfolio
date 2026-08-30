@@ -16,7 +16,7 @@ export function PullQuote({ lines, attribution }: PullQuoteProps) {
       {lines.map((line, i) => (
         <p
           key={i}
-          className="text-display-italic"
+          className="text-callout"
           style={{ fontSize: "clamp(1.375rem, 2.75vw, 2.25rem)", color: "var(--color-ink)" }}
         >
           {line}

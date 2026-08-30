@@ -242,7 +242,7 @@ export function CaseStudySection({ section, subsections }: Props) {
         {section.quote && (
           <blockquote className="mb-12">
             <p
-              className="text-display-italic"
+              className="text-callout"
               style={{
                 fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
                 color: "var(--color-ink)",

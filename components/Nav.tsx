@@ -117,7 +117,7 @@ export function Nav({ animateFromTop = false }: { animateFromTop?: boolean }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "var(--space-5) var(--space-4)",
+        padding: "var(--space-4)",
         // Transparent — sits above page content; label color follows hero contrast
       }}
     >

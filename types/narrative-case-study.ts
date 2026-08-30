@@ -66,7 +66,7 @@ export interface NarrativeSectionData {
   pullQuote?: PullQuoteData;
   /** Zero or more sequential media moments. */
   beats?: MediaBeat[];
-  /** Optional bolded, italic callout line — used sparingly, for a single distilled takeaway. */
+  /** Optional bolded callout line — used sparingly, for a single distilled takeaway. */
   keyTakeaway?: string;
   /** When true, the first beat's media renders above the heading/body instead of below — for sections where the visual should introduce the idea rather than illustrate it. */
   mediaFirst?: boolean;

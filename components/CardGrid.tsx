@@ -84,9 +84,9 @@ export function CardGrid({ cards }: CardGridProps) {
       initial={enableGridEnterAnim ? "hidden" : "visible"}
       animate="visible"
       style={{
-        padding: "var(--space-5)",
-        columnGap: "var(--space-5)",
-        rowGap: "var(--space-5)",
+        padding: "var(--space-4)",
+        columnGap: "var(--space-4)",
+        rowGap: "var(--space-4)",
       }}
     >
       {cards.map((card) => {

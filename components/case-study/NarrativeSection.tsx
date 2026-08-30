@@ -62,12 +62,18 @@ export function NarrativeSection({ section }: NarrativeSectionProps) {
       )}
 
       {section.keyTakeaway && (
-        <p
-          className="text-display-italic mt-10"
-          style={{ color: "var(--color-ink)", fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)", maxWidth: "38rem" }}
-        >
-          {section.keyTakeaway}
-        </p>
+        // Border-left + indent, matching PullQuote — the thing that actually
+        // reads as "this is a callout," not italic (removed) and not the
+        // serif alone (also used for plain headings). Not a <blockquote>:
+        // this is the writer's own distilled point, not quoted text.
+        <div className="mt-10" style={{ borderLeft: "3px solid var(--color-ink)", paddingLeft: "2rem" }}>
+          <p
+            className="text-callout"
+            style={{ color: "var(--color-ink)", fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)", maxWidth: "38rem" }}
+          >
+            {section.keyTakeaway}
+          </p>
+        </div>
       )}
     </>
   );

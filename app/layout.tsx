@@ -14,17 +14,25 @@ import { NavHost } from "@/components/NavHost";
 // so the swap doesn't change layout. Variable names match what globals.css
 // and every component already reference via var(--font-display) etc., so
 // nothing else needed to change.
+// Neither family loads an italic style — italic was dropped sitewide
+// (pull quotes read fine off their border-left + indent alone; the
+// callout/subtitle treatment didn't need it once it stopped being the
+// one thing telling those apart from a title).
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "700", "900"],
-  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  // 700/900 added when a handful of formerly-serif elements (hero
+  // subtitle, About page chapter headings, email CTA) moved to the body
+  // font but kept their bold treatment — without these, the browser
+  // would synthesize (fake) bold instead of rendering DM Sans's actual
+  // cuts.
+  weight: ["300", "400", "500", "700", "900"],
   variable: "--font-body",
   display: "swap",
 });

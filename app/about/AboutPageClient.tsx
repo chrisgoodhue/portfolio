@@ -89,14 +89,14 @@ export function AboutPageClient() {
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "var(--color-paper)" }}>
-      <div className="flex flex-col lg:flex-row" style={{ gap: "var(--space-5)", paddingLeft: "var(--space-5)" }}>
+      <div className="flex flex-col lg:flex-row" style={{ gap: "var(--space-4)", paddingLeft: "var(--space-4)" }}>
         {/* Photo — same inset as the homepage's cards (CardGrid's
-            var(--space-5) padding), not true edge-to-edge. Sticky + inset
+            var(--space-4) padding), not true edge-to-edge. Sticky + inset
             top/bottom at lg+, so it stays put for the entire page (bio,
             Experience, Capabilities, Contact) while the right column
             scrolls past it. */}
         <div
-          className="w-full lg:w-1/2 lg:sticky lg:top-[var(--space-5)] lg:h-[calc(100vh_-_(var(--space-5)*2))]"
+          className="w-full lg:w-1/2 lg:sticky lg:top-[var(--space-4)] lg:h-[calc(100vh_-_(var(--space-4)*2))]"
           style={{
             aspectRatio: "1200 / 1791",
             backgroundColor: "var(--color-ink)",
@@ -124,7 +124,7 @@ export function AboutPageClient() {
               style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)", lineHeight: 0.95 }}
             >
               Chris<br />
-              <em style={{ fontStyle: "italic", opacity: 0.5 }}>Goodhue</em>
+              <span style={{ opacity: 0.5 }}>Goodhue</span>
             </h1>
 
             {chapters.map((chapter) => (
@@ -134,7 +134,9 @@ export function AboutPageClient() {
                 </p>
                 <h2
                   className="text-display mb-4"
-                  style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)" }}
+                  // Body font: a chapter subheading, not the page's own
+                  // title (that's "Chris Goodhue" above) or a quote.
+                  style={{ fontFamily: "var(--font-body)", fontSize: "clamp(1.4rem, 2.5vw, 2rem)" }}
                 >
                   {chapter.title}
                 </h2>
@@ -143,7 +145,7 @@ export function AboutPageClient() {
                     key={i}
                     className="leading-relaxed"
                     style={{
-                      fontSize: "var(--text-lg)",
+                      fontSize: "var(--text-body)",
                       color: "var(--color-ink)",
                       opacity: 0.7,
                       marginTop: i > 0 ? "1rem" : 0,
@@ -169,7 +171,7 @@ export function AboutPageClient() {
                 }}
               >
                 <div>
-                  <p className="text-display" style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}>
+                  <p className="text-display" style={{ fontFamily: "var(--font-body)", fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}>
                     {item.company}
                   </p>
                   <p className="text-label mt-1" style={{ color: "var(--color-muted)" }}>
@@ -213,6 +215,7 @@ export function AboutPageClient() {
               href="mailto:christopher.goodhue@gmail.com"
               className="text-display"
               style={{
+                fontFamily: "var(--font-body)",
                 fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
                 display: "inline-block",
                 borderBottom: "2px solid var(--color-ink)",

@@ -96,8 +96,8 @@ export default function HomePage() {
         backgroundColor: "var(--color-paper)",
       }}
     >
-      {/* 0px is intentional: CardGrid supplies its own var(--space-5) padding
-          on all sides plus var(--space-5) gaps between cards, so the top gap
+      {/* 0px is intentional: CardGrid supplies its own var(--space-4) padding
+          on all sides plus var(--space-4) gaps between cards, so the top gap
           already matches the left/right/between-card gaps without this. */}
       <div style={{ paddingTop: "0px" }}>
         <CardGrid cards={cards} />

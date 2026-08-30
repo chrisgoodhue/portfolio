@@ -186,7 +186,7 @@ export function AboutCard({ isAnimatingIn = false, returnRequestId = null }: Abo
               }}
             >
               Chris<br />
-              <span style={{ opacity: 0.45, fontStyle: "italic" }}>Goodhue</span>
+              <span style={{ opacity: 0.45 }}>Goodhue</span>
             </h1>
 
             <p
